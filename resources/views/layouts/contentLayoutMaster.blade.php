@@ -1,0 +1,174 @@
+{{-- pageConfigs variable pass to Helper's updatePageConfig function to update page configuration  --}}
+@isset($pageConfigs)
+{!! Helper::updatePageConfig($pageConfigs) !!}
+@endisset
+
+<!DOCTYPE html>
+@php
+// confiData variable layoutClasses array in Helper.php file.
+$configData = Helper::applClasses();
+@endphp
+<!--
+Template Name: Materialize - Material Design Admin Template
+Author: PixInvent
+Website: http://www.pixinvent.com/
+Contact: hello@pixinvent.com
+Follow: www.twitter.com/pixinvents
+Like: www.facebook.com/pixinvents
+Purchase: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
+Renew Support: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+
+-->
+<html class="loading" lang="@if(session()->has('locale')){{session()->get('locale')}}@else{{$configData['defaultLanguage']}}@endif" data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}">
+<!-- BEGIN: Head-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  <title>@yield('title') | Materialize - Material Design Admin Template</title>
+  <link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon-152x152.png">
+  <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon/favicon-32x32.png">
+  <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
+  <style>
+    #modalDelete,
+    #modalDeletePhoto,
+    #modalDeletePhotoBackground {
+      max-height: 58%;
+      height: 58% !important;
+    }
+
+    #modalDeletePhotoAlbum {
+      max-height: 38%;
+      height: 38% !important;
+    }
+
+    #modalAdd {
+      max-height: 88%;
+      height: 88% !important;
+    }
+
+    #modal {
+      max-height: 70%;
+    }
+  </style>
+  {{-- Include core + vendor Styles --}}
+  @include('panels.styles')
+
+</head>
+<!-- END: Head-->
+
+{{-- @isset(config('custom.custom.mainLayoutType'))
+@endisset --}}
+@if(!empty($configData['mainLayoutType']) && isset($configData['mainLayoutType']))
+@include(($configData['mainLayoutType'] === 'horizontal-menu') ? 'layouts.horizontalLayoutMaster':
+'layouts.verticalLayoutMaster')
+@else
+{{-- if mainLaoutType is empty or not set then its print below line  --}}
+<h1>{{'mainLayoutType Option is empty in config custom.php file.'}}</h1>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+  <ul>
+    @foreach ($errors->all() as $error)
+    <script>
+      M.toast({
+        html: '{{$error}}'
+      }, 5000);
+    </script>
+    @endforeach
+  </ul>
+</div>
+@endif
+
+@if(session()->has('message'))
+<div class="alert alert-success">
+  <script>
+    M.toast({
+      html: '{{ session()->get("message")}}'
+    }, 5000);
+  </script>
+</div>
+@endif
+
+<script src="{{ asset('js/select2.min.js') }}"></script>
+<script>
+  $(document).ready(function() {
+    $("#modalAdd").modal();
+    $('#modalDelete').modal();
+    $('#modalDeletePhoto').modal();
+    $('#modalDeletePhotoAlbum').modal();
+    $('#modalDeletePhotoBackground').modal();
+    $('#modalPhotos').modal();
+
+    $('#modalAdd').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    });
+    document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e => e.stopPropagation()))
+  });
+</script>
+
+<script>
+  (function(document, $, undefined) {
+    $.fn.sm_select = function(options) {
+      var defaults = $.extend({
+        input_text: 'Select option...',
+        duration: 200,
+        show_placeholder: false
+      }, options);
+      return this.each(function(e) {
+        $(this).select2(options);
+        var select_state;
+        var drop_down;
+        var obj = $(this);
+        $(this).on('select2:open', function(e) {
+          drop_down = $('body>.select2-container .select2-dropdown');
+          drop_down.find('.select2-search__field').attr('placeholder', (($(this).attr('placeholder') != undefined) ?
+            $(this).attr('placeholder') : defaults.input_text));
+          drop_down.hide();
+          setTimeout(function() {
+            if (defaults.show_placeholder == false) {
+              var out_p = obj.find('option[placeholder]');
+              out_p.each(function() {
+                drop_down.find('li:contains("' + $(this).text() + '")').css('display', 'none');
+              });
+            }
+            drop_down.css('opacity', 0).stop(true, true).slideDown(defaults.duration, 'easeOutCubic', function() {
+              drop_down.find('.select2-search__field').focus();
+            }).animate({
+              opacity: 1
+            }, {
+              queue: false,
+              duration: defaults.duration
+            })
+          }, 10);
+          select_state = true;
+        });
+        $(this).on('select2:closing', function(e) {
+          if (select_state) {
+            e.preventDefault();
+            drop_down = $('body>.select2-container .select2-dropdown');
+            drop_down.slideUp(defaults.duration, 'easeOutCubic', function() {
+              obj.select2('close');
+            }).animate({
+              opacity: 0
+            }, {
+              queue: false,
+              duration: defaults.duration,
+              easing: 'easeOutSine'
+            });
+            select_state = false;
+          }
+        });
+      });
+    };
+  })(document, jQuery);
+</script>
+
+
+</html>

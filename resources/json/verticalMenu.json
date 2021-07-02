@@ -1,0 +1,36 @@
+{
+  "menu": [
+    {
+      "navheader": "Menu ",
+      "icon": "more_horiz"
+    },
+    {
+      "url": "/admin",
+      "name": "Home",
+      "i18n": "Documentation",
+      "class": "waves-effect waves-cyan",
+      "icon": "home"
+    },
+    {
+      "url": "/admin/users",
+      "name": "Users",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "manage_accounts"
+    },
+    {
+      "url": "/admin/campaigns",
+      "name": "Campaigns",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "view_list"
+    },
+    {
+      "url": "/admin/albums",
+      "name": "Albums",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "camera_enhance"
+    }
+  ]
+}
