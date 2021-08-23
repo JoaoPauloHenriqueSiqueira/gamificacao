@@ -57,9 +57,9 @@ class CreditCard extends FormRequest
 
     protected function extractNumbers()
     {
-        if ($this->request->has('cnpj')) {
+        if ($this->request->has('cpf')) {
             $this->merge([
-                'cnpj' => Format::extractNumbers($this->request->get('cnpj'))
+                'cpf' => Format::extractNumbers($this->request->get('cpf'))
             ]);
         }
 

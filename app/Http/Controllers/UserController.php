@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccountUserValidator;
 use App\Http\Requests\UserValidator;
 use App\Services\CompanyService;
 use App\Services\UserService;
@@ -41,6 +42,14 @@ class UserController extends Controller
         }
     }
 
+    public function updateAccount(AccountUserValidator $request)
+    {
+        try {
+            return $this->service->save($request, false, true);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
     public function create(UserValidator $request)
     {

@@ -47,15 +47,5 @@
         </form>
     </div>
 </div>
-
-
 @endsection
-<script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        maskFields();
-    });
-    function maskFields() {
-        $('#token').mask('000000');
-    }
-</script>
+

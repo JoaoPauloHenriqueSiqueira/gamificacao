@@ -21,7 +21,7 @@
 
 <div style="bottom: 54px; right: 19px;" class="fixed-action-btn direction-top">
     <a class="btn-floating btn-large primary-text gradient-shadow contact-sidebar-trigger" onclick="openModal(false)" href="#modal1">
-        <i class="material-icons">person_add</i>
+        <i class="material-icons">add</i>
     </a>
 </div>
 <!-- Add new contact popup Ends-->
@@ -99,8 +99,9 @@
                             <div class="row">
                                 <span class="span-body">
                                     <div class="row" id="background_photo{{$data->id}}" <?php if (!$data['background']) { ?> style="display:none" <?php } ?>>
-                                        <h5 class="center">Foto <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
+                                        <h5 class="center">Remover Background <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
                                         </h5>
+                                        <br>
                                         <div class="col s12 m4 center">
                                             @if($data['background'])
                                             <img class="materialboxed responsive-img" width="550" src="<?= $urlAws . $data['background'] ?>" />
@@ -108,6 +109,7 @@
                                         </div>
                                     </div>
                                 </span>
+                                <br>
                                 <div class="row center">
                                     <span class="span-body">
                                         <a class="btn-small tooltipped blue" onclick="managerPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Fotos">
@@ -120,7 +122,7 @@
                             </div></br>
                             <hr>
                             <div class="row center">
-                                <a class="btn-small tooltipped" onclick="edit('{{$data->valid_at_input}}','{{$data->valid_from_input}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Álbum">
+                                <a class="btn-small tooltipped" onclick="editCampaign('{{$data->valid_at_input}}','{{$data->valid_from_input}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Álbum">
                                     <i class="material-icons white-text">
                                         edit
                                     </i>
@@ -153,7 +155,7 @@
                             <input type="file" name="photos[]" accept="image/*" id="photos" multiple>
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" id="photos2" required>
+                            <input class="file-path validate" type="text" id="photos2">
                         </div>
                     </div>
                 </div>
@@ -180,53 +182,43 @@
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDeletePhoto" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text row">Deletar foto?</h4><br>
+<div id="modalDeletePhoto" class="modal">
+    <div class="modal-content gradient-45deg-indigo-purple white-text">
+        <h4 class="center white-text row">Deletar background?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn-flat " onclick="deletePhoto()">
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_background_album') ?>}}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()">
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
         </div>
         <br>
         <div class="row center">
-            <div class=" preloader-wrapper big active center" style="display:none;" id="indeterminate">
-                <div class="spinner-layer spinner-blue-only">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
+            <div class="progress" id="loading" style="display:none">
+                <div class="indeterminate"></div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="modalDeletePhotoAlbum" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text row">Deletar foto?</h4><br>
+<div id="modalDeletePhotoAlbum" class="modal">
+    <div class="modal-content gradient-45deg-indigo-purple white-text">
+        <h4 class="center  white-text row">Deletar foto?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhotoAlbum">
-            <a class="btn-flat " onclick="deletePhotoAlbum()">
-                <i class="material-icons blue-text">
+            <a class="btn  waves-effect waves-light white-text" onclick="deletePhotoAlbum()">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModalAlbum()">
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModalAlbum()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
@@ -235,21 +227,27 @@
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDelete" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text">Deletar Álbum?</h4>
+<div id="modalDelete" class="modal">
+    <div class="modal-content  gradient-45deg-indigo-purple  white-text">
+        <h4 class="center white-text">Deletar Álbum?</h4>
         <div class="row center">
             <input type="hidden" id="deleteInput">
-            <a class="btn-flat " onclick="deleteAlbum()">
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text " onclick="deleteData('{{ URL::route('delete_album') }}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()">
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
+        </div>
+        <br>
+        <div class="row center">
+            <div class="progress" id="indeterminate" style="display:none">
+                <div class="indeterminate"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -270,7 +268,7 @@
                 <!-- form start -->
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" name="name" type="text" class="validate">
+                        <input id="name" name="name" type="text" class="validate" required>
                         <label for="name">Nome</label>
                     </div>
                     <div class="input-field col s12">
@@ -296,7 +294,7 @@
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix"> watch_later </i>
-                        <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate">
+                        <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate" required>
                         <label for="duration_frames">Duração por Frame(em segundos)</label>
                     </div>
                     <div class="input-field col s12">
@@ -386,31 +384,87 @@
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
 <script>
+    //ADD (VALID)
+
     $(document).ready(function() {
         "use strict";
         $(".modal").modal();
         $("#modalAdd").modal();
-
-
         $('.materialboxed').materialbox();
-
         $(".select2").select2({
             dropdownAutoWidth: true,
             width: '100%'
         });
 
-        var updatecontact = $(".update-contact"),
-            addcontact = $(".add-contact"),
-            contactComposeSidebar = $(".contact-compose-sidebar"),
-            $old = "<?= old('name') ?>";
-
-        if ($old != "") {
+        var $old = "<?= !empty(old()); ?>";
+        if ($old || $old != "") {
             $("#old").val(1);
             formOldUser();
         }
     });
 
-    function managerPhotos($data) {
+    function formOldUser() {
+        if ($("#old").val() != 1) {
+            this.clean();
+        } else {
+            $("#old").val(0);
+
+            let $data = [];
+
+            var list_of_all_old_value = <?= json_encode(session()->getOldInput())  ?>;
+
+            let $id = '<?= old('id'); ?>' != '' ? '<?= old('id'); ?>' : false;
+            if ($id) {
+                $data['id'] = $id;
+            }
+
+            let $name = '<?= old('name'); ?>' != '' ? '<?= old('name'); ?>' : false;
+            if ($name) {
+                $data['name'] = $name;
+            }
+
+            let $duration_frames = '<?= old('duration_frames'); ?>' != '' ? '<?= old('duration_frames'); ?>' : false;
+            if ($duration_frames) {
+                $data['duration_frames'] = $duration_frames;
+            }
+
+            let $active = '<?= old('active'); ?>' != '' ? '<?= old('active'); ?>' : false;
+            if ($active) {
+                $data['active'] = $active;
+            }
+
+            let $is_not_continuous = '<?= old('is_not_continuous'); ?>' != '' ? false : true;
+            $data['is_continuous'] = $is_not_continuous;
+
+            $data['days_week'] = '<?= is_array(old('days_week')) == true ? implode(',', old('days_week'))  : "" ?>';
+
+            let $is_birthday = '<?= old('is_birthday'); ?>' != '' ? '<?= old('is_birthday'); ?>' : false;
+            if ($is_birthday) {
+                $data['is_birthday'] = $is_birthday;
+            }
+
+            this.editCampaign('{{old("valid_at_input")}}', '{{old("valid_from_input")}}', $data);
+        }
+    }
+
+    function clean() {
+        $('#form').get(0).setAttribute('method', 'POST');
+        $("#id").remove();
+        $("#idalbum").remove();
+        $("#name").val('');
+        $("#active").prop('checked', true);
+        $("#duration_frames").val('');
+        $("#checkDates").prop('checked', false);
+        $('input[name^="days_week"]').each(function() {
+            $(this).prop('checked', true);
+        });
+        changeTypeDate();
+        $("#background1").val('');
+        $("#background2").val('');
+    }
+
+    function managerPhotos($data, $photos) {
+        closeForm();
         $("#idalbum").remove();
 
         $id = $data['id'];
@@ -423,6 +477,7 @@
         }).appendTo('#formUsers');
 
         $photos = $data['photos'];
+
         $("#users_form").empty();
         var items = JSON.parse(sessionStorage.getItem('deletePhotos') || '[]');
 
@@ -437,59 +492,9 @@
         $('.materialboxed').materialbox();
     }
 
-    function changeTypeDate() {
-        if ($("#checkDates").is(":checked")) {
-            $("#dates_start_end").show();
-            $("#days_week").hide();
-        } else {
-            $("#days_week").show();
-            $("#dates_start_end").hide();
-        }
-    }
-
-    var updatecontact = $(".update-contact"),
-        addcontact = $(".add-contact"),
-        contactComposeSidebar = $(".contact-compose-sidebar"),
-        $old = "<?= old('name') ?>";
-
-
-    function closeForm() {
-        $(".contact-overlay").removeClass("show");
-        $(".contact-compose-sidebar").removeClass("show");
-    }
-
-    function openModal($edit) {
-        this.clean();
-
-        $(".contact-overlay").addClass("show");
-        $(".contact-compose-sidebar").addClass("show");
-        if ($edit) {
-            $(".update-contact").show();
-            $(".add-contact").hide();
-            $("#password_row").hide();
-            M.updateTextFields()
-        } else {
-            $(".update-contact").hide();
-            $(".add-contact").show();
-            M.updateTextFields()
-            $("#password_row").show();
-        }
-    }
-
     function askDeletePhoto(id) {
         $('#modalDeletePhoto').modal('open');
         $("#deleteInputPhoto").val(id);
-    }
-
-    function formOldUser() {
-        if ($("#old").val() != 1) {
-            this.clean();
-        } else {
-            $("#old").val(0);
-        }
-        updatecontact.addClass("display-none");
-        addcontact.removeClass("display-none");
-        contactComposeSidebar.addClass("show");
     }
 
     function createRow($id, $path) {
@@ -507,7 +512,6 @@
                             </button>
                         </td>
                     </tr>`);
-
     }
 
 
@@ -562,101 +566,21 @@
     function closeCleanModalALbum($id, $data, $success) {
         if (!$success) {
             $("#rowPhoto" + id).show();
+            M.toast({
+                html: $data
+            }, 5000);
         }
 
-        M.toast({
-            html: $data
-        }, 5000);
         $("#modalDeletePhotoAlbum").modal("close");
         $("#deleteInputPhotoAlbum").val('');
-    }
-
-    function clean() {
-        $('#form').get(0).setAttribute('method', 'POST');
-        $("#idalbum").remove();
-        $("#name").val('');
-        $("#active").prop('checked', true);
-        $("#duration_frames").val('');
-        $("#checkDates").prop('checked', false);
-        $('input[name^="days_week"]').each(function() {
-            $(this).prop('checked', true);
-        });
-        changeTypeDate();
-        $("#background1").val('');
-        $("#background2").val('');
-    }
-
-    function closeModal() {
-        this.clean();
-        $('#modalDeletePhoto').modal('close');
     }
 
     function closeModalAlbum() {
         $('#modalDeletePhotoAlbum').modal('close');
     }
 
-    function edit(validAt, validFrom, album) {
-        openModal(true);
-        $("#idalbum").append(album['id']);
-        $("#name").val(album['name']);
-        $("#duration_frames").val(album['duration_frames']);
-
-        let active = album['active'];
-        if (active) {
-            $("#active").prop('checked', true);
-        }else{
-            $("#active").prop('checked', false);
-        }
-
-        let is_continuos = album['is_continuous'];
-        if (is_continuos) {
-            $("#checkDates").prop('checked', false);
-            $('input[name^="days_week"]').each(function() {
-                $(this).prop('checked', false);
-            });
-
-            album['days_week'].forEach(element => {
-                $(`#day${element}`).prop('checked', true);
-            });
-
-        } else {
-            $("#checkDates").prop('checked', true);
-            $("#valid_at").val(validAt);
-            $("#valid_from").val(validFrom);
-        }
-
-        changeTypeDate();
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'idalbum',
-            name: 'id',
-            value: album['id']
-        }).appendTo('#form');
-
-        M.updateTextFields()
-    }
-
-    function askDelete(id) {
-        $('#modalDelete').modal('open');
-        $("#deleteInput").val(id);
-    }
-
-
-    function closeCleanModal(id, $data, $success) {
-        if ($success) {
-            $("#" + id).remove();
-        }
-        M.toast({
-            html: $data
-        }, 5000);
-        $("#modalDelete").modal("close");
-        $("#deleteInput").val('');
-        $("#indeterminate").hide();
-    }
-
-
-    function deleteAlbum() {
-        $("#indeterminate").hide();
+    function deleteData() {
+        $("#indeterminate").show();
         let id = $("#deleteInput").val();
         let $url = "<?= URL::route('delete_album') ?>";
         $.ajax({
@@ -670,34 +594,9 @@
             },
             error: function(data) {
                 closeCleanModal(id, data.responseText, false);
-            }
-        });
-    }
-
-    function closeCleanPhotoModal($data, $id) {
-        $("#indeterminate").hide();
-        $(`#background_photo${id}`).hide();
-        M.toast({
-            html: $data
-        }, 5000);
-        $('#modalDeletePhoto').modal('close');
-    }
-
-    function deletePhoto() {
-        $("#indeterminate").show();
-        let $url = "<?= URL::route('delete_background_album') ?>";
-        id = $("#deleteInputPhoto").val();
-        $.ajax({
-            type: 'DELETE',
-            url: $url,
-            data: {
-                "id": id
             },
-            success: function(data) {
-                closeCleanPhotoModal(data, id);
-            },
-            error: function(data) {
-                closeCleanPhotoModal(data.responseText, '');
+            complete: function(data) {
+                $("#indeterminate").hide();
             }
         });
     }

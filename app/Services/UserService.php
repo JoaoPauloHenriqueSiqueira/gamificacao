@@ -7,6 +7,7 @@ use App\Library\Upload;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ActiveCompany;
 
 class UserService
 {
@@ -62,6 +63,7 @@ class UserService
             array_push($filterColumns, ['name', 'like', '%' . Arr::get($request, 'search_name') . '%']);
         }
 
+        array_push($filterColumns, ['id', "!=", Auth::user()->id]);
         return  $filterColumns;
     }
 
@@ -76,13 +78,17 @@ class UserService
         return $this->repository->find($userId)->toArray();
     }
 
-
-    public function save($request, $register = false)
+    public function save($request, $register = false, $updateAccount = false)
     {
         $userId = Arr::get($request, "id", false);
+        
+        if ($updateAccount) {
+            $userId = Auth::user()->id;
+        }
+
         if ($userId) {
             if (!$this->checkCompany($userId)) {
-                return response('Sem permissão para essa empresa', 422);
+                return redirect()->back()->with('message', 'Sem permissão para essa empresa');
             }
             $request = $this->verifyUpdate($request);
         }
@@ -91,22 +97,43 @@ class UserService
             $request['password'] = bcrypt(Arr::get($request, "password"));
         }
 
-        $admin = Arr::get($request, "admin", false);
+        $admin =  Arr::get($request, "admin", false);
+        $request['admin'] = false;
 
-        if($admin){
+        if ($admin) {
             $request['admin'] = true;
+        }
+
+        if ($updateAccount) {
+            unset($request['admin']);
         }
 
         if ($register) {
             return $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request);
         }
 
+        $old = [];
+        if ($userId) {
+            $old =  $this->repository->find($userId);
+        }
+
         $request['company_id'] = Auth::user()->company_id;
         $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
-        $this->addPhoto($request, $response, 'photo');
+        $response = $this->addPhoto($request, $response, 'photo');
+
+        if ($userId && Arr::get($old, "email") == $response->email) {
+            return redirect()->back()->with('message', 'Registro criado/atualizado!');
+        }
+        
+        $response['token_active'] = mt_rand(100000, 999999);
+        $response['active'] = 0;
+        $response->save();
+
+        //TODO - REMOVER 
+        //$user->notify(new ActiveCompany($user->name, $user->token_active));
 
         if ($response) {
-            return redirect()->back()->with('message', 'Registro criado/atualizado!');
+            return redirect()->back()->with('message', 'Registro criado/atualizado! É necessário que o usuário valide o email');
         }
 
         return redirect()->back()->with('message', 'Ocorreu algum erro');
@@ -116,8 +143,8 @@ class UserService
     {
         $foto = $request->file($property);
         $companyId = Auth::user()->company_id;
-        $user = Arr::get($response, "id");
-        $path = "photos/company/$companyId/user/$user/$property";
+        $id = Arr::get($response, "id");
+        $path = "photos/company/$companyId/user/$id/$property";
 
         if ($path && $foto) {
             $pathPhoto = $this->uploadPlugin->upload($foto, $path);
@@ -125,10 +152,11 @@ class UserService
                 return;
             }
 
-            $user = $this->repository->find($user);
-            $user[$property] = $pathPhoto;
-            $user->save();
+            $response[$property] = $pathPhoto;
+            $response->save();
         }
+
+        return $response;
     }
 
     public function active($request)
@@ -174,19 +202,21 @@ class UserService
         return true;
     }
 
-    /**
-     * Deleta usuário
-     *
-     * @param [type] $request
-     * @return void
-     */
     public function delete($request)
     {
         $userId = Arr::get($request, "id");
         $userFind =  $this->repository->find($userId);
 
-        if ($userId != Auth::user()->id && Arr::get($userFind, "company_id" == Auth::user()->company_id)) {
-            $this->uploadPlugin->remove(Arr::get($userFind, "photo"));
+        if ($userId == Auth::user()->id) {
+            return response('Você não pode deletar o seu usuário', 422);
+        }
+
+        if (Arr::get($userFind, "company_id") == Auth::user()->company_id) {
+            $foto = Arr::get($userFind, "photo");
+            if ($foto) {
+                $this->uploadPlugin->remove($foto);
+            }
+
             $response = $this->repository->delete($userId);
 
             if ($response) {

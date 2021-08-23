@@ -63,6 +63,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check_active_user' => \App\Http\Middleware\CheckActiveUserRole::class,
         'check_user_already_active' => \App\Http\Middleware\CheckUserAlreadyActiveRole::class,
+        'check_active_company' => \App\Http\Middleware\CheckActiveCompanyRole::class,
+        'check_user_admin' => \App\Http\Middleware\CheckUserAdminRole::class,
 
     ];
 

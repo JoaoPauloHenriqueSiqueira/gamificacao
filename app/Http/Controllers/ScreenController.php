@@ -28,6 +28,16 @@ class ScreenController extends Controller
         $this->albumService = $albumService;
         $this->carbon = $carbon;
     }
+
+    public function index()
+    {
+        $var1 = true;
+        $var2 = false;
+        $var3 = true;
+
+        return response()->json(['success' => false]);
+    }
+
     public function page(Request $request, $name)
     {
         $search = [];
@@ -36,8 +46,10 @@ class ScreenController extends Controller
         array_push($search, ['name', 'like', '%' . $name . '']);
         $company = $this->companyService->searchField($search);
 
-        if(!$company){
-            $company = $this->companyService->searchField(['id'=> 1]);
+
+        //TODO CRIAR COMPANY PADRÃO (TELA CAIR NA TELA DO EXIBE TV)
+        if (!$company) {
+            $company = $this->companyService->searchField(['id' => 1]);
         }
 
         //TODO BUSCAR PELO NOME

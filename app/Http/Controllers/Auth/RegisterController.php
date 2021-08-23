@@ -61,6 +61,7 @@ class RegisterController extends Controller
     {
         $newData = [];
         $newData['name'] = Arr::get($data, 'name');
+        $newData['birthday'] = Arr::get($data, 'birthday');
         $newData['email'] = Arr::get($data, 'email');
         $newData['company_id'] = $company['id'];
         $newData['password'] = Hash::make(Arr::get($data, 'password'));
@@ -95,8 +96,9 @@ class RegisterController extends Controller
             $newData['street'] = $enderecoRequest['logradouro'] ?? "" ;
         }
 
+        $newData['phone'] = Format::extractNumbers(Arr::get($data, 'phone'));
         $newData['country'] = 'BRA';
-        $newData['cnpj'] = Format::extractNumbers(Arr::get($data, 'cnpj'));
+        $newData['cpf'] = Format::extractNumbers(Arr::get($data, 'cpf'));
         $newData['active'] = 0;
         $newData['token_screen'] = md5(uniqid(""));
         return $newData;
@@ -114,6 +116,7 @@ class RegisterController extends Controller
             $campaign = $this->makeCampaign($companyData);
             $this->campaignService->save($campaign, true);
 
+            //TODO - REMOVER 
             //$user->notify(new ActiveCompany($user->name, $user->token_active));
             return (new LoginController)->login($data);
         }

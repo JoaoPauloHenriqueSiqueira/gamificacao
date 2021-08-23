@@ -19,11 +19,9 @@
 @endsection
 
 <!-- Add new contact popup -->
-<div class=" contact-overlay">
-</div>
 <div style="bottom: 54px; right: 19px;" class="fixed-action-btn direction-top">
     <a class="btn-floating btn-large primary-text gradient-shadow contact-sidebar-trigger" onclick="openModal(false)" href="#modal1">
-        <i class="material-icons">person_add</i>
+        <i class="material-icons">add</i>
     </a>
 </div>
 <!-- Add new contact popup Ends-->
@@ -62,13 +60,13 @@
                             <div class="row ">
                                 <span class="span-body">
                                     <span class="green-text">Nascimento:</span>
-                                    {{ $data->birthday }}
+                                    {{ $data->birthday ==  "" ? '-' : $data->birthday }}
                                 </span>
                             </div></br>
                             <div class="row ">
                                 <span class="span-body">
                                     <div class="row" id="photo{{$data->id}}" <?php if (!$data['photo']) { ?> style="display:none" <?php } ?>>
-                                        <h5 class="center">Foto <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
+                                        <h5 class="center">Remover Foto <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
                                         </h5>
                                         <div class="col s12 m4 center">
                                             <img class="materialboxed responsive-img" width="550" src="<?= $urlAws . $data['photo'] ?>" />
@@ -79,7 +77,7 @@
                             </div></br>
                             <hr>
                             <div class="row center">
-                                <a class="btn-small tooltipped" onclick="editUser('{{$data->birthday_date}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Usuário">
+                                <a class="btn-small tooltipped" onclick="editUser('{{ $data->birthday_date }}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Usuário">
                                     <i class="material-icons white-text">
                                         edit
                                     </i>
@@ -100,64 +98,60 @@
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDeletePhoto" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text row">Deletar foto?</h4><br>
+<div id="modalDeletePhoto" class="modal">
+    <div class="modal-content gradient-45deg-indigo-purple white-text">
+        <h4 class="center white-text row">Deletar foto?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn-flat " onclick="deletePhoto()">
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_user_photo') ?>}}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()">
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
         </div>
         <br>
         <div class="row center">
-            <div class=" preloader-wrapper big active center" style="display:none;" id="indeterminate">
-                <div class="spinner-layer spinner-blue-only">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
+            <div class="progress" id="loading" style="display:none">
+                <div class="indeterminate"></div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDelete" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text">Deletar Usuário?</h4>
+<div id="modalDelete" class="modal">
+    <div class="modal-content  gradient-45deg-indigo-purple  white-text">
+        <h4 class="center white-text">Deletar Usuário?</h4>
         <div class="row center">
             <input type="hidden" id="deleteInput">
-            <a class="btn-flat " onclick="deleteUser()">
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text " onclick="deleteData('{{ URL::route('delete_user') }}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()" >
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
+        </div>
+        <br>
+        <div class="row center">
+            <div class="progress" id="indeterminate" style="display:none">
+                <div class="indeterminate"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <!--  Contact sidebar -->
 <div class="contact-compose-sidebar">
-    <form class="edit-contact-item mb-5 mt-5" method="POST" action="{{ URL::route('make_user') }}" id="formUser" enctype="multipart/form-data">
+    <form class="edit-contact-item mb-5 mt-5" method="POST" action="{{ URL::route('make_user') }}" id="form" enctype="multipart/form-data">
         <input type="hidden" id="old">
         <div class="card quill-wrapper">
             <div class="card-content pt-0">
@@ -239,18 +233,65 @@
         $(".modal").modal();
         $('.materialboxed').materialbox();
 
-        var contactOverlay = $(".contact-overlay"),
-            updatecontact = $(".update-contact"),
-            addcontact = $(".add-contact"),
-            contactComposeSidebar = $(".contact-compose-sidebar"),
-            password = "<?= $password_default ?>",
-            $old = "<?= old('name') ?>";
+        var $old = "<?= !empty(old()); ?>";
+        if ($old) {
+            $("#old").val(1);
+            formOldUser();
+        }
 
         if ($old != "") {
             $("#old").val(1);
             formOldUser();
         }
     });
+
+    function formOldUser() {
+        if ($("#old").val() != 1) {
+            this.clean();
+        } else {
+            $("#old").val(0);
+
+            let $data = [];
+
+            var list_of_all_old_value = <?= json_encode(session()->getOldInput())  ?>;
+
+            let $id = '<?= old('id'); ?>' != '' ? '<?= old('id'); ?>' : '';
+            if ($id) {
+                $data['id'] = $id;
+            }
+
+            let $name = '<?= old('name'); ?>' != '' ? '<?= old('name'); ?>' : '';
+            if ($name) {
+                $data['name'] = $name;
+            }
+
+            $data['admin'] = '<?= old('admin'); ?>' != '' ? true : false;
+
+            $data['email'] = '<?= old('email'); ?>' != '' ? '<?= old('email'); ?>' : '';
+            
+            $data['password']= '<?= old('password'); ?>' != '' ? '<?= old('password'); ?>' : '';
+
+            let $birthday = '<?= old('birthday'); ?>' != '' ? '<?= old('birthday'); ?>' : '';
+            if ($birthday != '') {
+                $data['birthday'] = $birthday;
+            }
+
+            this.editUser($birthday, $data);
+        }
+    }
+
+    function clean() {
+        $('#form').get(0).setAttribute('method', 'POST');
+        $('#id').remove();
+        $("#idUser").remove();
+        $("#name").val('');
+        $("#email").val('');
+        $("#birthday").val('');
+        $("#foto1").val('');
+        $("#foto2").val('');
+        $("#password").val('');
+        $("#admin").prop('checked', false);
+    }
 
     var contactOverlay = $(".contact-overlay"),
         updatecontact = $(".update-contact"),
@@ -260,148 +301,9 @@
         $old = "<?= old('name') ?>";
 
 
-    function closeForm() {
-        $(".contact-overlay").removeClass("show");
-        $(".contact-compose-sidebar").removeClass("show");
-    }
-
-    function openModal($edit) {
-        $(".contact-overlay").addClass("show");
-        $(".contact-compose-sidebar").addClass("show");
-
-        if ($edit) {
-            $(".update-contact").show();
-            $(".add-contact").hide();
-            $("#password_row").hide();
-            M.updateTextFields()
-        } else {
-            this.clean();
-            $(".update-contact").hide();
-            $(".add-contact").show();
-            $("#password").val(password);
-            M.updateTextFields()
-            $("#password_row").show();
-        }
-    }
-
     function askDeletePhoto(id) {
         $('#modalDeletePhoto').modal('open');
         $("#deleteInputPhoto").val(id);
     }
 
-    function formOldUser() {
-        if ($("#old").val() != 1) {
-            this.clean();
-        } else {
-            $("#old").val(0);
-        }
-        updatecontact.addClass("display-none");
-        addcontact.removeClass("display-none");
-        contactOverlay.addClass("show");
-        contactComposeSidebar.addClass("show");
-    }
-
-    function clean() {
-        $('#formUser').get(0).setAttribute('method', 'POST');
-        $("#idUser").remove();
-        $("#name").val('');
-        $("#email").val('');
-        $("#birthday").val('');
-        $("#foto1").val('');
-        $("#foto2").val('');
-        $("#password").attr('disabled', true);
-        $("#admin").prop('checked', false);
-    }
-
-    function closeModal() {
-        this.clean();
-        $('#modalDelete').modal('close');
-    }
-
-    function editUser(birthday, user) {
-        openModal(true);
-        $("#idUser").append(user['id']);
-        $("#name").val(user['name']);
-        $("#email").val(user['email']);
-        $("#password").attr('disabled', true);
-        $("#birthday").val(birthday);
-        let admin = user['admin'];
-
-        if (admin) {
-            $("#admin").prop('checked', true);
-        } else {
-            $("#admin").prop('checked', false);
-        }
-
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'idUser',
-            name: 'id',
-            value: user['id']
-        }).appendTo('#formUser');
-
-        M.updateTextFields()
-    }
-
-    function askDelete(id) {
-        $('#modalDelete').modal('open');
-        $("#deleteInput").val(id);
-    }
-
-    function closeCleanModal(id, $data, $success) {
-        if ($success) {
-            $("#" + id).remove();
-        }
-        M.toast({
-            html: $data
-        }, 5000);
-        $("#modalDelete").modal("close");
-        $("#deleteInput").val('');
-    }
-
-    function deleteUser() {
-        let id = $("#deleteInput").val();
-        let $url = "<?= URL::route('delete_user') ?>";
-        $.ajax({
-            type: 'DELETE',
-            url: $url,
-            data: {
-                "id": id
-            },
-            success: function(data) {
-                closeCleanModal(id, data, true);
-            },
-            error: function(data) {
-                closeCleanModal(id, data.responseText, false);
-            }
-        });
-    }
-
-    function closeCleanPhotoModal($data, $id) {
-        $("#indeterminate").hide();
-        $(`#photo${$id}`).hide();
-        M.toast({
-            html: $data
-        }, 5000);
-        $('#modalDeletePhoto').modal('close');
-    }
-
-    function deletePhoto() {
-        $("#indeterminate").show();
-        let $url = "<?= URL::route('delete_user_photo') ?>";
-        id = $("#deleteInputPhoto").val();
-        $.ajax({
-            type: 'DELETE',
-            url: $url,
-            data: {
-                "id": id
-            },
-            success: function(data) {
-                closeCleanPhotoModal(data, id);
-            },
-            error: function(data) {
-                closeCleanPhotoModal(data.responseText, '');
-            }
-        });
-    }
 </script>

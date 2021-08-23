@@ -69,6 +69,44 @@ class HomeController extends Controller
         }
     }
 
+    public function indexUser()
+    {
+        try {
+            $breadcrumbs = [];
+
+            //Pageheader set true for breadcrumbs
+            $pageConfigs = ['pageHeader' => true];
+
+            return view('pages.home_user', [
+                'pageConfigs' => $pageConfigs,
+                'breadcrumbs' => $breadcrumbs,
+                "urlAws" => ENV('AWS_URL'),
+            ]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function myAccount()
+    {
+        try {
+         
+            $user = Auth::user();
+            $breadcrumbs = [];
+
+            $pageConfigs = ['pageHeader' => true];
+
+            return view('pages.perfil', [
+                "data" => $user,
+                'pageConfigs' => $pageConfigs,
+                'breadcrumbs' => $breadcrumbs,
+                "urlAws" => ENV('AWS_URL'),
+            ]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function active()
     {
         try {
@@ -100,10 +138,10 @@ class HomeController extends Controller
 
     public function porcentagem($parcial, $total)
     {
-
         if ($total == 0) {
             return number_format((($parcial - $total)) * 100, 0);
         }
+
         return number_format((($parcial - $total) / $total) * 100, 0);
     }
 }

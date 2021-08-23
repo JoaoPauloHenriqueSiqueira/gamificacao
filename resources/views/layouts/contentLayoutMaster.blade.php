@@ -35,18 +35,6 @@ License: You must have a valid license purchased only from themeforest(the above
   <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
   <style>
-    #modalDelete,
-    #modalDeletePhoto,
-    #modalDeletePhotoBackground {
-      max-height: 58%;
-      height: 58% !important;
-    }
-
-    #modalDeletePhotoAlbum {
-      max-height: 38%;
-      height: 38% !important;
-    }
-
     #modalAdd {
       max-height: 88%;
       height: 88% !important;
@@ -170,5 +158,258 @@ License: You must have a valid license purchased only from themeforest(the above
   })(document, jQuery);
 </script>
 
+<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+<script>
+  var pusher = new Pusher('05ebbb87aba66fb09125', {
+    cluster: 'us2'
+  });
+  var company = "<?= session()->get('company') ?>";
+  var channel = pusher.subscribe(`paymentEvent.${company}`);
+
+  channel.bind('paymentEvent', function(data) {
+    if (company == data.company) {
+      verifyPayment(data.status);
+    }
+  });
+
+  function verifyPayment(status) {
+    if (
+      status == "CANCELLED_BY_RECEIVER" ||
+      status == "CANCELLED_BY_SENDER" ||
+      status == "SUSPENDED" ||
+      status == "CANCELLED") {
+      createCreditCard('Plano - Desativado');
+    } else if (status == 'PAYMENT_METHOD_CHANGE') {
+      updateCreditCard('Plano - Pagamento pendente. Atualize a forma de pagamento');
+    } else if (status == "ACTIVE") {
+      updateCreditCard('Plano - Ativo');
+    } else if (status == "PENDING") {
+      updateCreditCard('Plano - Aguardando Aprovação');
+    } else {
+      createCreditCard('Plano - Desativado');
+    }
+  }
+
+  function createCreditCard($status) {
+    $(".creditCard").show();
+    $(".optionSave").show();
+    $(".creditCardData").show();
+    $(".optionsUpdate").hide();
+    $(".optionUpdateCard").hide();
+    $("#status").html($status);
+  }
+
+  function updateCreditCard($status, show) {
+    if (!show) {
+      $(".creditCard").hide();
+      $(".optionsUpdate").hide();
+      $(".optionUpdateCard").hide();
+      $(".optionSave").hide();
+      $(".creditCardData").hide();
+    } else {
+      $(".creditCard").show();
+      $(".optionsUpdate").show();
+      $(".optionUpdateCard").hide();
+      $(".optionSave").hide();
+      $(".creditCardData").hide();
+    }
+    $("#status").html($status);
+  }
+</script>
+<script>
+  function openModal($edit) {
+    this.clean();
+    $("#dates").show();
+    $(".contact-overlay").addClass("show");
+    $(".contact-compose-sidebar").addClass("show");
+    if ($edit) {
+      $(".update-contact").show();
+      $(".add-contact").hide();
+    } else {
+      $(".update-contact").hide();
+      $(".add-contact").show();
+    }
+    M.updateTextFields()
+  }
+
+
+  function closeModal() {
+    this.clean();
+    $('#modalDelete').modal('close');
+    $('#modalDeletePhoto').modal('close');
+  }
+
+  function editCampaign(validAt, validFrom, data) {
+    console.log(data);
+    $('#id').remove();
+    if (data['id']) {
+      openModal(true);
+      $('<input>').attr({
+        type: 'hidden',
+        id: 'id',
+        name: 'id',
+        value: data['id']
+      }).appendTo('#form');
+    } else {
+      openModal();
+    }
+    $("#name").val(data['name']);
+    $("#duration_frames").val(data['duration_frames']);
+
+    let active = data['active'];
+    if (active) {
+      $("#active").prop('checked', true);
+    } else {
+      $("#active").prop('checked', false);
+    }
+
+    if (data['is_birthday']) {
+      $("#dates").hide();
+    } else {
+      $("#dates").show();
+    }
+
+    let is_continuos = data['is_continuous'];
+    if (is_continuos) {
+      $("#checkDates").prop('checked', false);
+      $('input[name^="days_week"]').each(function() {
+        $(this).prop('checked', false);
+      });
+
+      if (!Array.isArray(data['days_week']) && data['days_week'] != '' && data['days_week'] != null) {
+        data['days_week'] = data['days_week'].split(",");
+      }
+
+      if (Array.isArray(data['days_week'])) {
+        data['days_week'].forEach(element => {
+          $(`#day${element}`).prop('checked', true);
+        });
+      }
+
+    } else {
+      $("#checkDates").prop('checked', true);
+      $("#valid_at").val(validAt);
+      $("#valid_from").val(validFrom);
+    }
+
+    changeTypeDate();
+    M.updateTextFields()
+  }
+
+  function editUser(birthday, data) {
+    $('#id').remove();
+    if (data['id']) {
+      openModal(true);
+      $('<input>').attr({
+        type: 'hidden',
+        id: 'id',
+        name: 'id',
+        value: data['id']
+      }).appendTo('#form');
+    } else {
+      openModal();
+    }
+
+    $("#name").val(data['name']);
+    $("#email").val(data['email']);
+    $("#password").val(data['password']);
+    $("#birthday").val(birthday);
+
+
+    let active = data['admin'];
+    if (active) {
+      $("#admin").prop('checked', true);
+    } else {
+      $("#admin").prop('checked', false);
+    }
+
+    M.updateTextFields()
+  }
+
+  function changeTypeDate() {
+    if ($("#checkDates").is(":checked")) {
+      $("#dates_start_end").show();
+      $("#days_week").hide();
+    } else {
+      $("#days_week").show();
+      $("#dates_start_end").hide();
+    }
+  }
+
+  function closeForm() {
+    $(".contact-overlay").removeClass("show");
+    $(".contact-compose-sidebar").removeClass("show");
+  }
+
+  function askDelete(id) {
+    $('#modalDelete').modal('open');
+    $("#deleteInput").val(id);
+  }
+
+  function closeCleanModal(id, $data, $success) {
+    if ($success) {
+      $("#" + id).remove();
+    }
+    M.toast({
+      html: $data
+    }, 5000);
+    $("#modalDelete").modal("close");
+    $("#deleteInput").val('');
+  }
+
+  function deleteData($url) {
+    $("#indeterminate").show();
+    let id = $("#deleteInput").val();
+    $.ajax({
+      type: 'DELETE',
+      url: $url,
+      data: {
+        "id": id
+      },
+      success: function(data) {
+        closeCleanModal(id, data, true);
+      },
+      error: function(data) {
+        closeCleanModal(id, data.responseText, false);
+      },
+      complete: function(data) {
+        $("#indeterminate").hide();
+      }
+    });
+  }
+
+  function closeCleanPhotoModal($data, $id) {
+
+    if ($id != "") {
+      $(`${$id}`).hide();
+    }
+
+    M.toast({
+      html: $data
+    }, 5000);
+    $('#modalDeletePhoto').modal('close');
+  }
+
+  function deletePhoto($url) {
+    $("#loading").show();
+    id = $("#deleteInputPhoto").val();
+    $.ajax({
+      type: 'DELETE',
+      url: $url,
+      data: {
+        "id": id
+      },
+      success: function(data) {
+        closeCleanPhotoModal(data, $(`#photo${$id}`));
+      },
+      error: function(data) {
+        closeCleanPhotoModal(data.responseText, '');
+      },
+      complete: function(data) {
+        $("#loading").hide();
+      }
+    });
+  }
+</script>
 
 </html>

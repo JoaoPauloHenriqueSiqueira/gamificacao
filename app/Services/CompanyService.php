@@ -89,8 +89,6 @@ class CompanyService
         $this->addPhoto($request, $response, 'logo');
         $this->addPhoto($request, $response, 'background_default');
 
-
-
         if ($response) {
             return redirect()->back()->with('message', 'Registro criado/atualizado!');
         }

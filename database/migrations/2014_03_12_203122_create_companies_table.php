@@ -17,13 +17,14 @@ class CreateCompaniesTable extends Migration
             $table->increments('id');
             $table->boolean('active')->unsigned()->nullable(true)->default('1');
             $table->boolean('chat')->unsigned()->nullable(true)->default('1');
+            $table->boolean('anonymus')->unsigned()->nullable(true)->default('1');
             $table->string('phone')->nullable(true);
             $table->string('logo')->nullable(true);
             $table->string('token_screen')->nullable(true);
             $table->string('background_default')->nullable(true);
             $table->string('password_default')->nullable(true);
             $table->string('name')->nullable(true);
-            $table->string('cnpj')->nullable(true);
+            $table->string('cpf')->nullable(true);
             $table->string('postalCode')->nullable(true); //
             $table->string('district')->nullable(true); //bairro
             $table->string('street')->nullable(true);

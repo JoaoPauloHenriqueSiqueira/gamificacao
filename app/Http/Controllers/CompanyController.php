@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Company;
-use App\Http\Requests\Size;
 use App\Services\CompanyService;
 use Exception;
 use Illuminate\Http\Request;

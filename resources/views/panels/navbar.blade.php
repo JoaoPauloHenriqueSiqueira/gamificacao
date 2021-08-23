@@ -1,20 +1,24 @@
+<?php $user = Auth::user(); ?>
+
 <div class="navbar @if(($configData['isNavbarFixed'])=== true){{'navbar-fixed'}} @endif">
     <nav class="{{$configData['navbarMainClass']}} @if($configData['isNavbarDark']=== true) {{'navbar-dark'}} @elseif($configData['isNavbarDark']=== false) {{'navbar-light'}} @elseif(!empty($configData['navbarBgColor'])) {{$configData['navbarBgColor']}} @else {{$configData['navbarMainColor']}} @endif">
-        <div class="nav-wrapper">
+    @if(isset($user))
+
+    <div class="nav-wrapper">
             <ul class="navbar-list right">
-                <li class="dropdown-language">
+                <!-- <li class="dropdown-language">
                     <a class="waves-effect waves-block waves-light translation-button" href="#" data-target="translation-dropdown">
                         <span class="flag-icon flag-icon-gb"></span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="profile-dropdown">
-                        Sair
+                        Opções da conta
                     </a>
                 </li>
             </ul>
             <!-- translation-button-->
-            <ul class="dropdown-content" id="translation-dropdown">
+            <!-- <ul class="dropdown-content" id="translation-dropdown">
                 <li class="dropdown-item">
                     <a class="grey-text text-darken-1" href="{{url('lang/pt')}}" data-language="pt">
                         <i class="flag-icon flag-icon-br"></i>
@@ -27,15 +31,18 @@
                         English
                     </a>
                 </li>
-
-            </ul>
+            </ul> -->
 
             <!-- profile-dropdown-->
             <ul class="dropdown-content" id="profile-dropdown">
                 <li>
+                    <a class="grey-text text-darken-1" href="{{ URL::route('my_account') }}">
+                        <i class="material-icons">face</i>
+                        Perfil
+                    </a>
                     <a class="grey-text text-darken-1" href="{{ URL::route('logout') }}">
                         <i class="material-icons">keyboard_tab</i>
-                        Logout
+                        Sair
                     </a>
                 </li>
             </ul>
@@ -54,5 +61,7 @@
                 </form>
             </div>
         </nav>
+        @endif
+
     </nav>
 </div>

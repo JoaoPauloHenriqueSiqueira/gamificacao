@@ -5,32 +5,59 @@
       "icon": "more_horiz"
     },
     {
-      "url": "/admin",
-      "name": "Home",
+      "url": "/dashboard/admin",
+      "name": "Início",
       "i18n": "Documentation",
       "class": "waves-effect waves-cyan",
       "icon": "home"
     },
     {
-      "url": "/admin/users",
-      "name": "Users",
+      "url": "/dashboard/admin/users",
+      "name": "Usuários",
       "i18n": "Support",
       "class": "waves-effect waves-cyan",
       "icon": "manage_accounts"
     },
     {
-      "url": "/admin/campaigns",
-      "name": "Campaigns",
+      "url": "/dashboard/admin/campaigns",
+      "name": "Campanhas",
       "i18n": "Support",
       "class": "waves-effect waves-cyan",
       "icon": "view_list"
     },
     {
-      "url": "/admin/albums",
-      "name": "Albums",
+      "url": "/dashboard/admin/albums",
+      "name": "Álbums",
       "i18n": "Support",
       "class": "waves-effect waves-cyan",
       "icon": "camera_enhance"
+    },
+    {
+      "url": "/dashboard/scraps",
+      "name": "Mensagens",
+      "i18n": "Documentation",
+      "class": "waves-effect waves-cyan",
+      "icon": "message"
+    }
+  ],
+  "menuNotAdmin": [
+    {
+      "navheader": "Menu ",
+      "icon": "more_horiz"
+    },
+    {
+      "url": "/dashboard",
+      "name": "Início",
+      "i18n": "Documentation",
+      "class": "waves-effect waves-cyan",
+      "icon": "home"
+    },
+    {
+      "url": "/dashboard/scraps",
+      "name": "Mensagens",
+      "i18n": "Documentation",
+      "class": "waves-effect waves-cyan",
+      "icon": "message"
     }
   ]
 }

@@ -21,7 +21,7 @@
 
 <div style="bottom: 54px; right: 19px;" class="fixed-action-btn direction-top">
     <a class="btn-floating btn-large primary-text gradient-shadow contact-sidebar-trigger" onclick="openModal(false)" href="#modal1">
-        <i class="material-icons">person_add</i>
+        <i class="material-icons">add</i>
     </a>
 </div>
 <!-- Add new contact popup Ends-->
@@ -58,7 +58,8 @@
                                     {{ $data->duration_frames }}
                                 </span>
                             </div></br>
-                            @if($data->is_continuous)
+                            @if($data->is_continuous )
+                            @if($data['days_week'])
                             <div class="row">
                                 <span class="span-body">
                                     <span class="green-text">Dias:</span>
@@ -84,7 +85,10 @@
                                     Sábado
                                     @endif
                                 </span>
-                            </div></br>
+                            </div>
+
+                            @endif
+                            </br>
                             @else
                             <div class="row">
                                 <span class="span-body">
@@ -99,7 +103,7 @@
                             <div class="row">
                                 <span class="span-body">
                                     <div class="row" id="photo{{$data->id}}" <?php if (!$data['background']) { ?> style="display:none" <?php } ?>>
-                                        <h5 class="center">Foto <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
+                                        <h5 class="center">Remover Background <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
                                         </h5>
                                         <div class="col s12 m4 center">
                                             @if($data['background'])
@@ -120,7 +124,7 @@
                             </div></br>
                             <hr>
                             <div class="row center">
-                                <a class="btn-small tooltipped" onclick="edit('{{$data->valid_at_input}}','{{$data->valid_from_input}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Campanha">
+                                <a class="btn-small tooltipped" onclick="editCampaign('{{$data->valid_at_input}}','{{$data->valid_from_input}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Campanha">
                                     <i class="material-icons white-text">
                                         edit
                                     </i>
@@ -184,58 +188,53 @@
     </form>
 </div>
 
-<!-- Modal Structure -->
-<div id="modalDeletePhoto" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text row">Deletar foto?</h4><br>
+<div id="modalDeletePhoto" class="modal">
+    <div class="modal-content gradient-45deg-indigo-purple white-text">
+        <h4 class="center white-text row">Deletar background?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn-flat " onclick="deletePhoto()" >
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_background_campaign') ?>}}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()" >
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
         </div>
         <br>
         <div class="row center">
-            <div class=" preloader-wrapper big active center" style="display:none;" id="indeterminate">
-                <div class="spinner-layer spinner-blue-only">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
+            <div class="progress" id="loading" style="display:none">
+                <div class="indeterminate"></div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDelete" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center red-text">Deletar Campanha?</h4>
+<div id="modalDelete" class="modal">
+    <div class="modal-content  gradient-45deg-indigo-purple  white-text">
+        <h4 class="center white-text">Deletar Campanha?</h4>
         <div class="row center">
             <input type="hidden" id="deleteInput">
-            <a class="btn-flat " onclick="deleteUser()">
-                <i class="material-icons blue-text">
+            <a class="btn waves-effect waves-light white-text " onclick="deleteData('{{ URL::route('delete_campaign') }}')">
+                <i class="material-icons white-text">
                     done
                 </i>
             </a>
-            <a class="btn-flat " onclick="closeModal()">
-                <i class="material-icons red-text">
+            <a class="btn blue waves-effect waves-light white-text" onclick="closeModal()">
+                <i class="material-icons white-text">
                     close
                 </i>
             </a>
+        </div>
+        <br>
+        <div class="row center">
+            <div class="progress" id="indeterminate" style="display:none">
+                <div class="indeterminate"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -256,7 +255,7 @@
                 <!-- form start -->
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" name="name" type="text" class="validate">
+                        <input id="name" name="name" type="text" class="validate" required>
                         <label for="name">Nome</label>
                     </div>
                     <div class="input-field col s12">
@@ -280,75 +279,80 @@
                             </label>
                         </p>
                     </div>
+
+
                     <div class="input-field col s12">
                         <i class="material-icons prefix"> watch_later </i>
-                        <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate">
+                        <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate" required>
                         <label for="duration_frames">Duração por Frame(em segundos)</label>
                     </div>
-                    <div class="input-field col s12">
-                        <p>
-                            <label>
-                                <input type="checkbox" id="checkDates" name="is_not_continuous" onclick="changeTypeDate()" checked>
-                                <span>Determinar data de início e fim</span>
-                            </label>
-                        </p>
-                    </div>
-                    <div id="dates_start_end">
+
+                    <div id="dates">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix"> calendar_today </i>
-                            <input id="valid_at" name="valid_at" type="date" class="validate">
-                            <label for="valid_at">Data de início</label>
+                            <p>
+                                <label>
+                                    <input type="checkbox" id="checkDates" name="is_not_continuous" onclick="changeTypeDate()" checked>
+                                    <span>Determinar data de início e fim</span>
+                                </label>
+                            </p>
                         </div>
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix"> calendar_today </i>
-                            <input id="valid_from" name="valid_from" type="date" class="validate">
-                            <label for="valid_from">Data de término</label>
+                        <div id="dates_start_end">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix"> calendar_today </i>
+                                <input id="valid_at" name="valid_at" type="date" class="validate">
+                                <label for="valid_at">Data de início</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix"> calendar_today </i>
+                                <input id="valid_from" name="valid_from" type="date" class="validate">
+                                <label for="valid_from">Data de término</label>
+                            </div>
                         </div>
-                    </div>
-                    <div id="days_week" style="display:none">
-                        <div class="input-field col s12">
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day0" value="0" checked>
-                                    <span>Domingo</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day1" value="1" checked>
-                                    <span>Segunda</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day2" value="2" checked>
-                                    <span>Terça</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day3" value="3" checked>
-                                    <span>Quarta</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day4" value="4" checked>
-                                    <span>Quinta</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day5" value="5" checked>
-                                    <span>Sexta</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name="days_week[]" id="day6" value="6" checked>
-                                    <span>Sábado</span>
-                                </label>
-                            </p>
+                        <div id="days_week" style="display:none">
+                            <div class="input-field col s12">
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day0" value="0" checked>
+                                        <span>Domingo</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day1" value="1" checked>
+                                        <span>Segunda</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day2" value="2" checked>
+                                        <span>Terça</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day3" value="3" checked>
+                                        <span>Quarta</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day4" value="4" checked>
+                                        <span>Quinta</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day5" value="5" checked>
+                                        <span>Sexta</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name="days_week[]" id="day6" value="6" checked>
+                                        <span>Sábado</span>
+                                    </label>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,18 +387,76 @@
             width: '100%'
         });
 
-        var updatecontact = $(".update-contact"),
-            addcontact = $(".add-contact"),
-            contactComposeSidebar = $(".contact-compose-sidebar"),
-            $old = "<?= old('name') ?>";
-
-        if ($old != "") {
+        var $old = "<?= !empty(old()); ?>";
+        if ($old) {
             $("#old").val(1);
             formOldUser();
         }
     });
 
-    function managerUser($data, $users) {
+    function formOldUser() {
+        if ($("#old").val() != 1) {
+            this.clean();
+        } else {
+            $("#old").val(0);
+
+            let $data = [];
+
+            var list_of_all_old_value = <?= json_encode(session()->getOldInput())  ?>;
+
+            let $id = '<?= old('id'); ?>' != '' ? '<?= old('id'); ?>' : false;
+            if ($id) {
+                $data['id'] = $id;
+            }
+
+            let $name = '<?= old('name'); ?>' != '' ? '<?= old('name'); ?>' : false;
+            if ($name) {
+                $data['name'] = $name;
+            }
+
+            let $duration_frames = '<?= old('duration_frames'); ?>' != '' ? '<?= old('duration_frames'); ?>' : false;
+            if ($duration_frames) {
+                $data['duration_frames'] = $duration_frames;
+            }
+
+            let $active = '<?= old('active'); ?>' != '' ? '<?= old('active'); ?>' : false;
+            if ($active) {
+                $data['active'] = $active;
+            }
+
+            let $is_not_continuous = '<?= old('is_not_continuous'); ?>' != '' ? false : true;
+            $data['is_continuous'] = $is_not_continuous;
+
+            $data['days_week'] = '<?= is_array(old('days_week')) == true ? implode(',', old('days_week'))  : "" ?>';
+
+            let $is_birthday = '<?= old('is_birthday'); ?>' != '' ? '<?= old('is_birthday'); ?>' : false;
+            if ($is_birthday) {
+                $data['is_birthday'] = $is_birthday;
+            }
+
+            this.editCampaign('{{old("valid_at_input")}}', '{{old("valid_from_input")}}', $data);
+        }
+    }
+
+    function clean() {
+        $('#form').get(0).setAttribute('method', 'POST');
+        $("#id").remove();
+        $("#idCampaign").remove();
+        $("#name").val('');
+        $("#active").prop('checked', true);
+        $("#duration_frames").val('');
+        $("#checkDates").prop('checked', false);
+        $('input[name^="days_week"]').each(function() {
+            $(this).prop('checked', true);
+        });
+        changeTypeDate();
+        $("#background1").val('');
+        $("#background2").val('');
+    }
+
+    function managerUser($data,$users) {
+        closeForm();
+        $("#idCampaign").remove();
         $id = $data['id'];
         $('#modalAdd').modal('open');
         $('<input>').attr({
@@ -410,62 +472,11 @@
             $element = createRow(element.id, element.name);
             $("#users_form").append($element);
         });
-
-    }
-
-    function changeTypeDate() {
-        if ($("#checkDates").is(":checked")) {
-            $("#dates_start_end").show();
-            $("#days_week").hide();
-        } else {
-            $("#days_week").show();
-            $("#dates_start_end").hide();
-        }
-    }
-
-    var updatecontact = $(".update-contact"),
-        addcontact = $(".add-contact"),
-        contactComposeSidebar = $(".contact-compose-sidebar"),
-        $old = "<?= old('name') ?>";
-
-
-    function closeForm() {
-        $(".contact-overlay").removeClass("show");
-        $(".contact-compose-sidebar").removeClass("show");
-    }
-
-    function openModal($edit) {
-        this.clean();
-
-        $(".contact-overlay").addClass("show");
-        $(".contact-compose-sidebar").addClass("show");
-        if ($edit) {
-            $(".update-contact").show();
-            $(".add-contact").hide();
-            $("#password_row").hide();
-            M.updateTextFields()
-        } else {
-            $(".update-contact").hide();
-            $(".add-contact").show();
-            M.updateTextFields()
-            $("#password_row").show();
-        }
     }
 
     function askDeletePhoto(id) {
         $('#modalDeletePhoto').modal('open');
         $("#deleteInputPhoto").val(id);
-    }
-
-    function formOldUser() {
-        if ($("#old").val() != 1) {
-            this.clean();
-        } else {
-            $("#old").val(0);
-        }
-        updatecontact.addClass("display-none");
-        addcontact.removeClass("display-none");
-        contactComposeSidebar.addClass("show");
     }
 
     function addUser() {
@@ -504,130 +515,5 @@
         $(`#rowuser${$user}`).remove();
     }
 
-    function clean() {
-        $('#form').get(0).setAttribute('method', 'POST');
-        $("#idCampaign").remove();
-        $("#name").val('');
-        $("#active").prop('checked', true);
-        $("#duration_frames").val('');
-        $("#checkDates").prop('checked', false);
-        $('input[name^="days_week"]').each(function() {
-            $(this).prop('checked', true);
-        });
-        changeTypeDate();
-        $("#background1").val('');
-        $("#background2").val('');
-    }
-
-    function closeModal() {
-        this.clean();
-        $('#modalDelete').modal('close');
-    }
-
-    function edit(validAt, validFrom, campaign) {
-        openModal(true);
-        $("#idCampaign").append(campaign['id']);
-        $("#name").val(campaign['name']);
-        $("#duration_frames").val(campaign['duration_frames']);
-   
-        let active = campaign['active'];
-        if (active) {
-            $("#active").prop('checked', true);
-        }else{
-            $("#active").prop('checked', false);
-        }
-
-        let is_continuos = campaign['is_continuous'];
-        if (is_continuos) {
-            $("#checkDates").prop('checked', false);
-            $('input[name^="days_week"]').each(function() {
-                $(this).prop('checked', false);
-            });
-
-            campaign['days_week'].forEach(element => {
-                $(`#day${element}`).prop('checked', true);
-            });
-
-        } else {
-            $("#checkDates").prop('checked', true);
-            $("#valid_at").val(validAt);
-            $("#valid_from").val(validFrom);
-        }
-
-
-        changeTypeDate();
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'idCampaign',
-            name: 'id',
-            value: campaign['id']
-        }).appendTo('#form');
-
-        M.updateTextFields()
-    }
-
-    function askDelete(id) {
-        $('#modalDelete').modal('open');
-        $("#deleteInput").val(id);
-    }
-
-
-    function closeCleanModal(id, $data, $success) {
-        if ($success) {
-            $("#" + id).remove();
-        }
-        M.toast({
-            html: $data
-        }, 5000);
-        $("#modalDelete").modal("close");
-        $("#deleteInput").val('');
-        $("#indeterminate").hide();
-    }
-
-    function deleteUser() {
-        $("#indeterminate").hide();
-        let id = $("#deleteInput").val();
-        let $url = "<?= URL::route('delete_campaign') ?>";
-        $.ajax({
-            type: 'DELETE',
-            url: $url,
-            data: {
-                "id": id
-            },
-            success: function(data) {
-                closeCleanModal(id, data, true);
-            },
-            error: function(data) {
-                closeCleanModal(id, data.responseText, false);
-            }
-        });
-    }
-
-    function closeCleanPhotoModal($data, $id) {
-        $("#indeterminate").hide();
-        $(`#photo${$id}`).hide();
-        M.toast({
-            html: $data
-        }, 5000);
-        $('#modalDeletePhoto').modal('close');
-    }
-
-    function deletePhoto() {
-        $("#indeterminate").show();
-        let $url = "<?= URL::route('delete_background_campaign') ?>";
-        id = $("#deleteInputPhoto").val();
-        $.ajax({
-            type: 'DELETE',
-            url: $url,
-            data: {
-                "id": id
-            },
-            success: function(data) {
-                closeCleanPhotoModal(data, id);
-            },
-            error: function(data) {
-                closeCleanPhotoModal(data.responseText, '');
-            }
-        });
-    }
+    
 </script>

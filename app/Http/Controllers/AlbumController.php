@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignValidator;
-use App\Http\Requests\UserValidator;
 use App\Services\AlbumService;
-use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
 

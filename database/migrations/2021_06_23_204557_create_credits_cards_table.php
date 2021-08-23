@@ -22,7 +22,12 @@ class CreateCreditsCardsTable extends Migration
             $table->string('brand'); //bandeira
             $table->string('expirationMonth'); //Mês da expiração do cartão
             $table->string('expirationYear'); // Ano da expiração do cartão, é necessário os 4 dígitos.
-            $table->string('token')->nullable(); //token gerado
+            $table->string('token')->nullable(); //token gerado no front end
+            $table->string('plan_status')->nullable(); //status do plano
+            $table->string('plan_token')->nullable(); //token adesão gerado
+            $table->string('reference')->nullable(); //referencia única
+            $table->integer('status')->unsigned()->nullable(); //status pagamento
+            $table->timestamp('validated_at')->nullable(); //validado no dia
             $table->timestamps();
         });
 

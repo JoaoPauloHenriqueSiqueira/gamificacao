@@ -2,30 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserToken;
-use App\Services\AlbumService;
-use App\Services\CampaignService;
-use App\Services\CompanyService;
-use App\Services\UserService;
+use App\Services\PaymentService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     protected $carbon;
 
     public function __construct(
-        Carbon $carbon
+        Carbon $carbon,
+        PaymentService $service
     ) {
         $this->carbon = $carbon;
+        $this->service = $service;
     }
-
 
     public function index(Request $request)
     {
-        \Log::debug("chegouuuu");
-        \Log::debug($request);
+        return $this->service->transaction($request);
     }
 }

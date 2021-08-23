@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ScreenChanges;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
@@ -55,7 +56,8 @@ class AlbumService
         return (new AlbumTransformer)->transform($list->get());
     }
 
-    public function list($request){
+    public function list($request)
+    {
 
         $filterColumns = $this->makeParamsFilter($request);
 
@@ -136,6 +138,10 @@ class AlbumService
     {
         $fotos = $request->file('photos');
 
+        if (empty($fotos)) {
+            return redirect()->back()->with('message', 'Nenhuma foto enviada. Selecione as fotos clicando no botão "Fotos"');
+        }
+
         $arrFotos = [];
         $companyId = Auth::user()->company_id;
         $albumId = Arr::get($request, "album_id");
@@ -144,7 +150,7 @@ class AlbumService
         foreach ($fotos as $foto) {
             $newPhoto = [];
             $pathPhoto = $this->uploadPlugin->upload($foto, $path);
-            
+
             $photoId = $this->photoRepository->updateOrCreate(['path' => $pathPhoto]);
             $newPhoto["photo_id"] = $photoId->id;
             $newPhoto["album_id"] = $albumId;
@@ -156,6 +162,8 @@ class AlbumService
         $album->photos()->attach(
             $arrFotos
         );
+
+        broadcast(new ScreenChanges(Auth::user()->company_id))->toOthers();
         return redirect()->back()->with('message', 'Registro criado/atualizado!');
     }
 
@@ -203,7 +211,7 @@ class AlbumService
 
             if ($albumId) {
                 if (!$this->checkCompany($albumId)) {
-                    return response('Sem permissão para essa empresa', 422);
+                    return redirect()->back()->with('message', 'Sem permissão para essa empresa');
                 }
 
                 $album = $this->repository->find($albumId);
@@ -242,6 +250,8 @@ class AlbumService
             $response = $this->repository->updateOrCreate(["id" => $albumId], $request->all());
 
             $this->addPhoto($request, $response, 'background');
+
+            broadcast(new ScreenChanges(Auth::user()->company_id))->toOthers();
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');

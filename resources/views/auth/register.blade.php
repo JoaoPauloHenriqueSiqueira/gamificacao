@@ -22,8 +22,7 @@
         </div>
       </div>
       <div class="row margin">
-
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">person_outline</i>
           <input id="name" type="text" class="@error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
           <label for="name" class="center-align">Nome de Usuário</label>
@@ -33,9 +32,19 @@
           </small>
           @enderror
         </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix pt-2">person_outline</i>
+          <input id="birthday" type="date" class="@error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" required autocomplete="birthday" autofocus>
+          <label for="birthday" class="center-align">Data de nascimento</label>
+          @error('birthday')
+          <small class="red-text ml-10" role="alert">
+            {{ $message }}
+          </small>
+          @enderror
+        </div>
       </div>
       <div class="row margin">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">mail_outline</i>
           <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
           <label for="email">Email</label>
@@ -45,9 +54,19 @@
           </small>
           @enderror
         </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix pt-2">phone</i>
+          <input id="phone" type="text" class="@error('phone') is-invalid @enderror phone" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+          <label for="email">Celular</label>
+          @error('phone')
+          <small class="red-text ml-10" role="alert">
+            {{ $message }}
+          </small>
+          @enderror
+        </div>
       </div>
       <div class="row margin">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">lock_outline</i>
           <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
           <label for="password">Senha</label>
@@ -57,28 +76,25 @@
           </small>
           @enderror
         </div>
-      </div>
-      <div class="row margin">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">lock_outline</i>
           <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
           <label for="password-confirm">Confirmação de Senha</label>
         </div>
       </div>
       <div class="row margin">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">store</i>
-          <input type="text" id="cnpj" class="@error('cnpj') is-invalid @enderror" required value="{{ old('cnpj') }}" name="cnpj">
-          <label for="cnpj" class="active">CNPJ / CPF</label>
-          @error('cnpj')
+          <!-- TODO -->
+          <input type="text" id="cpf" class="@error('cpf') is-invalid @enderror" required value="{{ old('cpf') }}" name="cpf">
+          <label for="cpf" class="active">CPF</label>
+          @error('cpf')
           <small class="red-text ml-10" role="alert">
             {{ $message }}
           </small>
           @enderror
         </div>
-      </div>
-      <div class="row margin">
-        <div class="input-field col s12">
+        <div class="input-field col s6">
           <i class="material-icons prefix pt-2">language</i>
           <input type="text" class="@error('cep') is-invalid @enderror cep" required value="{{ old('cep') }}" name="cep">
           <label for="cep" class="active">CEP</label>
@@ -109,5 +125,6 @@
 <script>
   $(document).ready(function($) {
     $(".cep").mask("99999-999");
+    $(".phone").mask("(99) 99999-9999");
   });
 </script>

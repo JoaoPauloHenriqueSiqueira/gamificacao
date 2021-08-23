@@ -28,9 +28,9 @@ class Company extends FormRequest
     {
         $valid = [];
 
-        $cpfCnpj = is_null($this->request->get('cnpj'));
-        if (!$cpfCnpj) {
-            $valid['cnpj'] = Rule::unique('companies')->ignore($this->request->get('id'))->where(function ($query) {
+        $cpf = is_null($this->request->get('cpf'));
+        if (!$cpf) {
+            $valid['cpf'] = Rule::unique('companies')->ignore($this->request->get('id'))->where(function ($query) {
                 return $query->where('id', Auth::user()->company_id);
             }) . "|min:11|max:14";
         }
@@ -59,9 +59,9 @@ class Company extends FormRequest
             'name.min' => 'Mínimo de 1 letras para um nome',
             'name.max' => 'Máximo de 30 letras para um nome',
             'name.unique' => "Nome de empresa já em uso",
-            'cnpj.min' => 'Mínimo de 11 dígitos para CNPJ',
-            'cnpj.max' => 'Máximo de 14 dígitos para CNPJ',
-            'cnpj.unique' => "CNPJ já possui cadastro",
+            'cpf.min' => 'Mínimo de 11 dígitos para CPF',
+            'cpf.max' => 'Máximo de 14 dígitos para CPF',
+            'cpf.unique' => "CPF já possui cadastro",
         ];
     }
 
@@ -73,9 +73,9 @@ class Company extends FormRequest
 
     protected function extractNumbers()
     {
-        if ($this->request->has('cnpj')) {
+        if ($this->request->has('cpf')) {
             $this->merge([
-                'cnpj' => Format::extractNumbers($this->request->get('cnpj'))
+                'cpf' => Format::extractNumbers($this->request->get('cpf'))
             ]);
         }
 

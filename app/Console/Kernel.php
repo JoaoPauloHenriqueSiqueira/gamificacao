@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AtualizarTabelaCreditCard;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        AtualizarTabelaCreditCard::class,
     ];
 
     /**
@@ -24,9 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        //TODO:  CRIAR JOB EXCLUIR SCRAPS DIA ANTERIOR
+        $schedule->command('atualizar:credit-cards')->twiceDaily("5", "23")->environments(['production']);
     }
+
 
     /**
      * Register the commands for the application.

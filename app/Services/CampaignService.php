@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ScreenChanges;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
@@ -53,13 +54,14 @@ class CampaignService
 
         $list = $this->repository->scopeQuery(function ($query) use ($filterColumnsPeriod, $filterColumns2) {
             return $query->where($filterColumnsPeriod)->orWhere($filterColumns2)->whereJsonContains('days_week',  strval($this->carbon->now()->dayOfWeek))->orderBy('created_at', 'DESC');
-           // return $query->where($filterColumnsPeriod)->orderBy('created_at', 'DESC');
+            // return $query->where($filterColumnsPeriod)->orderBy('created_at', 'DESC');
         });
 
-        return  (new CampaignTransformer)->transform($list->get());
+        return (new CampaignTransformer)->transform($list->get());
     }
 
-    public function list($request){
+    public function list($request)
+    {
 
         $filterColumns = $this->makeParamsFilter($request);
 
@@ -121,8 +123,13 @@ class CampaignService
         $campaignId = Arr::get($request, "campaign_id");
 
         if ($campaignId) {
+            //TODO -> VER RETORNOS VIEW IMPORTANTE COM MESSAGE AO INVÉS DE BACK
             if (!$this->checkCompany($campaignId)) {
-                return response('Sem permissão para essa empresa', 422);
+                return redirect()->back()->with('message','Sem permissão para essa empresa');
+            }
+
+            if (empty(Arr::get($request, 'users'))) {
+                return redirect()->back()->with('message','Nenhum usuário adicionado. Adicione um usuário clicando no botão ao lado direito');
             }
 
             $campaign = $this->repository->find($campaignId);
@@ -157,16 +164,17 @@ class CampaignService
 
             if ($campaignId) {
                 if (!$this->checkCompany($campaignId)) {
-                    return response('Sem permissão para essa empresa', 422);
+                    return redirect()->back()->with('message', 'Sem permissão para essa empresa');
                 }
 
                 $campaign = $this->repository->find($campaignId);
                 $foto = $request->file('background');
-                
+
                 if ($foto) {
                     $this->uploadPlugin->remove(Arr::get($campaign, "background"));
                 }
             }
+            $request['company_id'] = Auth::user()->company_id;
 
             $active = false;
             if (Arr::exists($request->all(), "active")) {
@@ -191,6 +199,8 @@ class CampaignService
 
             $response = $this->repository->updateOrCreate(["id" => $campaignId], $request->all());
             $this->addPhoto($request, $response, 'background');
+
+            broadcast(new ScreenChanges(Auth::user()->company_id))->toOthers();
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
@@ -228,9 +238,9 @@ class CampaignService
         }
 
         $campaignFind =  $this->repository->find($campaignId);
-        
+
         $birthday = Arr::get($campaignFind, "is_birthday");
-        if($birthday){
+        if ($birthday) {
             return response("Campanha de aniversário não pode ser removida, apenas desativada", 422);
         }
 

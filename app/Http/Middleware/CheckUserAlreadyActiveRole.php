@@ -40,7 +40,6 @@ class CheckUserAlreadyActiveRole
 
         $user = Auth::guard()->user();
 
-
         if ($this->adminCheck->check($user)) {
             return redirect()->route('home', [$user]);
         }

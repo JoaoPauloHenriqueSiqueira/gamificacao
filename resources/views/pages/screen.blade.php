@@ -11,11 +11,19 @@
 <style>
     body,
     html {
+        margin: 0px;
         height: 100%;
+        width: 100%;
     }
 
     * {
         font-family: 'Antonio', sans-serif;
+    }
+
+
+    .responsive {
+        width: 100%;
+        height: auto;
     }
 
     body {
@@ -24,11 +32,20 @@
         background-repeat: no-repeat;
         background-size: cover;
         animation-duration: 4s;
-        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%);
+        /* box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%); */
         min-height: 100vh;
         flex-direction: column;
-
+        overflow: hidden;
     }
+
+    .truncateContent {
+        margin: 0 auto;
+        position: relative;
+        display: block;
+        width: 100%;
+        word-wrap: break-word;
+    }
+
 
     .logo {
         width: 15em;
@@ -36,23 +53,41 @@
     }
 
     .qrCode {
-        width: 13em;
-    }
-
-    .img-carousel {
-        width: 100%;
-        max-width: 50em;
-        background: rgba(0, 0, 0, 0.5);
+        width: 15em;
     }
 
     .carousel {
         margin-top: -5em !important;
+        min-height: 900px;
     }
 
-
-    .carousel .carousel-item {
-        min-width: 35em !important;
+    .carousel-item {
+        min-width: 25em !important;
         height: 100% !important;
+        visibility: hidden !important;
+    }
+
+    .contentMessage {
+        font-size: 2em;
+    }
+
+    .userImage {
+        max-width: 8em !important;
+    }
+
+    .nameUser {
+        font-size: 1.6em;
+    }
+
+    .carousel-item.active {
+        visibility: visible !important;
+    }
+
+    .carousel .carousel-item>img {
+        width: 210%;
+        margin: -50%;
+        margin-top: -12%;
+        max-width: 550px;
     }
 
     .name {
@@ -63,10 +98,9 @@
 
     .page-footer {
         background-color: transparent;
-        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%);
+        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 56%);
         max-height: 15em;
     }
-
 
     img.avtar {
         width: 4em;
@@ -75,8 +109,8 @@
     }
 
     .ml1 {
-        font-weight: 900;
-        font-size: 3.5em;
+        font-weight: 1000;
+        font-size: 4.5em;
     }
 
     .ml1 .letter {
@@ -110,6 +144,7 @@
         bottom: 0;
     }
 
+
     @keyframes floatText {
         to {
             transform: translateX(-100%);
@@ -117,36 +152,122 @@
     }
 
 
-    @media screen and (max-width: 600px) {}
+    @media screen and (max-width: 2500px) {
 
-    @media screen and (max-width: 1376px) {
-        /* footer{
-            display: none;
-        } */
+        .contentMessage {
+            font-size: 1.6em;
+        }
 
+        .userImage {
+            max-width: 5em !important;
+        }
 
+        .carousel .carousel-item>img {
+            max-width: 400px;
+            margin-top: 10%;
+        }
+
+        .ml1 {
+            font-weight: 1000;
+            font-size: 3.5em;
+        }
     }
 
+    @media screen and (max-width: 1787px) {
+        .page-footer {
+            max-height: 12em;
+        }
+
+        .qrCode {
+            width: 6em;
+        }
+
+        .contentMessage {
+            font-size: 0.6em;
+        }
+    }
+
+
+    /* TODO  media queries*/
     @media screen and (max-height: 787px) {
-        .carousel .carousel-item {
-            min-width: 22em !important;
-            height: 100% !important;
+        .carousel .carousel-item>img {
+            margin-top: 0;
+            margin-left: 0;
+            max-width: 250px;
+        }
+
+        .page-footer {
+            max-height: 5em;
+        }
+
+        .qrCode {
+            width: 3em;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+
+        .titleLogo {
+            margin-top: 15%;
+        }
+
+        .ml1 {
+            font-size: 1.5em;
+        }
+
+        .carousel .carousel-item>img {
+            margin-top: 0;
+            margin-left: 0;
+            max-width: 250px;
+        }
+
+        #dayMounth {
+            font-size: 0.5em;
+        }
+
+        #time {
+            font-size: 0.8em;
+        }
+
+        .truncateContent {
+            width: 13em;
+        }
+
+        .contentMessage {
+            font-size: 0.6em;
+        }
+
+        .nameUser {
+            font-size: 0.6em;
+        }
+
+        .qrCode {
+            margin-left: 100%;
+            margin-left: -3em;
+        }
+
+        .userImage {}
+    }
+
+    @media screen and (max-width: 480px) {
+        .truncateContent {
+            width: 10em;
         }
     }
 </style>
 
-<div class="row">
+<div class="row titleLogo">
     <div class="col s3">
         <img id="logo" class="logo center">
     </div>
     <div class="col s9">
-        <h2 class="ml1 right">
+        <h1 class="ml1 right">
             <span class="text-wrapper">
                 <span class="line line1"></span>
                 <span class="letters right title white-text" id="title"></span>
                 <span class="line line2"></span>
             </span>
-        </h2>
+        </h1>
     </div>
 </div>
 
@@ -162,13 +283,14 @@
             </h5>
         </div>
 
-        <div class="col s7">
-            <p class="center-align center text-center white-text ">
-            <div id='greeting'></div>
-            </p>
+        <div class="col s8">
+            <div class="row valign-wrapper">
+                <div id='greeting'></div>
+            </div>
         </div>
 
-        <div class="col s3">
+
+        <div class="col s2">
             <img class="qrCode" src="{{$qrCode}}">
         </div>
     </div>
@@ -195,60 +317,42 @@
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="{{ asset('js/moment-with-locales.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<script src="{{ asset('js/anime.min.js') }}"></script>
+<script src="{{ asset('js/pusher.min.js') }}"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script> -->
+<!-- <script src="https://js.pusher.com/5.0/pusher.min.js"></script> -->
+
 
 <script>
     $(document).ready(function() {
+        animateTitle();
         var urlAws = "<?= $urlAws ?>";
         var company = <?= $company ?>;
+
+        var pusher = new Pusher('05ebbb87aba66fb09125', {
+            cluster: 'us2'
+        });
+
+        let id = company.id;
+        var channel = pusher.subscribe(`screenEvent.${id}`);
+        channel.bind('screenEvent', function(data) {
+            if (id == data.company) {
+                location.reload();
+            }
+        });
+
+        var channelScrap = pusher.subscribe(`scrapEvent.${id}`);
+        channelScrap.bind('scrapEvent', function(data) {
+            if (id == data.company) {
+                getMessages(id);
+            }
+        });
 
         startTime();
         changeLogo()
         runCampaigns(true);
-
-        let messages = [{
-                'id': 1,
-                "user": {
-                    "photo": "https://blog.unyleya.edu.br/wp-content/uploads/2017/12/saiba-como-a-educacao-ajuda-voce-a-ser-uma-pessoa-melhor.jpeg",
-                    "name": "Asd Cetr"
-                },
-                "text": 'Esse é um exemplo de mensagem Ahhhhh que top Ahhhhh que top Ahhhhh',
-                "created_at": "05/10/2021"
-            },
-            {
-                'id': 2,
-                "user": {
-                    "photo": "https://blog.unyleya.edu.br/wp-content/uploads/2017/12/saiba-como-a-educacao-ajuda-voce-a-ser-uma-pessoa-melhor.jpeg",
-                    "name": "João Silva"
-                },
-                "text": 'Ahhhhh que top',
-                "created_at": "05/10/2021"
-            },
-            {
-                'id': 3,
-                "user": {
-                    "photo": "https://vilamulher.com.br/imagens/thumbs/2014/11/10/4-razoes-para-ser-uma-pessoa-mais-curiosa-thumb-570.jpg",
-                    "name": "Jefferson Souza"
-                },
-                "text": 'aCHA',
-                "created_at": "05/10/2021"
-            },
-            {
-                'id': 4,
-                "user": {
-                    "name": "Jefferson Souza"
-                },
-                "text": 'Tentando de novo e tal',
-                "created_at": "05/07/2021"
-            }
-        ];
-
-        drawMessage(messages);
-
-        // 1 - pegar mensagens
-        // 1 - ler o index atual do array,  comparar com o storage e exibir próximo no markee e salvar no storage
-        // 2 - atualizar via push cadastro de novos recados do dia
-        // 3 - limpar cache
+        getMessages(id);
+        drawMessage();
 
         /**
          * Verifica se página já foi recarregada no dia
@@ -267,6 +371,20 @@
             }
         }
 
+        function getMessages(id) {
+            let $url = "<?= URL::route('list_messages') ?>";
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: {
+                    "id": id
+                },
+                success: function(data) {
+                    sessionStorage.setItem("messages", JSON.stringify(data));
+                }
+            });
+        }
+
         function runCampaigns(start) {
             reloadPage();
 
@@ -280,7 +398,8 @@
             let campaign = sessionStorage.getItem('campaign')
             let invalids = sessionStorage.getItem('invalid_campaigns');
 
-            if ((campaigns.length == 1 || !campaign)) {
+            // if ((campaigns.length == 1 || !campaign)) {
+            if ((campaigns.length == 1)) {
                 campaign = campaigns[0];
                 sessionStorage.setItem('campaign', campaign['id']);
                 drawCampaign(campaign, company, urlAws);
@@ -342,17 +461,24 @@
             campaign.slides.forEach(element => {
                 if (element.name && element.photo) {
                     $("#carousel").append(
-                        `<a class="carousel-item">
+                        `<a class="carousel-item center">
                                 <h6 class="center-text text-center center name white-text">${element.name}</h6>
-                                <img src="${urlAws}${element.photo}">
+                                <img class="responsive" src="${urlAws}${element.photo}">
                                 </a>`
                     );
                     qtdSlides++;
                 } else if (element.photo && !element.name) {
                     $("#carousel").append(
-                        `<a class="carousel-item">
-                                <img src="${urlAws}${element.photo}">
-                                </a>`
+                        `<a class="carousel-item center">
+                                <img class="responsive" src="${urlAws}${element.photo}">
+                            </a>`
+                    );
+                    qtdSlides++;
+                } else if (!element.photo && element.name) {
+                    $("#carousel").append(
+                        `<a class="carousel-item center">
+                            <h1 class="center-text text-center center name white-text">${element.name}</h1>
+                        </a>`
                     );
                     qtdSlides++;
                 }
@@ -466,7 +592,6 @@
             if ($title) {
                 $("#title").removeAttr('style');
                 $("#title").html($title);
-                animateTitle();
             }
         }
 
@@ -479,31 +604,59 @@
 
         function mountMesssage(user, msg) {
             if (user.hasOwnProperty('photo')) {
-                return `<div class="user-media">
-                    <div class="list-title">${user.name}</div>
-                    <img src="${user.photo}" alt="" class="circle z-depth-2 responsive-img avtar">
-                    <div class="list-title">${msg.text}</div>
-                  </div>`;
+                return `
+                    <div class="col media-image online pr-0">
+                        <img src="${urlAws}${user.photo}" alt="" class="userImage circle z-depth-2 responsive-img">
+                    </div>
+                    <div class="col">
+                        <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
+                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                    </div>
+                    `;
+            } else if (user.hasOwnProperty('name')) {
+                return `
+                    <div class="col media-image online pr-0">
+                        <i class="material-icons circle userImage circle z-depth-2 responsive-img">account_circle</i>
+                    </div>
+                    <div class="col">
+                        <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
+                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                    </div>
+                    `;
             } else {
-                return `<div class="user-media">
-                    <div class="list-title">${user.name}: ${msg.text}</div>
-                  </div>`;
+                return `
+                    <div class="col media-image online pr-0">
+                        <i class="material-icons circle userImage circle z-depth-2 responsive-img">account_circle</i>
+                    </div>
+                    <div class="col">
+                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                    </div>
+                    `;
             }
         }
 
-        function drawMessage(messages) {
+        function drawMessage() {
+
+            let messages = JSON.parse(sessionStorage.getItem('messages') || "[]");
+            console.log(messages);
+
             let msg = sessionStorage.getItem('msg')
             let dateNow = moment(new Date(), "MM-DD-YYYY").format('L');
 
-            result = messages.filter(d => {
-                var time = d.created_at;
-                return (moment(dateNow, "MM-DD-YYYY").isSame(moment(time, "MM-DD-YYYY")));
-            });
+            let result = false;
+
+            if (messages !== "undefined" && Array.isArray(messages) && messages.length > 0) {
+
+                result = messages.filter(d => {
+                    var time = d.created_at;
+                    return (moment(dateNow, "MM-DD-YYYY").isSame(moment(time, "MM-DD-YYYY")));
+                });
+
+            }
 
             if (result !== "undefined" && Array.isArray(result) && result.length > 0) {
                 if (!msg) {
                     let mensagem = result[0];
-                    console.log(mensagem);
                     $("#greeting").html(mountMesssage(mensagem['user'], mensagem));
                     sessionStorage.setItem('msg', mensagem['id']);
                 } else {
@@ -511,16 +664,19 @@
 
                     if (index >= result.length - 1) {
                         sessionStorage.setItem('msg', false);
-                        return drawMessage(messages);
+                        return drawMessage();
                     }
 
                     index += 1;
                     let mensagem = result[index];
+                    console.log(mensagem);
+
                     sessionStorage.setItem('msg', mensagem['id']);
                     $("#greeting").html(mountMesssage(mensagem['user'], mensagem));
                 }
             }
-            setTimeout(drawMessage, 10000, messages);
+
+            setTimeout(drawMessage, 10000);
         }
     });
 </script>

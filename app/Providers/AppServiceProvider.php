@@ -58,6 +58,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\CreditsCardsRepositoryInterface',
             'App\Repositories\CreditsCardsRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\ScrapRepositoryInterface',
+            'App\Repositories\ScrapRepository'
+        );
     }
 
     /**

@@ -7,11 +7,10 @@ use Laravel\Passport\HasApiTokens;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'company_id','admin','birthday','photo','token_active'
+        'name', 'email', 'password', 'company_id', 'admin', 'birthday', 'photo', 'token_active'
     ];
 
     /**
@@ -52,12 +51,24 @@ class User extends Authenticatable
 
     public function getBirthdayAttribute()
     {
-        return Carbon::parse($this->attributes['birthday'])->format('d/m');
+        if ($this->attributes['birthday']) {
+            return Carbon::parse($this->attributes['birthday'])->format('d/m');
+        }
     }
 
     public function getBirthdayDateAttribute()
     {
-        return Carbon::parse($this->attributes['birthday'])->format('Y-m-d');
+        if ($this->attributes['birthday']) {
+
+            return Carbon::parse($this->attributes['birthday'])->format('Y-m-d');
+        }
     }
 
+    public function getBirthdayCardAttribute()
+    {
+        if ($this->attributes['birthday']) {
+
+            return Carbon::parse($this->attributes['birthday'])->format('d/m/Y');
+        }
+    }
 }

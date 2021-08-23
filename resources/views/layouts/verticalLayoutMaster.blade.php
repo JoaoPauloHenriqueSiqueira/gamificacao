@@ -1,3 +1,13 @@
+{{-- pageConfigs variable pass to Helper's updatePageConfig function to update page configuration  --}}
+@isset($pageConfigs)
+{!! Helper::updatePageConfig($pageConfigs) !!}
+@endisset
+
+<!DOCTYPE html>
+@php
+// confiData variable layoutClasses array in Helper.php file.
+$configData = Helper::applClasses();
+@endphp
 <body
   class="{{$configData['mainLayoutTypeClass']}} @if(!empty($configData['bodyCustomClass']) && isset($configData['bodyCustomClass'])) {{$configData['bodyCustomClass']}} @endif @if($configData['isMenuCollapsed'] && isset($configData['isMenuCollapsed'])){{'menu-collapse'}} @endif"
   data-open="click" data-menu="vertical-modern-menu" data-col="2-columns">

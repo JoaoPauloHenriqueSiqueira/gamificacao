@@ -48,7 +48,7 @@ class CampaignController extends Controller
     public function create(CampaignValidator $request)
     {
         try {
-            return $this->service->save($request);
+            return $this->service->save($request,false);
         } catch (Exception $e) {
             return $e->getMessage();
         }

@@ -15,7 +15,7 @@ return [
         'activeMenuType' => '', //Options:default("") sidenav-active-square, sidenav-active-rounded, sidenav-active-fullwidth  Warning:this option is not applicable for horizontal
         'isFooterDark' => null, //True for dark, flase for light and null for default
         'isFooterFixed' => false, //options:true or false
-        'templateTitle' => 'Nome', //template Title can be changes default('Materialize)
+        'templateTitle' => 'Exibe TV', //template Title can be changes default('Materialize)
         'defaultLanguage'=>'pt', //set your default language Options: en(default),pt,fr,de
         'largeScreenLogo' => 'images/logo/materialize-logo-color.png', //we used saparete log image for large screen and small
         'smallScreenLogo' => 'images/logo/materialize-logo.png', // pass the image path here e.g:'images/logo/materialize-logo-color.png' note:(Vertical-menu-nav-dark and horizontal-menu template used a single logo in both small and large screen)
