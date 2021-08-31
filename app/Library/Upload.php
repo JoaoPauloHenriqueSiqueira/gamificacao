@@ -31,11 +31,12 @@ class Upload
         try {
             $name = md5(microtime() . rand());
             $fileName = "$path/$name" . "." . $file->getClientOriginalExtension();
-            $uploaded =  $this->storage->put($fileName, $this->filesystem->get($file));
+            $uploaded =  $this->storage->put(fopen($fileName,'r'), $this->filesystem->get($file));
             if ($uploaded) {
                 return $fileName;
             }
         } catch (Exception $e) {
+            \Log::info($e->getMessage());
             return false;
         }
     }

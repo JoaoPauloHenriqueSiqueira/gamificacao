@@ -151,6 +151,10 @@ class AlbumService
             $newPhoto = [];
             $pathPhoto = $this->uploadPlugin->upload($foto, $path);
 
+            if (!$pathPhoto) {
+                continue;
+            }
+            
             $photoId = $this->photoRepository->updateOrCreate(['path' => $pathPhoto]);
             $newPhoto["photo_id"] = $photoId->id;
             $newPhoto["album_id"] = $albumId;
