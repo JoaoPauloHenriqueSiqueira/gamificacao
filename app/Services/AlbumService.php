@@ -179,6 +179,9 @@ class AlbumService
 
         if (Arr::get($data, 'company_id') == Auth::user()->company_id) {
             $response = $this->uploadPlugin->remove(Arr::get($data, "background"));
+
+
+            
             $data['background'] = null;
             $data->save();
 

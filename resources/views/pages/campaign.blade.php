@@ -501,11 +501,11 @@
                                 <label for="name">Nome</label>
                             </td>
                             <td>
-                                <button class="btn-small red" onclick="removeUserCamp(${$user})">
+                                <a class="btn-small red" onclick="removeUserCamp(${$user})">
                                     <i class="material-icons white-text">
                                         clear
                                     </i>
-                                </button>
+                                </a>
                             </td>
                         </tr>`);
 

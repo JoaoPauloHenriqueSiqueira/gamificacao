@@ -505,11 +505,11 @@
                             <img class="materialboxed responsive-img" width="80" src="${$urlAws}${$path}"></img>
                         </td>
                         <td>
-                            <button class="btn-small red" onclick="askDeletePhotoAlbum(${$id})">
+                            <a class="btn-small red" onclick="askDeletePhotoAlbum(${$id})">
                                 <i class="material-icons white-text">
                                     clear
                                 </i>
-                            </button>
+                            </a>
                         </td>
                     </tr>`);
     }
@@ -565,7 +565,7 @@
 
     function closeCleanModalALbum($id, $data, $success) {
         if (!$success) {
-            $("#rowPhoto" + id).show();
+            $("#rowPhoto" + $id).show();
             M.toast({
                 html: $data
             }, 5000);
