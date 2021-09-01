@@ -502,7 +502,7 @@
 
         return $(`<tr id="rowPhoto${$id}">
                         <td>
-                            <img class="materialboxed responsive-img" width="350" src="${$urlAws}${$path}"></img>
+                            <img class="materialboxed responsive-img" width="80" src="${$urlAws}${$path}"></img>
                         </td>
                         <td>
                             <button class="btn-small red" onclick="askDeletePhotoAlbum(${$id})">

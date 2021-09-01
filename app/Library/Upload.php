@@ -5,6 +5,7 @@ namespace App\Library;
 use Exception;
 use \Illuminate\Filesystem\Filesystem;
 use \Illuminate\Contracts\Filesystem\Factory as Storage;
+use Image;
 
 class Upload
 {
@@ -31,7 +32,10 @@ class Upload
         try {
             $name = md5(microtime() . rand());
             $fileName = "$path/$name" . "." . $file->getClientOriginalExtension();
-            $uploaded =  $this->storage->put($fileName, $this->filesystem->get($file));
+
+            $normal = Image::make($file)->resize(160, 160)->encode($file->getClientOriginalExtension());
+
+            $uploaded =  $this->storage->put($fileName, $normal);
             if ($uploaded) {
                 return $fileName;
             }

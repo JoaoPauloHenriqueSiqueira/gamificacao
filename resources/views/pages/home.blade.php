@@ -180,7 +180,7 @@
                                     <div class="card animate center fadeLeft">
                                         <div class="card-content  gradient-45deg-indigo-purple white-text">
                                             <p class="card-stats-title">Mensal</p>
-                                            <h4 class="card-stats-number white-text">R$30,00</h4>
+                                            <h4 class="card-stats-number white-text">R$9,99</h4>
                                         </div>
                                     </div>
                                 </div>
