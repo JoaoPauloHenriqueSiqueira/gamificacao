@@ -32,12 +32,26 @@ License: You must have a valid license purchased only from themeforest(the above
   <title>@yield('title') | Materialize - Material Design Admin Template</title>
   <link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon-152x152.png">
   <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon/favicon-32x32.png">
-  <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css">
-  <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
+  <!-- <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css"> -->
+
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
+ <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
+
+
   <style>
-    #modalAdd {
+
+    .modal{
+      overflow-x: hidden;   
+     }
+     
+    #modalList {
       max-height: 88%;
       height: 88% !important;
+    }
+
+    #modalAdd {
+      max-height: 40%;
+      height: 40% !important;
     }
 
     #modal {
@@ -84,79 +98,23 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 @endif
 
-<script src="{{ asset('js/select2.min.js') }}"></script>
+<!-- <script src="{{ asset('js/select2.min.js') }}"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
   $(document).ready(function() {
     $("#modalAdd").modal();
+    $("#modalList").modal();
     $('#modalDelete').modal();
     $('#modalDeletePhoto').modal();
     $('#modalDeletePhotoAlbum').modal();
     $('#modalDeletePhotoBackground').modal();
     $('#modalPhotos').modal();
-
-    $('#modalAdd').modal({
+    $('#modalList').modal({
       dismissible: false, // Modal can be dismissed by clicking outside of the modal
     });
-    document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e => e.stopPropagation()))
   });
 </script>
 
-<script>
-  (function(document, $, undefined) {
-    $.fn.sm_select = function(options) {
-      var defaults = $.extend({
-        input_text: 'Select option...',
-        duration: 200,
-        show_placeholder: false
-      }, options);
-      return this.each(function(e) {
-        $(this).select2(options);
-        var select_state;
-        var drop_down;
-        var obj = $(this);
-        $(this).on('select2:open', function(e) {
-          drop_down = $('body>.select2-container .select2-dropdown');
-          drop_down.find('.select2-search__field').attr('placeholder', (($(this).attr('placeholder') != undefined) ?
-            $(this).attr('placeholder') : defaults.input_text));
-          drop_down.hide();
-          setTimeout(function() {
-            if (defaults.show_placeholder == false) {
-              var out_p = obj.find('option[placeholder]');
-              out_p.each(function() {
-                drop_down.find('li:contains("' + $(this).text() + '")').css('display', 'none');
-              });
-            }
-            drop_down.css('opacity', 0).stop(true, true).slideDown(defaults.duration, 'easeOutCubic', function() {
-              drop_down.find('.select2-search__field').focus();
-            }).animate({
-              opacity: 1
-            }, {
-              queue: false,
-              duration: defaults.duration
-            })
-          }, 10);
-          select_state = true;
-        });
-        $(this).on('select2:closing', function(e) {
-          if (select_state) {
-            e.preventDefault();
-            drop_down = $('body>.select2-container .select2-dropdown');
-            drop_down.slideUp(defaults.duration, 'easeOutCubic', function() {
-              obj.select2('close');
-            }).animate({
-              opacity: 0
-            }, {
-              queue: false,
-              duration: defaults.duration,
-              easing: 'easeOutSine'
-            });
-            select_state = false;
-          }
-        });
-      });
-    };
-  })(document, jQuery);
-</script>
 
 <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 <script>
@@ -391,6 +349,7 @@ License: You must have a valid license purchased only from themeforest(the above
   }
 
   function deletePhoto($url) {
+    console.log($url);
     $("#loading").show();
     id = $("#deleteInputPhoto").val();
     $.ajax({

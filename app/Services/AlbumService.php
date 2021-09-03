@@ -179,15 +179,12 @@ class AlbumService
 
         if (Arr::get($data, 'company_id') == Auth::user()->company_id) {
             $response = $this->uploadPlugin->remove(Arr::get($data, "background"));
-
-
-            
+            if(!$response){
+                \Log::info("Tentativa de remover foto bucket deu erro:".Arr::get($data, "background"));
+            }
             $data['background'] = null;
             $data->save();
-
-            if ($response) {
-                return response('Removido com sucesso', 200);
-            }
+            return response('Removido com sucesso', 200);
         }
 
         return response('Ocorreu algum erro ao remover', 422);

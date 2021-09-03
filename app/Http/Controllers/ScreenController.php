@@ -46,7 +46,6 @@ class ScreenController extends Controller
         array_push($search, ['name', 'like', '%' . $name . '']);
         $company = $this->companyService->searchField($search);
 
-
         //TODO CRIAR COMPANY PADRÃO (TELA CAIR NA TELA DO EXIBE TV)
         if (!$company) {
             $company = $this->companyService->searchField(['id' => 1]);

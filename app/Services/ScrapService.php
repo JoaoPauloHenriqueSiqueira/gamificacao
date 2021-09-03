@@ -99,20 +99,16 @@ class ScrapService
 
     public function save($request)
     {
-        $company = Auth::user()->company_id;
+        $token = $request->token_screen;
+        $search = [];
+        array_push($search, ['token_screen', 'like', '%' . $token . '%']);
+        $company = $this->companyService->searchField($search);
 
-        if (!$company) {
-            $token = $request->token_screen;
-            $search = [];
-            array_push($search, ['token_screen', 'like', '%' . $token . '%']);
-            $company = $this->companyService->searchField($search);
-        }
-
-        if (!$company || !Auth::user() && !$company['anonymus']) {
+        if (!$company || (!Auth::user() && !$company['anonymus'])) {
             return redirect()->route('messages');
         }
 
-        $request['company_id'] = $company['id'] ?? $company;
+        $request['company_id'] = $company['id'];
 
         if (Arr::exists($request->all(), "valid_from")) {
             $request['valid_from'] = $this->carbon->parse($request['valid_from'])->startOfDay();

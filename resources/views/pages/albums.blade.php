@@ -112,7 +112,13 @@
                                 <br>
                                 <div class="row center">
                                     <span class="span-body">
-                                        <a class="btn-small tooltipped blue" onclick="managerPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Fotos">
+                                        <a class="btn-small tooltipped green {{   count($data->photos) <= 0 ? 'disabled' : '' }}" onclick="managerPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Fotos">
+                                            <i class="material-icons white-text">
+                                                perm_media
+                                            </i>
+                                        </a>
+                                        
+                                        <a class="btn-small tooltipped blue" onclick="addPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Adicionar Fotos">
                                             <i class="material-icons white-text">
                                                 add_a_photo
                                             </i>
@@ -146,7 +152,7 @@
     <form class="col s12" method="POST" action="{{ URL::route('add_photo_album') }}" id="formUsers" enctype="multipart/form-data">
 
         <div class="modal-content">
-            <h4 class='center text-center'>Adicionar fotos</h4>
+            <h4 class='center text-center'>Adicionar foto(s)</h4>
             <div class="row">
                 <div class="input-field col s12">
                     <div class="file-field input-field">
@@ -160,16 +166,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <table class="bordered center">
-                    <thead>
-                        <tr>
-                        </tr>
-                    </thead>
-                    <tbody id="users_form">
-                    </tbody>
-                </table>
-            </div>
         </div>
         <div class="modal-footer">
             <button class="btn-small waves-effect waves-light">
@@ -178,7 +174,28 @@
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
     </form>
+</div>
 
+
+<div id="modalList" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div class="row">
+            <table class="bordered center">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody id="users_form">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-small waves-effect waves-light">
+            <span>Salvar</span>
+        </button>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
 </div>
 
 <!-- Modal Structure -->
@@ -187,7 +204,7 @@
         <h4 class="center white-text row">Deletar background?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_background_album') ?>}}')">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_background_album') ?> ')">
                 <i class="material-icons white-text">
                     done
                 </i>
@@ -384,18 +401,12 @@
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
 <script>
-    //ADD (VALID)
 
     $(document).ready(function() {
         "use strict";
         $(".modal").modal();
         $("#modalAdd").modal();
         $('.materialboxed').materialbox();
-        $(".select2").select2({
-            dropdownAutoWidth: true,
-            width: '100%'
-        });
-
         var $old = "<?= !empty(old()); ?>";
         if ($old || $old != "") {
             $("#old").val(1);
@@ -463,10 +474,9 @@
         $("#background2").val('');
     }
 
-    function managerPhotos($data, $photos) {
+    function addPhotos($data) {
         closeForm();
         $("#idalbum").remove();
-
         $id = $data['id'];
         $('#modalAdd').modal('open');
         $('<input>').attr({
@@ -475,9 +485,12 @@
             name: 'album_id',
             value: $id
         }).appendTo('#formUsers');
+    }
 
+    function managerPhotos($data, $photos) {
+        closeForm();
+        $('#modalList').modal('open');
         $photos = $data['photos'];
-
         $("#users_form").empty();
         var items = JSON.parse(sessionStorage.getItem('deletePhotos') || '[]');
 
@@ -500,7 +513,7 @@
     function createRow($id, $path) {
         $urlAws = "<?= $urlAws ?>";
 
-        return $(`<tr id="rowPhoto${$id}">
+        return $(`<tr class='photos' id="rowPhoto${$id}">
                         <td>
                             <img class="materialboxed responsive-img" width="80" src="${$urlAws}${$path}"></img>
                         </td>
@@ -528,7 +541,9 @@
     }
 
     function deletePhotoAlbum() {
-
+        //TODO
+        //pegar todas as photos e se não tiver nenhuma, desativar botão managerPhotos
+        
         let id = $("#deleteInputPhotoAlbum").val();
 
         $("#rowPhoto" + id).hide();

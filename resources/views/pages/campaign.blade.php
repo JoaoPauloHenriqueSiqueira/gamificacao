@@ -114,9 +114,14 @@
                                 </span>
                                 <div class="row center">
                                     <span class="span-body">
-                                        <a class="btn-small tooltipped blue" onclick="managerUser({{$data,json_encode($data->users)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Usuários">
+                                        <!-- <a class="btn-small tooltipped green {{   count($data->users) <= 0 ? 'disabled' : '' }}" onclick="managerUser({{$data,json_encode($data->users)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Usuários">
                                             <i class="material-icons white-text">
-                                                face
+                                                manage_accounts
+                                            </i>
+                                        </a> -->
+                                        <a class="btn-small tooltipped blue" onclick="addUser({{$data,json_encode($data->users)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Usuários">
+                                            <i class="material-icons white-text">
+                                                manage_accounts
                                             </i>
                                         </a>
                                     </span>
@@ -147,33 +152,32 @@
 <div id="modalAdd" class="modal modal-fixed-footer">
     <form class="col s12" method="POST" action="{{ URL::route('add_users_campaign') }}" id="formUsers">
         <div class="modal-content">
-            <h4 class='center text-center'>Adicionar usuários</h4>
+            <h4 class='center text-center'>Gerenciar usuário(s)</h4>
             <div class="row">
-                <div class="input-field col s8">
-                    <select class="select2 browser-default" id="user_selected">
-                        <option value="select" disabled selected>Selecione o usuário</option>
-                        @foreach ($users as $user)
-                        <option data-name="{{$user->name}}" value="{{$user->id}}">
-                            {{$user->name}}
-                        </option>
-                        @endforeach
-                    </select>
-                    <label class="active">Usuário</label>
-                </div>
-
-                <div class="input-field col s4">
-                    <a class="btn-floating center blue  btn tooltipped " data-background-color="red lighten-3" data-position="right" data-delay="50" data-tooltip="Adicionar usuário" onclick="addUser()">
-                        <i class="large material-icons">add</i>
-                    </a>
-                </div>
+                <select class="select2 browser-default js-example-basic-multiple" name="users[]" id="user_selected" multiple="multiple">
+                    @foreach ($users as $user)
+                    <option data-name="{{$user->name}}" value="{{$user->id}}">
+                        {{$user->name}}
+                    </option>
+                    @endforeach
+                </select>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-small waves-effect waves-light">
+                <span>Salvar</span>
+            </button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<!-- <div id="modalList" class="modal modal-fixed-footer">
+    <form class="col s12" method="POST" action="{{ URL::route('add_users_campaign') }}" id="formUsersList">
+        <div class="modal-content">
+            <h4 class='center text-center'>Gerenciar usuários</h4>
             <div class="row">
                 <table class="bordered center">
-                    <thead>
-                        <tr>
-
-                        </tr>
-                    </thead>
                     <tbody id="users_form">
                     </tbody>
                 </table>
@@ -186,7 +190,7 @@
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
     </form>
-</div>
+</div> -->
 
 <div id="modalDeletePhoto" class="modal">
     <div class="modal-content gradient-45deg-indigo-purple white-text">
@@ -381,11 +385,8 @@
         $(".modal").modal();
         $("#modalAdd").modal();
         $('.materialboxed').materialbox();
+        $('.js-example-basic-multiple').select2();
 
-        $(".select2").select2({
-            dropdownAutoWidth: true,
-            width: '100%'
-        });
 
         var $old = "<?= !empty(old()); ?>";
         if ($old) {
@@ -454,7 +455,7 @@
         $("#background2").val('');
     }
 
-    function managerUser($data,$users) {
+    function addUser($data, $users) {
         closeForm();
         $("#idCampaign").remove();
         $id = $data['id'];
@@ -465,6 +466,28 @@
             name: 'campaign_id',
             value: $id
         }).appendTo('#formUsers');
+
+        let listaSimilares = [];
+
+        $users = $data['users'];
+        $users.forEach(element => {
+            listaSimilares.push(element.id);
+        });
+
+        $("#user_selected").val(listaSimilares).change();
+    }
+
+    function managerUser($data, $users) {
+        closeForm();
+        $("#idCampaign").remove();
+        $id = $data['id'];
+        $('#modalList').modal('open');
+        $('<input>').attr({
+            type: 'hidden',
+            id: 'idCampaign',
+            name: 'campaign_id',
+            value: $id
+        }).appendTo('#formUsersList');
 
         $users = $data['users'];
         $("#users_form").empty();
@@ -477,20 +500,6 @@
     function askDeletePhoto(id) {
         $('#modalDeletePhoto').modal('open');
         $("#deleteInputPhoto").val(id);
-    }
-
-    function addUser() {
-        $user = $("#user_selected").val();
-        $name = $("#user_selected").find(':selected').data('name');
-
-        if ($(`#rowuser${$user}`).length > 0) {
-            return M.toast({
-                html: "Usuário já está adicionado à campanha"
-            }, 5000);
-        }
-
-        $element = createRow($user, $name);
-        $("#users_form").append($element);
     }
 
     function createRow($user, $name) {
@@ -514,6 +523,4 @@
     function removeUserCamp($user) {
         $(`#rowuser${$user}`).remove();
     }
-
-    
 </script>
