@@ -117,7 +117,7 @@ class RegisterController extends Controller
             $this->campaignService->save($campaign, true);
 
             //TODO - REMOVER 
-            //$user->notify(new ActiveCompany($user->name, $user->token_active));
+            $user->notify(new ActiveCompany($user->name, $user->token_active));
             return (new LoginController)->login($data);
         }
 

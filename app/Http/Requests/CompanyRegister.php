@@ -79,6 +79,8 @@ class CompanyRegister extends FormRequest
             'phone.max' => "Telefone precisa ser válido e estar no formato correto, por exemplo (99) 99999-9999",
             'cpf.cpf' => "Esse documento precisa ser válido",
             'cpf.unique' => "Essa empresa já está cadastrada em nossa base",
+            'cpf.min' => "São necessários 11 caracteres para o campo CPF",
+            'cpf.max' => "São necessários 11 caracteres para o campo CPF",
             'email.unique' => "Esse email já está cadastrado em nossa base",
             'email.email' => "Email precisa ser válido",
             'password.min' => "São necessários 5 caracteres para o campo senha",

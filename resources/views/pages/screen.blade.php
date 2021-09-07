@@ -20,7 +20,6 @@
         font-family: 'Antonio', sans-serif;
     }
 
-
     .responsive {
         width: 100%;
         height: auto;
@@ -53,18 +52,19 @@
     }
 
     .qrCode {
-        width: 15em;
+        width: 100%;
     }
 
     .carousel {
         margin-top: -5em !important;
-        min-height: 900px;
+        /* min-height: 900px; */
     }
 
     .carousel-item {
         min-width: 25em !important;
         height: 100% !important;
         visibility: hidden !important;
+        width: 100% !important;
     }
 
     .contentMessage {
@@ -84,10 +84,21 @@
     }
 
     .carousel .carousel-item>img {
-        width: 210%;
-        margin: -50%;
+        /* width: 210%;
+        /* margin: -50%; 
         margin-top: -12%;
-        max-width: 550px;
+        object-fit: cover;
+        max-width: 550px; */
+        /* width: 40vw;
+        height: 40vw;
+        object-fit: scale-down; */
+    }
+
+    .carousel .carousel-item>img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: unset;
     }
 
     .name {
@@ -98,8 +109,7 @@
 
     .page-footer {
         background-color: transparent;
-        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 56%);
-        max-height: 15em;
+        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%);
     }
 
     img.avtar {
@@ -144,6 +154,18 @@
         bottom: 0;
     }
 
+    .truncateContent {
+        width: 13em;
+    }
+
+    .contentMessage {
+        font-size: 0.6em;
+    }
+
+    .nameUser {
+        font-size: 0.6em;
+    }
+
 
     @keyframes floatText {
         to {
@@ -151,8 +173,109 @@
         }
     }
 
+    @media screen and (orientation: portrait) {
+        .titleLogo {
+            margin-top: 15%;
+        }
 
-    @media screen and (max-width: 2500px) {
+        .ml1 {
+            font-size: 1.5em;
+        }
+
+    }
+
+    @media screen and (orientation: landscape) {
+        .titleLogo {
+            margin-top: -5%;
+        }
+
+        .ml1 {
+            font-size: 1.5em;
+        }
+
+        /* #dayMounth {
+            font-size: 0.5em;
+        } */
+        /* 
+        .page-footer {
+            max-height: 7em;
+        } */
+
+
+    }
+
+    @media screen and (orientation: landscape) and (max-width: 1000px) {
+
+        .page-footer {
+            max-height: 7em;
+        }
+
+
+        .qrCode {
+            width: 60%;
+        }
+
+        #dayMounth {
+            position: relative;
+            font-size: 0.6em;
+
+        }
+
+        #time {
+            position: relative;
+            top: -1em;
+            font-size: 0.6em;
+        }
+
+
+        .titleLogo {
+            margin-top: -10%;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 60%;
+            max-height: 60%;
+            object-fit: cover;
+            object-position: unset;
+        }
+    }
+
+    @media screen and (orientation: landscape) and (max-width: 800px) {
+        .page-footer {
+            max-height: 7em;
+        }
+    }
+
+    @media screen and (orientation: portrait) and (max-width: 800px) {
+        .page-footer {
+            max-height: 9em;
+        }
+
+        #dayMounth {
+            font-size: 0.8em;
+
+        }
+
+        #time {
+            font-size: 0.8em;
+        }
+
+        /* .qrCode {
+            width: 200%;
+            margin-left: -20%;
+        } */
+    }
+
+    @media screen and (min-width: 1400px) and (max-width: 3000px) {
+        .qrCode {
+            width: 30%;
+            margin-left: 60%;
+        }
+
+        
+    }
+
+    /* @media only screen and (min-width: 1501px) and (max-width: 2000px) {
 
         .contentMessage {
             font-size: 1.6em;
@@ -163,16 +286,34 @@
         }
 
         .carousel .carousel-item>img {
-            max-width: 400px;
-            margin-top: 10%;
+            max-width: 40em;
+            max-height: 40em;
         }
 
         .ml1 {
             font-weight: 1000;
             font-size: 3.5em;
         }
-    }
+    } */
 
+    @media only screen and (min-width: 1000px) and (max-width: 1500px) {
+        /* .carousel .carousel-item>img {
+            max-width: 500px;
+            margin-top: 10%;
+        }
+    } */
+
+        /* @media only screen and (max-width: 1000px) {
+        .ml1 {
+            font-size: 1.5em;
+        }
+
+        #dayMounth {
+            font-size: 0.8em;
+        }
+    } */
+
+        /*
     @media screen and (max-width: 1787px) {
         .page-footer {
             max-height: 12em;
@@ -188,9 +329,8 @@
     }
 
 
-    /* TODO  media queries*/
     @media screen and (max-height: 787px) {
-        .carousel .carousel-item>img {
+         .carousel .carousel-item>img {
             margin-top: 0;
             margin-left: 0;
             max-width: 250px;
@@ -206,6 +346,12 @@
     }
 
     @media screen and (max-width: 600px) {
+         .carousel .carousel-item>img {
+            margin-top: 0;
+            margin-left: 0;
+            max-width: 250px;
+        }
+
 
         .titleLogo {
             margin-top: 15%;
@@ -214,13 +360,6 @@
         .ml1 {
             font-size: 1.5em;
         }
-
-        .carousel .carousel-item>img {
-            margin-top: 0;
-            margin-left: 0;
-            max-width: 250px;
-        }
-
         #dayMounth {
             font-size: 0.5em;
         }
@@ -253,6 +392,7 @@
         .truncateContent {
             width: 10em;
         }
+    } */
     }
 </style>
 
@@ -271,31 +411,28 @@
     </div>
 </div>
 
-<div class="carousel" id="carousel">
+<div class="carousel " id="carousel">
 </div>
 
 @if($company['chat'])
 <footer class="page-footer" style="position:fixed;bottom:0;left:0;width:100%;">
     <div class="row valign-wrapper">
-        <div class="col s2">
+        <div class="col s3 footer-row">
             <h3 class="white-text"><span id="dayMounth"></span></h3>
             <h5 class="white-text"><span id="time"></span>
             </h5>
         </div>
 
-        <div class="col s8">
+        <div class="col s6 footer-row">
             <div class="row valign-wrapper">
                 <div id='greeting'></div>
             </div>
         </div>
 
 
-        <div class="col s2">
-            <img class="qrCode" src="{{$qrCode}}">
+        <div class="col s3 valign-wrapper footer-row">
+            <img class="qrCode center-align" src="{{$qrCode}}">
         </div>
-    </div>
-
-    <div class="footer-copyright">
     </div>
 </footer>
 @else
@@ -463,14 +600,14 @@
                     $("#carousel").append(
                         `<a class="carousel-item center">
                                 <h6 class="center-text text-center center name white-text">${element.name}</h6>
-                                <img class="responsive" src="${urlAws}${element.photo}">
+                                <img class="responsive responsive-img" src="${urlAws}${element.photo}">
                                 </a>`
                     );
                     qtdSlides++;
                 } else if (element.photo && !element.name) {
                     $("#carousel").append(
                         `<a class="carousel-item center">
-                                <img class="responsive" src="${urlAws}${element.photo}">
+                                <img class="responsive responsive-img" src="${urlAws}${element.photo}">
                             </a>`
                     );
                     qtdSlides++;
@@ -541,7 +678,7 @@
             m = checkTime(m);
             s = checkTime(s);
             document.getElementById('time').innerHTML =
-                h + ":" + m + ":" + s;
+                h + ":" + m;
 
             var monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez")
             var day = today.getDate();
