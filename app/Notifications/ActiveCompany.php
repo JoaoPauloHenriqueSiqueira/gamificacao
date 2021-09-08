@@ -44,7 +44,7 @@ class ActiveCompany extends Notification
         return (new MailMessage)
             ->subject('Ativação da conta')
             ->line("Olá,  $this->user")
-            ->line("Seu Token de ativação é, $this->token")
+            ->line("Seu Token de ativação é: $this->token")
             ->line('Obrigado por utilizar nossa aplicação!');
     }
 

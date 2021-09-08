@@ -1,5 +1,5 @@
 <tr>
     <td class="header">
-        <img src="https://www.coronainsights.com/wp-content/uploads/2014/11/Welcome.jpg" width="400px">
+        <img src="https://c.tenor.com/jjADcY68aA0AAAAM/waving-bear-hi.gif" width="400px">
     </td>
 </tr>

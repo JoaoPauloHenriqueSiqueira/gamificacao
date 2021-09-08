@@ -44,7 +44,7 @@
 {{ $salutation }}
 @else
 @lang('Saudações'),<br>
-TheBoss
+ExibeTV
 @endif
 
 {{-- Subcopy --}}
