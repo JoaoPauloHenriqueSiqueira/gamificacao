@@ -237,7 +237,7 @@
 
                                 <div class="row optionSave">
                                     <div class="s12 center">
-                                        <button class="btn-small waves-effect pulse" onclick="getCreditCardToken()">Efetuar Assinatura</button>
+                                        <!-- <button class="btn-small waves-effect pulse" onclick="getCreditCardToken()">Efetuar Assinatura</button> -->
                                     </div>
                                 </div>
 
