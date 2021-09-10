@@ -143,11 +143,6 @@
     .nameAlbumCampaign .line2 {
         bottom: 0;
     }
-
-    .contentMessage {
-        font-size: 1em;
-    }
-
     .nameUser {
         font-size: 1.6em;
     }
