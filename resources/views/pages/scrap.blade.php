@@ -2,6 +2,32 @@
 @extends('layouts.contentLayoutMaster')
 
 {{-- page title --}}
+
+
+<?php $user = Auth::user(); ?>
+
+@if(!isset($user))
+<header class="page-topbar" id="header">
+    <div class="navbar navbar-fixed ">
+        <nav class="navbar-main navbar-color nav-collapsible no-shadow nav-expanded sideNav-lock  navbar-dark gradient-45deg-indigo-purple ">
+
+            <div class="nav-wrapper">
+                <ul class="navbar-list right">
+                   
+                    <li>
+                        <a class="white-text" href="<?= URL::route('messages') ?>">
+                            <i class="material-icons">face</i>
+                            Entrar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+@endif
+
+
 @section('title','Mensagem')
 <style>
     .center .materialboxed,
@@ -27,7 +53,6 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/pages/app-contacts.css')}}">
 @endsection
 
-<?php $user = Auth::user(); ?>
 @if(isset($user))
 
 <div class="content-area content-left">
@@ -128,6 +153,7 @@
 
 @else
 
+
 <div class="row">
     <!-- invoice view page -->
     <div class="col s12">
@@ -140,7 +166,7 @@
                                 <div class="row">
                                     <div class="invoice-item display-flex mb-1">
                                         <div class="col s12 input-field">
-                                            <input type="text"  id="message" name="message" class="invoice-item-desc" placeholder='Envie sua mensagem' data-length="255" maxlength="255">
+                                            <input type="text" id="message" name="message" class="invoice-item-desc" placeholder='Envie sua mensagem' data-length="255" maxlength="255">
                                         </div>
                                         <input type="hidden" name="token" value="{{$company['token_screen']}}">
                                     </div>
