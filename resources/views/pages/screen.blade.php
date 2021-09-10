@@ -31,7 +31,6 @@
         background-repeat: no-repeat;
         background-size: cover;
         animation-duration: 4s;
-        /* box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%); */
         min-height: 100vh;
         flex-direction: column;
         overflow: hidden;
@@ -44,7 +43,6 @@
         width: 100%;
         word-wrap: break-word;
     }
-
 
     .logo {
         width: 15em;
@@ -72,6 +70,10 @@
 
     .userImage {
         max-width: 8em !important;
+    }
+
+    .userIcon {
+        font-size: 5em;
     }
 
     .nameUser {
@@ -142,16 +144,12 @@
         bottom: 0;
     }
 
-    .truncateContent {
-        width: 13em;
-    }
-
     .contentMessage {
-        font-size: 0.6em;
+        font-size: 1em;
     }
 
     .nameUser {
-        font-size: 0.6em;
+        font-size: 1.6em;
     }
 
     .titleLogo {
@@ -177,6 +175,22 @@
             width: 100%;
         }
     }
+
+    @media screen and (orientation: landscape) and (max-width: 1800px) {
+        /* .page-footer {
+            max-height: 7em;
+        } */
+
+        .logo {
+            max-width: 5em;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 80%;
+            max-height: 75%;
+        }
+    }
+
 
     @media screen and (orientation: landscape) and (max-width: 1000px) {
         .titleLogo {
@@ -209,18 +223,71 @@
             margin-top: -10%;
         }
 
+        .logo {
+            max-width: 10em;
+        }
     }
 
     @media screen and (orientation: landscape) and (max-width: 800px) {
-        /* .page-footer {
-            max-height: 7em;
-        } */
+        .titleLogo {
+            margin-top: 0;
+        }
+
+        .userImage {
+            max-width: 4em !important;
+        }
+
+        .userIcon {
+            font-size: 2.5em;
+        }
+
+        .contentMessage {
+            font-size: 0.8em;
+        }
+
+        .nameUser {
+            font-size: 0.6em;
+        }
+
+        .logo {
+            max-width: 5em;
+            margin-top: 4%;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 80%;
+            max-height: 30%;
+        }
     }
 
     @media screen and (orientation: portrait) and (max-width: 800px) {
+        .titleLogo {
+            margin-top: 5%;
+        }
+
+        .userImage {
+            max-width: 2em !important;
+        }
+
+        .userIcon {
+            font-size: 3em;
+        }
+
+        .contentMessage {
+            font-size: 0.8em;
+        }
+
+        .nameUser {
+            font-size: 0.7em;
+        }
+
+        .logo {
+            max-width: 5em;
+            margin-top: -4%;
+        }
 
         #dayMounth {
-            font-size: 0.8em;
+            font-size: 0.6em;
 
         }
 
@@ -232,159 +299,6 @@
             max-width: 100%;
             max-height: 90%;
         }
-
-    }
-
-    /* 
-    @media screen and (orientation: landscape) and (min-width: 800px) and (max-width: 1400px) {
-        .page-footer {
-            max-height: 7em;
-        }
-
-        .qrCode {
-            width: 30%;
-             margin-left: 60%;
-            margin-bottom: 8%; 
-        }
-
-        #dayMounth {
-            font-size: 0.8em;
-        }
-
-        #time {
-            font-size: 0.8em;
-            top: -1em;
-            position: relative;
-        }
-    } */
-    /* 
-    @media screen and (min-width: 1400px) and (max-width: 3000px) {
-        .qrCode {
-            width: 30%;
-            margin-left: 60%;
-        }
-
-
-    } */
-
-    /* @media only screen and (min-width: 1501px) and (max-width: 2000px) {
-
-        .contentMessage {
-            font-size: 1.6em;
-        }
-
-        .userImage {
-            max-width: 5em !important;
-        }
-
-        .carousel .carousel-item>img {
-            max-width: 40em;
-            max-height: 40em;
-        }
-
-        .nameAlbumCampaign {
-            font-weight: 1000;
-            font-size: 3.5em;
-        }
-    } */
-
-    @media only screen and (min-width: 1000px) and (max-width: 1500px) {
-        /* .carousel .carousel-item>img {
-            max-width: 500px;
-            margin-top: 10%;
-        }
-    } */
-
-        /* @media only screen and (max-width: 1000px) {
-        .nameAlbumCampaign {
-            font-size: 1.5em;
-        }
-
-        #dayMounth {
-            font-size: 0.8em;
-        }
-    } */
-
-        /*
-    @media screen and (max-width: 1787px) {
-        .page-footer {
-            max-height: 12em;
-        }
-
-        .qrCode {
-            width: 6em;
-        }
-
-        .contentMessage {
-            font-size: 0.6em;
-        }
-    }
-
-
-    @media screen and (max-height: 787px) {
-         .carousel .carousel-item>img {
-            margin-top: 0;
-            margin-left: 0;
-            max-width: 250px;
-        }
-
-        .page-footer {
-            max-height: 5em;
-        }
-
-        .qrCode {
-            width: 3em;
-        }
-    }
-
-    @media screen and (max-width: 600px) {
-         .carousel .carousel-item>img {
-            margin-top: 0;
-            margin-left: 0;
-            max-width: 250px;
-        }
-
-
-        .titleLogo {
-            margin-top: 15%;
-        }
-
-        .nameAlbumCampaign {
-            font-size: 1.5em;
-        }
-        #dayMounth {
-            font-size: 0.5em;
-        }
-
-        #time {
-            font-size: 0.8em;
-        }
-
-        .truncateContent {
-            width: 13em;
-        }
-
-        .contentMessage {
-            font-size: 0.6em;
-        }
-
-        .nameUser {
-            font-size: 0.6em;
-        }
-
-        .qrCode {
-            margin-left: 100%;
-            margin-left: -3em;
-        }
-
-        .userImage {}
-    }
-
-    @media screen and (max-width: 480px) {
-        .truncateContent {
-            width: 10em;
-        }
-    } */
     }
 </style>
 
@@ -409,19 +323,19 @@
 @if($company['chat'])
 <footer class="page-footer" style="position:fixed;bottom:0;left:0;width:100%;">
     <div class="row valign-wrapper">
-        <div class="col s3">
+        <div class="col s2">
             <h3 class="white-text"><span id="dayMounth"></span></h3>
             <h5 class="white-text"><span id="time"></span>
             </h5>
         </div>
 
-        <div class="col s6">
+        <div class="col s8">
             <div class="row">
                 <div id='greeting'></div>
             </div>
         </div>
 
-        <div class="col s3">
+        <div class="col s2">
             <img class="qrCode right responsive-img" src="{{$qrCode}}">
         </div>
     </div>
@@ -516,7 +430,6 @@
             }
 
             let campaigns = <?= $campaigns ?>;
-            console.log(campaigns);
 
             let campaign = sessionStorage.getItem('campaign')
             let invalids = sessionStorage.getItem('invalid_campaigns');
@@ -728,30 +641,30 @@
         function mountMesssage(user, msg) {
             if (user.hasOwnProperty('photo')) {
                 return `
-                    <div class="col media-image online pr-0">
-                        <img src="${urlAws}${user.photo}" alt="" class="userImage circle z-depth-2 responsive-img">
+                    <div class="col s2 media-image online pr-0 ">
+                        <img src="${urlAws}${user.photo}" alt="" class="circle z-depth-2 responsive-img">
                     </div>
-                    <div class="col">
+                    <div class="col s9">
                         <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
                         <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
             } else if (user.hasOwnProperty('name')) {
                 return `
-                    <div class="col media-image online pr-0">
-                        <i class="material-icons circle userImage circle z-depth-2 responsive-img">account_circle</i>
+                    <div class="col s3 media-image online pr-0">
+                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img">account_circle</i>
                     </div>
-                    <div class="col">
+                    <div class="col s9">
                         <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
                         <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
             } else {
                 return `
-                    <div class="col media-image online pr-0">
-                        <i class="material-icons circle userImage circle z-depth-2 responsive-img">account_circle</i>
+                    <div class="col s3 media-image online pr-0">
+                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img">account_circle</i>
                     </div>
-                    <div class="col">
+                    <div class="col s9">
                         <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
@@ -791,14 +704,13 @@
 
                     index += 1;
                     let mensagem = result[index];
-                    console.log(mensagem);
 
                     sessionStorage.setItem('msg', mensagem['id']);
                     $("#greeting").html(mountMesssage(mensagem['user'], mensagem));
                 }
             }
 
-            setTimeout(drawMessage, 10000);
+            //setTimeout(drawMessage, 10000);
         }
     });
 </script>

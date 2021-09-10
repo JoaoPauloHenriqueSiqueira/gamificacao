@@ -129,8 +129,7 @@ class UserService
         $response['active'] = 0;
         $response->save();
 
-        //TODO - REMOVER 
-        //$user->notify(new ActiveCompany($user->name, $user->token_active));
+        $response->notify(new ActiveCompany($response->name, $response->token_active));
 
         if ($response) {
             return redirect()->back()->with('message', 'Registro criado/atualizado! É necessário que o usuário valide o email');

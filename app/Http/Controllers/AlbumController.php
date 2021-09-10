@@ -68,7 +68,6 @@ class AlbumController extends Controller
     public function deletePhoto(Request $request)
     {
         try {
-            \Log::info("aewwwww");
             return $this->service->deletePhoto($request);
         } catch (Exception $e) {
             return $e->getMessage();

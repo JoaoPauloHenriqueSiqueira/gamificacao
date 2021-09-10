@@ -80,7 +80,7 @@
         <h4 class="center white-text row">Deletar foto?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_user_photo') ?>}}')">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_user_photo') ?>')">
                 <i class="material-icons white-text">
                     done
                 </i>
@@ -136,7 +136,7 @@
                     <div class="input-field col s12" id="password_row">
                         <i class="material-icons prefix"> lock </i>
                         <input id="password" name="password" type="text" class="validate">
-                        <label for="password">Senha Padrão</label>
+                        <label for="password">Senha</label>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix"> calendar_today </i>

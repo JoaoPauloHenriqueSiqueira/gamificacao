@@ -197,7 +197,7 @@
         <h4 class="center white-text row">Deletar background?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_background_campaign') ?>}}')">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_background_campaign') ?>')">
                 <i class="material-icons white-text">
                     done
                 </i>

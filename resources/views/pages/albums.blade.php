@@ -98,7 +98,7 @@
                             @endif
                             <div class="row">
                                 <span class="span-body">
-                                    <div class="row" id="background_photo{{$data->id}}" <?php if (!$data['background']) { ?> style="display:none" <?php } ?>>
+                                    <div class="row" id="photo{{$data->id}}" <?php if (!$data['background']) { ?> style="display:none" <?php } ?>>
                                         <h5 class="center">Remover Background <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
                                         </h5>
                                         <br>
@@ -204,7 +204,7 @@
         <h4 class="center white-text row">Deletar background?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_background_album') ?> ')">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_background_album') ?>')">
                 <i class="material-icons white-text">
                     done
                 </i>

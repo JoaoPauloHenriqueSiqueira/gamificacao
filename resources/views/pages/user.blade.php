@@ -103,7 +103,7 @@
         <h4 class="center white-text row">Deletar foto?</h4><br>
         <div class="row center">
             <input type="hidden" id="deleteInputPhoto">
-            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('{{<?= URL::route('delete_user_photo') ?>}}')">
+            <a class="btn waves-effect waves-light white-text" onclick="deletePhoto('<?= URL::route('delete_user_photo') ?>')">
                 <i class="material-icons white-text">
                     done
                 </i>

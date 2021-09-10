@@ -198,7 +198,6 @@ License: You must have a valid license purchased only from themeforest(the above
   }
 
   function editCampaign(validAt, validFrom, data) {
-    console.log(data);
     $('#id').remove();
     if (data['id']) {
       openModal(true);
@@ -337,7 +336,6 @@ License: You must have a valid license purchased only from themeforest(the above
   }
 
   function closeCleanPhotoModal($data, $id) {
-
     if ($id != "") {
       $(`${$id}`).hide();
     }
@@ -349,7 +347,6 @@ License: You must have a valid license purchased only from themeforest(the above
   }
 
   function deletePhoto($url) {
-    console.log($url);
     $("#loading").show();
     id = $("#deleteInputPhoto").val();
     $.ajax({
@@ -359,7 +356,7 @@ License: You must have a valid license purchased only from themeforest(the above
         "id": id
       },
       success: function(data) {
-        closeCleanPhotoModal(data, $(`#photo${$id}`));
+        closeCleanPhotoModal(data, `#photo${id}`);
       },
       error: function(data) {
         closeCleanPhotoModal(data.responseText, '');
