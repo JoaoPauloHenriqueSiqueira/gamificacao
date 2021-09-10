@@ -637,7 +637,7 @@
             if (user.hasOwnProperty('photo')) {
                 return `
                     <div class="col s2 media-image online pr-0 ">
-                        <img src="${urlAws}${user.photo}" alt="" class="circle z-depth-2 responsive-img">
+                        <img src="${urlAws}${user.photo}" alt="" class="circle z-depth-2 responsive-img right">
                     </div>
                     <div class="col s9">
                         <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
@@ -647,7 +647,7 @@
             } else if (user.hasOwnProperty('name')) {
                 return `
                     <div class="col s3 media-image online pr-0">
-                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img">account_circle</i>
+                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img right">account_circle</i>
                     </div>
                     <div class="col s9">
                         <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
@@ -657,7 +657,7 @@
             } else {
                 return `
                     <div class="col s3 media-image online pr-0">
-                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img">account_circle</i>
+                        <i class="material-icons circle userIcon circle z-depth-2 responsive-img right">account_circle</i>
                     </div>
                     <div class="col s9">
                         <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
