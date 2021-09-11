@@ -700,7 +700,7 @@
                 }
             }
 
-           // setTimeout(drawMessage, 10000);
+           setTimeout(drawMessage, 10000);
         }
     });
 </script>
