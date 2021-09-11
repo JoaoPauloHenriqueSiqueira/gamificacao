@@ -70,6 +70,8 @@
 
     .userImage {
         max-width:70% !important;
+        max-height:70% !important;
+
     }
 
     .userIcon {
