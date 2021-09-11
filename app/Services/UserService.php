@@ -121,18 +121,21 @@ class UserService
         $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
         $response = $this->addPhoto($request, $response, 'photo');
 
-        if ($userId && Arr::get($old, "email") == $response->email) {
-            return redirect()->back()->with('message', 'Registro criado/atualizado!');
-        }
-        
-        $response['token_active'] = mt_rand(100000, 999999);
-        $response['active'] = 0;
-        $response->save();
-
-        $response->notify(new ActiveCompany($response->name, $response->token_active));
-
         if ($response) {
-            return redirect()->back()->with('message', 'Registro criado/atualizado! É necessário que o usuário valide o email');
+           
+            if ($userId && Arr::get($old, 'email') == $response->email) {
+                return redirect()->back()->with('message', 'Registro criado/atualizado!');
+            }
+
+            $response['token_active'] = mt_rand(100000, 999999);
+            $response['active'] = 0;
+            $response->save();
+
+            $response->notify(new ActiveCompany($response->name, $response->token_active));
+
+            if ($response) {
+                return redirect()->back()->with('message', 'Registro criado/atualizado! É necessário que o usuário valide o email');
+            }
         }
 
         return redirect()->back()->with('message', 'Ocorreu algum erro');

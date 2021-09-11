@@ -69,8 +69,8 @@
     }
 
     .userImage {
-        max-width:70% !important;
-        max-height:70% !important;
+        max-width:6em!important;
+        max-height:6em !important;
 
     }
 
@@ -236,11 +236,11 @@
         }
 
         .contentMessage {
-            font-size: 0.8em;
+            font-size: 1em;
         }
 
         .nameUser {
-            font-size: 0.6em;
+            font-size: 1em;
         }
 
         .logo {
@@ -703,7 +703,7 @@
                 }
             }
 
-           setTimeout(drawMessage, 10000);
+           setTimeout(drawMessage, 20000);
         }
     });
 </script>
