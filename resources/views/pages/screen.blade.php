@@ -309,7 +309,8 @@
 </div>
 
 @if($company['chat'])
-<footer class="page-footer" style="position:fixed;bottom:0;left:0;width:100%;">
+<footer class="page-footer" style="position:fixed;bottom:0;left:0;width:100%;padding-left: 2%;
+    padding-right: 2%;">
     <div class="row valign-wrapper">
         <div class="col s2">
             <h3 class="white-text"><span id="dayMounth"></span></h3>
