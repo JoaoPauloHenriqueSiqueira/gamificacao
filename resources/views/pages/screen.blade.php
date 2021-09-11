@@ -2,7 +2,7 @@
 @extends('layouts.fullCopyLayoutMaster')
 
 {{-- page title --}}
-@section('title','Tela')
+@section('title','ExibeTV')
 
 {{-- page content --}}
 @section('content')
@@ -69,7 +69,7 @@
     }
 
     .userImage {
-        max-width: 8em !important;
+        max-width:70% !important;
     }
 
     .userIcon {
@@ -228,9 +228,6 @@
             margin-top: 0;
         }
 
-        .userImage {
-            max-width: 4em !important;
-        }
 
         .userIcon {
             font-size: 2.5em;
@@ -258,10 +255,6 @@
     @media screen and (orientation: portrait) and (max-width: 800px) {
         .titleLogo {
             margin-top: 5%;
-        }
-
-        .userImage {
-            max-width: 2em !important;
         }
 
         .userIcon {
@@ -637,7 +630,9 @@
             if (user.hasOwnProperty('photo')) {
                 return `
                     <div class="col s2 media-image online pr-0 ">
-                        <img src="${urlAws}${user.photo}" alt="" class="circle z-depth-2 responsive-img right">
+                        <div class="row">
+                            <img src="${urlAws}${user.photo}" alt="" class="circle z-depth-2 responsive-img userImage right">
+                        </div>
                     </div>
                     <div class="col s9">
                         <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
@@ -705,7 +700,7 @@
                 }
             }
 
-            setTimeout(drawMessage, 10000);
+           // setTimeout(drawMessage, 10000);
         }
     });
 </script>
