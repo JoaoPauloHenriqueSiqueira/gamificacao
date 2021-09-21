@@ -34,16 +34,15 @@ License: You must have a valid license purchased only from themeforest(the above
   <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon/favicon-32x32.png">
   <!-- <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css"> -->
 
- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
- <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
+  <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
 
 
   <style>
+    .modal {
+      overflow-x: hidden;
+    }
 
-    .modal{
-      overflow-x: hidden;   
-     }
-     
     #modalList {
       max-height: 88%;
       height: 88% !important;
@@ -138,13 +137,11 @@ License: You must have a valid license purchased only from themeforest(the above
       status == "CANCELLED") {
       createCreditCard('Plano - Desativado');
     } else if (status == 'PAYMENT_METHOD_CHANGE') {
-      updateCreditCard('Plano - Pagamento pendente. Atualize a forma de pagamento');
+      updateCreditCard('Plano - Pagamento pendente. Atualize a forma de pagamento', true);
     } else if (status == "ACTIVE") {
-      updateCreditCard('Plano - Ativo');
-    } else if (status == "PENDING") {
+      updateCreditCard('Plano - Ativo', true);
+    } else if (status == "PENDING" || status == null) {
       updateCreditCard('Plano - Aguardando Aprovação');
-    } else {
-      createCreditCard('Plano - Desativado');
     }
   }
 

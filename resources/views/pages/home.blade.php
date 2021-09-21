@@ -59,10 +59,9 @@
             <div class="card-content">
                 <div class="row">
                     <ul class="tabs">
-                        <li id="geraisTab" class="tab col s3"><a class="active" href="#gerais">Configurações</a></li>
-                        <li id="enderecoTab" class="tab col s3"><a href="#endereco">Endereço</a></li>
-                        <li id="pagamentosTab" class="tab col s3"><a href="#pagamentos">Assinatura</a></li>
-                        <li id="ordensPagamentoTab" class="tab col s3"><a href="#ordensPagamento">Pagamentos</a></li>
+                        <li id="geraisTab" class="tab col s4"><a class="active" href="#gerais">Configurações</a></li>
+                        <li id="enderecoTab" class="tab col s4"><a href="#endereco">Endereço</a></li>
+                        <li id="pagamentosTab" class="tab col s4"><a href="#pagamentos">Assinatura</a></li>
                     </ul>
                     <div id="gerais" class="col s12">
                         <br>
@@ -192,6 +191,7 @@
                                     <div class="row">
                                         <h5 class="center text-center">Cartão de Crédito</h5>
                                         <p class="center">Cartões aceitos: American Express, Aura, Banese Card, Cabal, Diners, Elo, FortBrasil, Grand Card, Hiper, Hipercard, Mais, Mastercard, Personal Cardo, Soro Cred, Vale Card, Up Brasil, Visa e Vólus.</p>
+                                        <h6 class="center green-text" id="cartaoAtual"></h6>
                                     </div>
                                     <div class="row ">
                                         <div class="row">
@@ -237,7 +237,7 @@
 
                                 <div class="row optionSave">
                                     <div class="s12 center">
-                                        <!-- <button class="btn-small waves-effect pulse" onclick="getCreditCardToken()">Efetuar Assinatura</button> -->
+                                        <button class="btn-small waves-effect pulse" onclick="getCreditCardToken()">Efetuar Assinatura</button>
                                     </div>
                                 </div>
 
@@ -295,16 +295,6 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-
-                    <div id="ordensPagamento" class="col s12">
-                        <br>
-                        <div class="row">
-                            <h5 class="center text-center">Ordens de Pagamento</h5>
-                        </div>
-                        <div class="row">
-
                         </div>
                     </div>
                 </div>
@@ -432,8 +422,11 @@
         let card = '<?= $card ?>';
         if (card != '') {
             card = JSON.parse(card);
+            verifyPayment(card.plan_status);
+        }else{
+            createCreditCard('Plano - Desativado');
         }
-        verifyPayment(card.plan_status);
+
         verifyAddress(false);
     });
 
@@ -486,6 +479,16 @@
         $(".creditCard").show('slow');
         $(".optionUpdateCard").show();
         $(".creditCardData").show();
+        let card = '<?= $card ?>';
+
+        if (card != '') {
+            card = JSON.parse(card);
+            if(card.hasOwnProperty('cardNumber')){
+                let str = card.cardNumber.replace(/.(?=.{4})/g, "#");
+                $("#cartaoAtual").html("Cartão atual: "+str);
+            }
+           
+        }
     }
 
     function validCard(card) {

@@ -29,7 +29,6 @@ class PaymentService
         $card = $this->repository->findByField("reference", $notification['reference'])->first();
 
         if ($card) {
-
             $company = $card['company_id'];
 
             //alterações de status da adesão

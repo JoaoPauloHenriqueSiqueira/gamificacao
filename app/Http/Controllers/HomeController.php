@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PagSeguroRecorrente;
 
 class HomeController extends Controller
 {
@@ -71,6 +72,10 @@ class HomeController extends Controller
 
     public function indexUser()
     {
+        if(Auth::user()->admin){
+            return redirect()->route('home');
+        }
+
         try {
             $breadcrumbs = [];
 

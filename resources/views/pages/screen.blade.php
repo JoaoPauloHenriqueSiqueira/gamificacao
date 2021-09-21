@@ -94,9 +94,7 @@
     }
 
     .name {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px;
-        margin: 0;
+        margin: 1em;
     }
 
     .page-footer {
@@ -151,6 +149,10 @@
 
     .titleLogo {
         margin-top: -5%;
+    }
+
+    .texts{
+        color:#fff;
     }
 
     @keyframes floatText {
@@ -300,7 +302,7 @@
         <h1 class="nameAlbumCampaign right">
             <span class="text-wrapper">
                 <span class="line line1"></span>
-                <span class="letters right title white-text" id="title"></span>
+                <span class="letters right title texts" id="title"></span>
                 <span class="line line2"></span>
             </span>
         </h1>
@@ -315,8 +317,8 @@
     padding-right: 2%;">
     <div class="row valign-wrapper">
         <div class="col s2">
-            <h3 class="white-text"><span id="dayMounth"></span></h3>
-            <h5 class="white-text"><span id="time"></span>
+            <h3 class="texts"><span id="dayMounth"></span></h3>
+            <h5 class="texts"><span id="time"></span>
             </h5>
         </div>
 
@@ -335,8 +337,8 @@
 <footer class="" style="position:fixed;bottom:0;left:0;width:100%;">
     <div class="row valign-wrapper">
         <div class="col s12 left">
-            <h3 class="white-text"><span id="dayMounth"></span></h3>
-            <h5 class="white-text"><span id="time"></span>
+            <h3 class="texts"><span id="dayMounth"></span></h3>
+            <h5 class="texts"><span id="time"></span>
             </h5>
         </div>
     </div>
@@ -489,9 +491,11 @@
                 if (element.name && element.photo) {
                     $("#carousel").append(
                         `<a class="carousel-item center">
-                                <h6 class="center-text text-center center name white-text">${element.name}</h6>
-                                <img class="responsive responsive-img" src="${urlAws}${element.photo}">
-                                </a>`
+                            <img class="responsive responsive-img" src="${urlAws}${element.photo}">
+                            <div class="carousel-content">
+                                <button class="btn pulse name">${element.name}</button>
+                            </div>
+                        </a>`
                     );
                     qtdSlides++;
                 } else if (element.photo && !element.name) {
@@ -504,7 +508,7 @@
                 } else if (!element.photo && element.name) {
                     $("#carousel").append(
                         `<a class="carousel-item center">
-                            <h1 class="center-text text-center center name white-text">${element.name}</h1>
+                            <h1 class="center-text text-center center name texts">${element.name}</h1>
                         </a>`
                     );
                     qtdSlides++;

@@ -27,7 +27,7 @@ class CreditCard extends FormRequest
     public function rules()
     {
         $valid = [];
-        $valid['name'] = 'required';
+        $valid['cardNumber'] = 'required';
         $valid['expirationYear'] = 'required';
         $valid['expirationMonth'] = 'required';
         $valid['cvv'] = 'required';

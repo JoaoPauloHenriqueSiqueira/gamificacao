@@ -13,15 +13,12 @@ class CreateCreditsCardsTable extends Migration
      */
     public function up()
     {
+        //TODO
         Schema::create('credits_cards', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id')->unsigned();
-            $table->string('name'); //nome
-            $table->string('cvv'); //cvv
             $table->string('cardNumber'); //numero
-            $table->string('brand'); //bandeira
-            $table->string('expirationMonth'); //Mês da expiração do cartão
-            $table->string('expirationYear'); // Ano da expiração do cartão, é necessário os 4 dígitos.
+            $table->string('name'); //nome
             $table->string('token')->nullable(); //token gerado no front end
             $table->string('plan_status')->nullable(); //status do plano
             $table->string('plan_token')->nullable(); //token adesão gerado

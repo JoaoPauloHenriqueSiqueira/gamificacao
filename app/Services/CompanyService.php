@@ -117,10 +117,10 @@ class CompanyService
     public function deleteLogo()
     {
         $company = $this->repository->find(Auth::user()->company_id);
-        $response = $this->uploadPlugin->remove(Arr::get($company, "logo"));
+        $this->uploadPlugin->remove(Arr::get($company, "logo"));
 
         $company->logo = null;
-        $company->save();
+        $response = $company->save();
 
         if ($response) {
             return response('Removido com sucesso', 200);
@@ -132,10 +132,10 @@ class CompanyService
     public function deleteBackground()
     {
         $company = $this->repository->find(Auth::user()->company_id);
-        $response = $this->uploadPlugin->remove(Arr::get($company, "background_default"));
+        $this->uploadPlugin->remove(Arr::get($company, "background_default"));
 
         $company->background_default = null;
-        $company->save();
+        $response = $company->save();
 
         if ($response) {
             return response('Removido com sucesso', 200);
