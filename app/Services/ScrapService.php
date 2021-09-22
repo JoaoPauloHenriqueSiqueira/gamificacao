@@ -99,7 +99,7 @@ class ScrapService
 
     public function save($request)
     {
-        $token = $request->token_screen;
+        $token = $request->token;
         $search = [];
         array_push($search, ['token_screen', 'like', '%' . $token . '%']);
         $company = $this->companyService->searchField($search);
