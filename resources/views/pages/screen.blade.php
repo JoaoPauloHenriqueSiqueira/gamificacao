@@ -82,11 +82,13 @@
         visibility: visible !important;
     }
 
-
+    .carousel {
+        height: 600px;
+    }
 
     .carousel .carousel-item>img {
-        max-width: 160%;
-        max-height: 160%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
         object-position: unset;
     }
@@ -134,10 +136,6 @@
         top: 0;
     }
 
-    .carousel {
-            height: 700px;
-        }
-
     .nameAlbumCampaign .line2 {
         bottom: 0;
     }
@@ -176,6 +174,10 @@
             margin-top: 15%;
         }
 
+        .carousel {
+            height: 400px;
+        }
+
         .nameAlbumCampaign {
             font-size: 1.5em;
         }
@@ -206,12 +208,12 @@
             margin-top: -5%;
         }
 
-        .nameAlbumCampaign {
-            font-size: 1.5em;
-        }
-
         .carousel {
             height: 400px;
+        }
+
+        .nameAlbumCampaign {
+            font-size: 1.5em;
         }
 
         #dayMounth {
@@ -250,6 +252,7 @@
             height: 400px;
         }
 
+
         .userIcon {
             font-size: 2.5em;
         }
@@ -278,12 +281,12 @@
             margin-top: 5%;
         }
 
-        .userIcon {
-            font-size: 3em;
-        }
-
         .carousel {
             height: 400px;
+        }
+
+        .userIcon {
+            font-size: 3em;
         }
 
         .contentMessage {
