@@ -181,7 +181,6 @@
                         <label for="password">Senha Padrão</label>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons prefix"> calendar_today </i>
                         <input id="birthday" name="birthday" type="date" class="validate">
                         <label for="birthday">Data de nascimento</label>
                     </div>
