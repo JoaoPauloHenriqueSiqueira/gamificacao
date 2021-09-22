@@ -69,8 +69,8 @@
     }
 
     .userImage {
-        max-width:6em!important;
-        max-height:6em !important;
+        max-width: 6em !important;
+        max-height: 6em !important;
 
     }
 
@@ -78,15 +78,15 @@
         font-size: 5em;
     }
 
-   
-
     .carousel-item.active {
         visibility: visible !important;
     }
 
+
+
     .carousel .carousel-item>img {
-        max-width: 100%;
-        max-height: 100%;
+        max-width: 160%;
+        max-height: 160%;
         object-fit: contain;
         object-position: unset;
     }
@@ -106,7 +106,7 @@
         height: 4em;
         margin-right: .75rem;
     }
-  
+
     .nameAlbumCampaign .letter {
         display: inline-block;
         line-height: 1em;
@@ -134,9 +134,14 @@
         top: 0;
     }
 
+    .carousel {
+            height: 700px;
+        }
+
     .nameAlbumCampaign .line2 {
         bottom: 0;
     }
+
     .nameUser {
         font-size: 1.6em;
     }
@@ -145,19 +150,19 @@
         margin-top: -5%;
     }
 
-    .texts{
-        color:#fff;
+    .texts {
+        color: #fff;
     }
 
     .nameUser {
         font-size: 1.6em;
-        color:#fff;
+        color: #fff;
     }
 
     .nameAlbumCampaign {
         font-weight: 1000;
         font-size: 4.5em;
-        color:#fff;
+        color: #fff;
     }
 
     @keyframes floatText {
@@ -185,6 +190,10 @@
             max-width: 5em;
         }
 
+        .carousel {
+            height: 400px;
+        }
+
         .carousel .carousel-item>img {
             max-width: 80%;
             max-height: 75%;
@@ -199,6 +208,10 @@
 
         .nameAlbumCampaign {
             font-size: 1.5em;
+        }
+
+        .carousel {
+            height: 400px;
         }
 
         #dayMounth {
@@ -233,6 +246,9 @@
             margin-top: 0;
         }
 
+        .carousel {
+            height: 400px;
+        }
 
         .userIcon {
             font-size: 2.5em;
@@ -264,6 +280,10 @@
 
         .userIcon {
             font-size: 3em;
+        }
+
+        .carousel {
+            height: 400px;
         }
 
         .contentMessage {
@@ -709,7 +729,7 @@
                 }
             }
 
-           setTimeout(drawMessage, 20000);
+            setTimeout(drawMessage, 20000);
         }
     });
 </script>
