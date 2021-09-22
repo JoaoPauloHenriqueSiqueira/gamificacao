@@ -16,7 +16,7 @@
       "name": "Usuários",
       "i18n": "Support",
       "class": "waves-effect waves-cyan",
-      "icon": "manage_accounts"
+      "icon": "person"
     },
     {
       "url": "/dashboard/admin/campaigns",
