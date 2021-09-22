@@ -1,5 +1,5 @@
 <!-- BEGIN VENDOR JS-->
-<script src="{{asset('js/vendors.min.js')}}"></script>
+<!-- <script src="{{asset('js/vendors.min.js')}}"></script> -->
 <!-- BEGIN VENDOR JS-->
 <!-- BEGIN PAGE VENDOR JS-->
 @yield('vendor-script')
