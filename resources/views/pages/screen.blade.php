@@ -36,7 +36,7 @@
         overflow: hidden;
     }
 
-    .truncateContent {
+    .msgUser {
         margin: 0 auto;
         position: relative;
         display: block;
@@ -78,9 +78,7 @@
         font-size: 5em;
     }
 
-    .nameUser {
-        font-size: 1.6em;
-    }
+   
 
     .carousel-item.active {
         visibility: visible !important;
@@ -95,6 +93,7 @@
 
     .name {
         margin: 1em;
+        background-color: transparent;
     }
 
     .page-footer {
@@ -107,12 +106,7 @@
         height: 4em;
         margin-right: .75rem;
     }
-
-    .nameAlbumCampaign {
-        font-weight: 1000;
-        font-size: 4.5em;
-    }
-
+  
     .nameAlbumCampaign .letter {
         display: inline-block;
         line-height: 1em;
@@ -155,6 +149,17 @@
         color:#fff;
     }
 
+    .nameUser {
+        font-size: 1.6em;
+        color:#fff;
+    }
+
+    .nameAlbumCampaign {
+        font-weight: 1000;
+        font-size: 4.5em;
+        color:#fff;
+    }
+
     @keyframes floatText {
         to {
             transform: translateX(-100%);
@@ -176,10 +181,6 @@
     }
 
     @media screen and (orientation: landscape) and (max-width: 1800px) {
-        /* .page-footer {
-            max-height: 7em;
-        } */
-
         .logo {
             max-width: 5em;
         }
@@ -302,7 +303,7 @@
         <h1 class="nameAlbumCampaign right">
             <span class="text-wrapper">
                 <span class="line line1"></span>
-                <span class="letters right title texts" id="title"></span>
+                <span class="letters right" id="title"></span>
                 <span class="line line2"></span>
             </span>
         </h1>
@@ -491,10 +492,10 @@
                 if (element.name && element.photo) {
                     $("#carousel").append(
                         `<a class="carousel-item center">
-                            <img class="responsive responsive-img" src="${urlAws}${element.photo}">
                             <div class="carousel-content">
                                 <button class="btn pulse name">${element.name}</button>
                             </div>
+                            <img class="responsive responsive-img" src="${urlAws}${element.photo}">
                         </a>`
                     );
                     qtdSlides++;
@@ -642,8 +643,8 @@
                         </div>
                     </div>
                     <div class="col s9">
-                        <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
-                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                        <p class="nameUser m-0">${user.name}:</p>
+                        <div class="m-0 chat-text msgUser"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
             } else if (user.hasOwnProperty('name')) {
@@ -652,8 +653,8 @@
                         <i class="material-icons circle userIcon circle z-depth-2 responsive-img right">account_circle</i>
                     </div>
                     <div class="col s9">
-                        <p class="nameUser m-0 blue-grey-text text-darken-4 font-weight-700">${user.name}</p>
-                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                        <p class="nameUser m-0">${user.name}:</p>
+                        <div class="m-0 chat-text msgUser"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
             } else {
@@ -662,7 +663,8 @@
                         <i class="material-icons circle userIcon circle z-depth-2 responsive-img right">account_circle</i>
                     </div>
                     <div class="col s9">
-                        <div class="m-0 chat-text truncateContent"><div class="contentMessage">${msg.text}</div></div>
+                        <p class="nameUser m-0">Usuário:</p>
+                        <div class="m-0 chat-text msgUser"><div class="contentMessage">${msg.text}</div></div>
                     </div>
                     `;
             }
