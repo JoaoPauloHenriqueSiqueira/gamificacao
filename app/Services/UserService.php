@@ -8,6 +8,8 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\ActiveCompany;
+use App\User;
+use Carbon\Carbon;
 
 class UserService
 {
@@ -37,6 +39,11 @@ class UserService
         return $list->paginate(10);
     }
 
+    public function searchBirthday()
+    {
+        return User::where("company_id",Auth::user()->company_id)->whereMonth('birthday', '=', Carbon::now()->format('m'))->whereDay('birthday', '=', Carbon::now()->format('d'))->get();
+    }
+
     public function get($request)
     {
         $filterColumns = $this->makeParamsFilter($request);
@@ -54,6 +61,18 @@ class UserService
             return $query->where($filterColumns);
         });
     }
+
+    private function makeParamsFilterBirthday()
+    {
+        $filterColumns = ['company_id' => Auth::user()->company_id];
+
+        array_push($filterColumns, ["DATE_FORMAT(birthday, '%m-%d')", ">=", Carbon::now()->startOfDay()->format('m-d')]);
+        array_push($filterColumns, ["DATE_FORMAT(birthday, '%m-%d')", "<=", Carbon::now()->endOfDay()]);
+
+        return  $filterColumns;
+    }
+
+
 
     private function makeParamsFilter($request)
     {

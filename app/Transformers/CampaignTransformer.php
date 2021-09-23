@@ -2,14 +2,19 @@
 
 namespace App\Transformers;
 
+use App\Services\UserService;
 use Illuminate\Database\Eloquent\Collection;
 
 class CampaignTransformer
 {
-    public function transform($campaigns, $isVideo = false)
+    public function transform($campaigns, $users = [], $isVideo = false)
     {
         $objs = [];
         foreach ($campaigns as &$campaign) {
+
+            if($campaign->is_birthday){
+                $campaign->users = $users;
+            }
 
             $i = 0;
             
@@ -31,7 +36,7 @@ class CampaignTransformer
             $newObject['valid_at'] = $campaign->valid_at;
             $newObject['valid_from'] = $campaign->valid_from;
             $newObject['is_video'] = $isVideo;
-            $newObject['is_birthday'] = $isVideo;
+            $newObject['is_birthday'] = $campaign->is_birthday;
             $newObject['slides'] = (new UserTransformer)->transform($campaign->users);
             array_push($objs, $newObject);
         }

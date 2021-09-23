@@ -57,7 +57,7 @@ class CampaignService
             // return $query->where($filterColumnsPeriod)->orderBy('created_at', 'DESC');
         });
 
-        return (new CampaignTransformer)->transform($list->get());
+        return (new CampaignTransformer)->transform($list->get(), $this->userService->searchBirthday());
     }
 
     public function list($request)
@@ -108,6 +108,7 @@ class CampaignService
         if ($company) {
             array_push($filterColumns, ['is_continuous', true]);
             array_push($filterColumns, ['active', 1]);
+            array_push($filterColumns, ['is_birthday', 1]);
         }
 
         return  $filterColumns;

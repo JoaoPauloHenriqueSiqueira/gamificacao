@@ -95,7 +95,7 @@
 
     .name {
         margin: 1em;
-        background-color: transparent;
+        /* background-color: transparent; */
     }
 
     .page-footer {
