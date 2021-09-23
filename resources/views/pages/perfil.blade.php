@@ -114,14 +114,6 @@
                         <label for="name">Nome</label>
                     </div>
                     <div class="input-field col s12">
-                        <p>
-                            <label>
-                                <input type="checkbox" name="admin" id="admin">
-                                <span>Administrador</span>
-                            </label>
-                        </p>
-                    </div>
-                    <div class="input-field col s12">
                         <i class="material-icons prefix"> email </i>
                         <input id="email" name="email" type="email" class="validate">
                         <label for="email">Email</label>

@@ -39,10 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/search', 'UserController@index')->name('search_users');
                 Route::post('/search', 'UserController@search');
                 Route::post('/', 'UserController@create')->name('make_user');
-                Route::post('/account', 'UserController@updateAccount')->name('update_my_user');
                 Route::delete('/', 'UserController@delete')->name('delete_user');
                 Route::delete('/delete_photo', 'UserController@deletePhoto')->name('delete_user_photo');
             });
+
+
 
             Route::group(['prefix' => 'campaigns'], function () {
                 Route::get('/', 'CampaignController@index')->name('campaigns');
@@ -70,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::group(['prefix' => 'account'], function () {
             Route::get('/', 'HomeController@myAccount')->name('my_account');
+            Route::post('/update_account', 'UserController@updateAccount')->name('update_my_user');
+
         });
 
         Route::group(['prefix' => 'scraps'], function () {
