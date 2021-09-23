@@ -39,9 +39,9 @@ class UserService
         return $list->paginate(10);
     }
 
-    public function searchBirthday()
+    public function searchBirthday($id)
     {
-        return User::where("company_id",Auth::user()->company_id)->whereMonth('birthday', '=', Carbon::now()->format('m'))->whereDay('birthday', '=', Carbon::now()->format('d'))->get();
+        return User::where("company_id",$id)->whereMonth('birthday', '=', Carbon::now()->format('m'))->whereDay('birthday', '=', Carbon::now()->format('d'))->get();
     }
 
     public function get($request)

@@ -57,7 +57,7 @@ class CampaignService
             // return $query->where($filterColumnsPeriod)->orderBy('created_at', 'DESC');
         });
 
-        return (new CampaignTransformer)->transform($list->get(), $this->userService->searchBirthday());
+        return (new CampaignTransformer)->transform($list->get(), $this->userService->searchBirthday($id));
     }
 
     public function list($request)
