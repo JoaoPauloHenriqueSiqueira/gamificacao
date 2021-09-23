@@ -83,7 +83,7 @@
     }
 
     .carousel {
-        height: 600px;
+        height: 650px;
     }
 
     .carousel .carousel-item>img {
