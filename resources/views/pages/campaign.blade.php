@@ -113,9 +113,11 @@
                                                 manage_accounts
                                             </i>
                                         </a> -->
+                                        @if(!$data->is_birthday )
                                         <a class="btn-small tooltipped blue" onclick="addUser({{$data,json_encode($data->users)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Usuários">
                                             <i class="material-icons white-text">person</i>
                                         </a>
+                                        @endif
                                     </span>
                                 </div></br>
                             </div></br>
