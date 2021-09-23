@@ -96,6 +96,9 @@
     .name {
         margin: 1em;
         /* background-color: transparent; */
+        height: 1.3em;
+        font-size: 2.5em;
+        width: 8em;
     }
 
     .page-footer {
