@@ -9,6 +9,300 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap" rel="stylesheet">
 <style>
+    
+    body,
+    html {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+    }
+
+    * {
+        font-family: 'Antonio', sans-serif;
+    }
+
+    .responsive {
+        width: 100%;
+        height: auto;
+    }
+
+    body {
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        animation-duration: 4s;
+        min-height: 100vh;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .msgUser {
+        margin: 0 auto;
+        position: relative;
+        display: block;
+        width: 100%;
+        word-wrap: break-word;
+    }
+
+    .logo {
+        width: 15em;
+        height: auto;
+    }
+
+    .qrCode {
+        width: 5em;
+    }
+
+    .carousel {
+        margin-top: -5em !important;
+        height: 50em;
+    }
+
+    .carousel-item {
+        min-width: 25em !important;
+        height: 100% !important;
+        visibility: hidden !important;
+        width: 100% !important;
+    }
+
+    .contentMessage {
+        font-size: 2em;
+    }
+
+    .userImage {
+        max-width: 6em !important;
+        max-height: 6em !important;
+    }
+
+    .userIcon {
+        font-size: 5em;
+    }
+
+    .carousel-item.active {
+        visibility: visible !important;
+    }
+
+    .carousel .carousel-item>img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: unset;
+    }
+
+    .name {
+        margin: 1em;
+        /* background-color: transparent; */
+        height: 1.3em;
+        font-size: 2.5em;
+        width: 8em;
+    }
+
+    .page-footer {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 26%);
+    }
+
+    img.avtar {
+        width: 4em;
+        height: 4em;
+        margin-right: .75rem;
+    }
+
+    .nameAlbumCampaign .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+
+    .nameAlbumCampaign .text-wrapper {
+        position: relative;
+        display: inline-block;
+        padding-top: 0.1em;
+        padding-right: 0.05em;
+        padding-bottom: 0.15em;
+    }
+
+    .nameAlbumCampaign .line {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        background-color: #fff;
+        transform-origin: 0 0;
+    }
+
+    .nameAlbumCampaign .line1 {
+        top: 0;
+    }
+
+    .nameAlbumCampaign .line2 {
+        bottom: 0;
+    }
+
+    .nameUser {
+        font-size: 1.6em;
+    }
+
+    .titleLogo {
+        margin-top: -5%;
+    }
+
+    .texts {
+        color: #fff;
+    }
+
+    .nameUser {
+        font-size: 1.6em;
+        color: #fff;
+    }
+
+    .nameAlbumCampaign {
+        font-weight: 1000;
+        font-size: 4.5em;
+        color: #fff;
+    }
+
+    @keyframes floatText {
+        to {
+            transform: translateX(-100%);
+        }
+    }
+
+    @media screen and (orientation: portrait) {
+        .titleLogo {
+            margin-top: 15%;
+        }
+
+
+        .nameAlbumCampaign {
+            font-size: 1.5em;
+        }
+
+        .qrCode {
+            width: 100%;
+        }
+    }
+
+    @media screen and (orientation: landscape) and (max-width: 1900px) {
+        .logo {
+            max-width: 5em;
+        }
+
+        .carousel {
+            max-height: 40em;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 80%;
+            max-height: 75%;
+        }
+
+    }
+
+    @media screen and (orientation: landscape) and (max-width: 1500px) {
+        .titleLogo {
+            margin-top: -5%;
+        }
+
+        .carousel {
+            max-height: 20em;
+        }
+
+        .nameAlbumCampaign {
+            font-size: 1.5em;
+        }
+
+        #dayMounth {
+            position: relative;
+            font-size: 0.6em;
+        }
+
+        #time {
+            position: relative;
+            top: -1em;
+            font-size: 0.6em;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 80%;
+            max-height: 45%;
+            object-fit: cover;
+            object-position: unset;
+        }
+
+        .titleLogo {
+            margin-top: -10%;
+        }
+
+        .logo {
+            max-width: 10em;
+        }
+    }
+
+    @media screen and (orientation: landscape) and (max-width: 800px) {
+        .titleLogo {
+            margin-top: 0;
+        }
+
+        .userIcon {
+            font-size: 2.5em;
+        }
+
+        .contentMessage {
+            font-size: 1em;
+        }
+
+        .nameUser {
+            font-size: 1em;
+        }
+
+        .logo {
+            max-width: 5em;
+            margin-top: 4%;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 80%;
+            max-height: 30%;
+        }
+    }
+
+    @media screen and (orientation: portrait) and (max-width: 800px) {
+        .titleLogo {
+            margin-top: 5%;
+        }
+
+        .userIcon {
+            font-size: 3em;
+        }
+
+        .contentMessage {
+            font-size: 0.8em;
+        }
+
+        .nameUser {
+            font-size: 0.7em;
+        }
+
+        .logo {
+            max-width: 5em;
+            margin-top: -4%;
+        }
+
+        #dayMounth {
+            font-size: 0.6em;
+        }
+
+        #time {
+            font-size: 0.8em;
+        }
+
+        .carousel .carousel-item>img {
+            max-width: 100%;
+            max-height: 90%;
+        }
+    }
 </style>
 
 <div class="row titleLogo">
@@ -82,6 +376,7 @@
 
         let id = company.id;
         let css = company.css;
+        console.log(css);
         $("head").append('<style type="text/css">'+css+'</style>');
         var channel = pusher.subscribe(`screenEvent.${id}`);
         channel.bind('screenEvent', function(data) {
