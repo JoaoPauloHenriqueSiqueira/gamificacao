@@ -76,6 +76,10 @@ class ScrapController extends Controller
             return redirect()->route('messages');
         }
 
+        if(Auth::user()){
+            return redirect()->route('messages');
+        }
+
         $breadcrumbs = [];
 
         //Pageheader set true for breadcrumbs
