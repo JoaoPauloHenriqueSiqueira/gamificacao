@@ -130,6 +130,8 @@
                     <div class="input-field col s12">
                         <input type="text" id="message" name="message" class="validate" data-length="255" maxlength="255">
                         <label for="message">Mensagem</label>
+                        <input type="hidden" name="token" value="{{$company['token_screen']}}">
+
                     </div>
                 </div>
 
