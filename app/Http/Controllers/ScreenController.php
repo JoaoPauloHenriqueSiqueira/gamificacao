@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Contracts\CssRepositoryInterface;
 use App\Services\AlbumService;
 use App\Services\CampaignService;
 use App\Services\CompanyService;
@@ -14,18 +15,20 @@ class ScreenController extends Controller
     protected $campaignService;
     protected $companyService;
     protected $albumService;
-
+    protected $cssRepository;
     protected $carbon;
 
     public function __construct(
         CampaignService $campaignService,
         AlbumService $albumService,
         CompanyService $companyService,
+        CssRepositoryInterface $cssRepository,
         Carbon $carbon
     ) {
         $this->campaignService = $campaignService;
         $this->companyService = $companyService;
         $this->albumService = $albumService;
+        $this->cssRepository = $cssRepository;
         $this->carbon = $carbon;
     }
 
@@ -49,6 +52,10 @@ class ScreenController extends Controller
         //TODO CRIAR COMPANY PADRÃO (TELA CAIR NA TELA DO EXIBE TV)
         if (!$company) {
             $company = $this->companyService->searchField(['id' => 1]);
+        }
+
+        if(!$company['css']){
+            $company['css'] = $this->cssRepository->find(1)->value;
         }
 
         //TODO BUSCAR PELO NOME
