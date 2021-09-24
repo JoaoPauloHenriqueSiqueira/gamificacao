@@ -55,6 +55,7 @@
 
     .carousel {
         margin-top: -5em !important;
+        height: 70em;
     }
 
     .carousel-item {
@@ -82,9 +83,7 @@
         visibility: visible !important;
     }
 
-    .carousel {
-        height: 650px;
-    }
+   
 
     .carousel .carousel-item>img {
         max-width: 100%;
@@ -177,9 +176,6 @@
             margin-top: 15%;
         }
 
-        .carousel {
-            height: 400px;
-        }
 
         .nameAlbumCampaign {
             font-size: 1.5em;
@@ -190,30 +186,34 @@
         }
     }
 
-    @media screen and (orientation: landscape) and (max-width: 1800px) {
+    @media screen and (orientation: landscape) and (max-width: 1900px) {
         .logo {
             max-width: 5em;
         }
 
         .carousel {
-            height: 400px;
+            max-height: 40em;
         }
 
         .carousel .carousel-item>img {
             max-width: 80%;
             max-height: 75%;
         }
+
+      
+
     }
 
 
-    @media screen and (orientation: landscape) and (max-width: 1000px) {
+    @media screen and (orientation: landscape) and (max-width: 1500px) {
         .titleLogo {
             margin-top: -5%;
         }
 
         .carousel {
-            height: 400px;
+            max-height: 20em;
         }
+
 
         .nameAlbumCampaign {
             font-size: 1.5em;
@@ -251,11 +251,6 @@
             margin-top: 0;
         }
 
-        .carousel {
-            height: 400px;
-        }
-
-
         .userIcon {
             font-size: 2.5em;
         }
@@ -284,9 +279,6 @@
             margin-top: 5%;
         }
 
-        .carousel {
-            height: 400px;
-        }
 
         .userIcon {
             font-size: 3em;
