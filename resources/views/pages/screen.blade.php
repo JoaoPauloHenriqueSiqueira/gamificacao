@@ -55,7 +55,7 @@
 
     .carousel {
         margin-top: -5em !important;
-        height: 70em;
+        height: 60em;
     }
 
     .carousel-item {
