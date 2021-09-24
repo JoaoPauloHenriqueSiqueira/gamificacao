@@ -9,6 +9,10 @@
         margin: 0 auto;
         position: relative !important;
     }
+    #css{
+        height: 16rem!important;
+        resize: vertical!important;
+    }
 </style>
 {{-- page content --}}
 @section('content')
@@ -112,6 +116,13 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea name="css" id="css" class="materialize-textarea">{{$data['css']}}</textarea>                                        
+                                        <label for="css">CSS</label></label>
+                                    </div>
+                                </div>
+
                                 <div class="row" id="logo" <?php if ($data['logo']) { ?> style="display:none" <?php } ?>>
                                     <div class="file-field input-field">
                                         <div class="btn blue">
@@ -159,6 +170,8 @@
 
                                     </div>
                                 </div>
+
+                               
                             </div>
 
                             <div class="row">
@@ -410,6 +423,8 @@
         $("#modalError").modal();
         $('ul.tabs').tabs();
         $('.materialboxed').materialbox();
+        M.textareaAutoResize($('#css'));
+
 
         let chat = <?= $data['chat']; ?>;
 

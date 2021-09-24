@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Contracts\CssRepositoryInterface;
 use App\Services\AlbumService;
 use App\Services\CampaignService;
 use App\Services\CompanyService;
@@ -11,7 +12,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PagSeguroRecorrente;
 
 class HomeController extends Controller
 {
@@ -19,6 +19,7 @@ class HomeController extends Controller
     protected $albumService;
     protected $campaignService;
     protected $creditCardService;
+    protected $cssRepository;
     protected $carbon;
 
     public function __construct(
@@ -27,6 +28,7 @@ class HomeController extends Controller
         AlbumService $albumService,
         CampaignService $campaignService,
         CreditCardService $creditCardService,
+        CssRepositoryInterface $cssRepository,
         Carbon $carbon
     ) {
         $this->userService = $userService;
@@ -34,7 +36,9 @@ class HomeController extends Controller
         $this->albumService = $albumService;
         $this->campaignService = $campaignService;
         $this->creditCardService = $creditCardService;
+        $this->cssRepository = $cssRepository;
         $this->carbon = $carbon;
+
     }
 
     public function index(Request $request)
@@ -42,6 +46,7 @@ class HomeController extends Controller
         try {
             $request["search_album_active"] = 1;
             $request["search_campaign_active"] = 1;
+            
 
             $metrics = [
                 'campaigns' => $this->campaignService->list($request)->count(),
@@ -53,6 +58,11 @@ class HomeController extends Controller
             $card = $this->creditCardService->search($request)->first();
 
             $breadcrumbs = [];
+
+            if(!$data['css']){
+                $data['css'] = $this->cssRepository->find(1)->value;
+            }
+        
 
             //Pageheader set true for breadcrumbs
             $pageConfigs = ['pageHeader' => true];

@@ -63,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\ScrapRepositoryInterface',
             'App\Repositories\ScrapRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\CssRepositoryInterface',
+            'App\Repositories\CssRepository'
+        );
     }
 
     /**
