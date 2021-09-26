@@ -76,7 +76,7 @@ class ScreenController extends Controller
             'qrCode' => $url,
             'campaigns' => $data,
             'company' => $company,
-            "urlAws" => ENV('AWS_URL'),
+            "urlAws" => ENV('CLOUDFRONT_S3'),
         ]);
     }
 }
