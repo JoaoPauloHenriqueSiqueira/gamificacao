@@ -51,9 +51,11 @@ class CampaignService
     {
         $filterColumnsPeriod = $this->makeParamsSearch($id);
         $filterColumns2 = $this->makeParamsSearch2($id);
+        $filterColumns3 = $this->makeParamsSearch3($id);
 
-        $list = $this->repository->scopeQuery(function ($query) use ($filterColumnsPeriod, $filterColumns2) {
-            return $query->where($filterColumnsPeriod)->orWhere($filterColumns2)->whereJsonContains('days_week',  strval($this->carbon->now()->dayOfWeek))->orderBy('created_at', 'DESC');
+
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumnsPeriod, $filterColumns2,$filterColumns3) {
+            return $query->where($filterColumnsPeriod)->orWhere($filterColumns2)->orWhere($filterColumns3)->whereJsonContains('days_week',  strval($this->carbon->now()->dayOfWeek))->orderBy('created_at', 'DESC');
             // return $query->where($filterColumnsPeriod)->orderBy('created_at', 'DESC');
         });
 
@@ -100,6 +102,8 @@ class CampaignService
         return  $filterColumns;
     }
 
+   
+
     private function makeParamsSearch2($id)
     {
         $filterColumns = ['company_id' => $id];
@@ -108,11 +112,23 @@ class CampaignService
         if ($company) {
             array_push($filterColumns, ['is_continuous', true]);
             array_push($filterColumns, ['active', 1]);
+        }
+
+        return  $filterColumns;
+    }
+
+    private function makeParamsSearch3($id)
+    {
+        $filterColumns = ['company_id' => $id];
+        $company = $this->companyService->find($id);
+        if ($company) {
+            array_push($filterColumns, ['active', 1]);
             array_push($filterColumns, ['is_birthday', 1]);
         }
 
         return  $filterColumns;
     }
+
 
     public function find($taskId)
     {
