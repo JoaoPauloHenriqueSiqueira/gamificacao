@@ -26,7 +26,7 @@ class CampaignController extends Controller
             $pageConfigs = ['pageHeader' => true];
             return view('pages.campaign', [
                 "datas" => $this->service->search($request),
-                "users" => $this->userService->get($request),
+                "users" => $this->userService->getAll($request),
                 'pageConfigs' => $pageConfigs,
                 "search" => $request->all(),
                 "urlAws" => ENV('AWS_URL'),

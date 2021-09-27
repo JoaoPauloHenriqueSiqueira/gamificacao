@@ -54,6 +54,16 @@ class UserService
         return $list->get();
     }
 
+    public function getAll($request)
+    {
+        $filterColumns = $this->makeParamsFilterAll($request);
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
+            return $query->where($filterColumns)->orderBy('created_at', 'DESC');
+        });
+
+        return $list->get();
+    }
+
     public function list($request)
     {
         $filterColumns = $this->makeParamsFilter($request);
@@ -72,8 +82,6 @@ class UserService
         return  $filterColumns;
     }
 
-
-
     private function makeParamsFilter($request)
     {
         $filterColumns = ['company_id' => Auth::user()->company_id];
@@ -83,6 +91,17 @@ class UserService
         }
 
         array_push($filterColumns, ['id', "!=", Auth::user()->id]);
+        return  $filterColumns;
+    }
+
+    private function makeParamsFilterAll($request)
+    {
+        $filterColumns = ['company_id' => Auth::user()->company_id];
+
+        if (Arr::get($request, 'search_name')) {
+            array_push($filterColumns, ['name', 'like', '%' . Arr::get($request, 'search_name') . '%']);
+        }
+
         return  $filterColumns;
     }
 
