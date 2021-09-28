@@ -109,22 +109,18 @@
                 <!-- form start -->
                 <div class="row">
                     <div class="input-field col s12">
-                        <i class="material-icons prefix"> perm_identity </i>
                         <input id="name" name="name" type="text" class="validate">
                         <label for="name">Nome</label>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons prefix"> email </i>
                         <input id="email" name="email" type="email" class="validate">
                         <label for="email">Email</label>
                     </div>
                     <div class="input-field col s12" id="password_row">
-                        <i class="material-icons prefix"> lock </i>
                         <input id="password" name="password" type="text" class="validate">
                         <label for="password">Senha</label>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons prefix"> calendar_today </i>
                         <input id="birthday" name="birthday" type="date" class="validate">
                         <label for="birthday">Data de nascimento</label>
                     </div>

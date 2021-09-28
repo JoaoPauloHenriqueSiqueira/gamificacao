@@ -280,7 +280,6 @@
 
 
                     <div class="input-field col s12">
-                        <i class="material-icons prefix"> watch_later </i>
                         <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate" required>
                         <label for="duration_frames">Duração por Frame(em segundos)</label>
                     </div>
@@ -296,12 +295,10 @@
                         </div>
                         <div id="dates_start_end">
                             <div class="input-field col s12">
-                                <i class="material-icons prefix"> calendar_today </i>
                                 <input id="valid_at" name="valid_at" type="date" class="validate">
                                 <label for="valid_at">Data de início</label>
                             </div>
                             <div class="input-field col s12">
-                                <i class="material-icons prefix"> calendar_today </i>
                                 <input id="valid_from" name="valid_from" type="date" class="validate">
                                 <label for="valid_from">Data de término</label>
                             </div>

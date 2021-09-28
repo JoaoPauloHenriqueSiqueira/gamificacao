@@ -88,7 +88,11 @@ class ScrapService
     {
         $filterColumns = ['company_id' => Auth::user()->company_id];
         array_push($filterColumns, ['created_at', '>=', $this->carbon->now()->startOfDay()->format('Y-m-d H:i:s')]);
-        array_push($filterColumns, ['user_id', Auth::user()->id]);
+
+        if(!Auth::user()->admin){
+            array_push($filterColumns, ['user_id', Auth::user()->id]);
+        }
+        
         return  $filterColumns;
     }
 
@@ -127,6 +131,10 @@ class ScrapService
 
     private function checkAuthor($scrapId)
     {
+        if(Auth::user()->admin){
+            return true;
+        }
+        
         $authorId = Auth::user()->id;
         $scrap = $this->repository->find($scrapId);
         if ($authorId != Arr::get($scrap, "user_id")) {

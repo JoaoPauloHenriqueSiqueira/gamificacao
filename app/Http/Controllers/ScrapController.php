@@ -33,7 +33,7 @@ class ScrapController extends Controller
         $pageConfigs = ['pageHeader' => true];
 
         $company = $this->companyService->find(Auth::user()->company_id);
-        $data = $this->service->search($request, Auth::user()->id);
+        $data = $this->service->search();
 
         return view(
             'pages.scrap',
