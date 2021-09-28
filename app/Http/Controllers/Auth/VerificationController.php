@@ -26,7 +26,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/page-blank';
+    protected $redirectTo = '/dashboard/admin';
 
     /**
      * Create a new controller instance.
