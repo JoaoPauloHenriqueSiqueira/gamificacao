@@ -161,7 +161,7 @@
             <button class="btn-small waves-effect waves-light">
                 <span>Salvar</span>
             </button>
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
         </div>
     </form>
 </div>

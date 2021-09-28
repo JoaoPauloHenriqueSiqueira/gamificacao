@@ -79,7 +79,7 @@
                 </div>
                 <div class="input-field col s4 m4 l4">
                     <p class="margin right-align medium-small">
-                        <a href="{{ ('password.request') }}">Esqueceu a senha?</a>
+                        <a href="{{ route('password.request') }}">Esqueceu a senha?</a>
                     </p>
                 </div>
             </div>
