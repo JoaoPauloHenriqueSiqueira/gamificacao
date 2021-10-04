@@ -56,6 +56,10 @@ License: You must have a valid license purchased only from themeforest(the above
     #modal {
       max-height: 70%;
     }
+
+    #modalPerfil {
+      max-height: 100%;
+    }
   </style>
   {{-- Include core + vendor Styles --}}
   @include('panels.styles')
@@ -298,6 +302,13 @@ License: You must have a valid license purchased only from themeforest(the above
   function askDelete(id) {
     $('#modalDelete').modal('open');
     $("#deleteInput").val(id);
+  }
+
+  function closeModalMessage($message, $modal) {
+    M.toast({
+      html: $message
+    }, 5000);
+    $(`#${$modal}`).modal("close");
   }
 
   function closeCleanModal(id, $data, $success) {

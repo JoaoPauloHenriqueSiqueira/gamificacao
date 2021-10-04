@@ -51,6 +51,15 @@ class UserController extends Controller
         }
     }
 
+    public function updatePicture(Request $request)
+    {
+        try {
+            return $this->service->savePicture($request);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function create(UserValidator $request)
     {
         try {

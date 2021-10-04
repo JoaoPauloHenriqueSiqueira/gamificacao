@@ -116,6 +116,27 @@ class UserService
         return $this->repository->find($userId)->toArray();
     }
 
+    public function savePicture($request)
+    {
+        $userId = Auth::user()->id;
+
+        if ($userId) {
+            if (!$this->checkCompany($userId)) {
+                return redirect()->back()->with('message', 'Sem permissão para essa empresa');
+            }
+            $request = $this->verifyUpdate($request);
+        }
+        
+        $response = $this->repository->find($userId);
+        $response = $this->addPhoto64($request, $response, 'photo');
+
+        if ($response) {
+            return response('Foto atualizada', 200);
+        }
+
+        return response('Ocorreu algum erro', 422);
+    }
+
     public function save($request, $register = false, $updateAccount = false)
     {
         $userId = Arr::get($request, "id", false);
@@ -188,6 +209,27 @@ class UserService
 
         if ($path && $foto) {
             $pathPhoto = $this->uploadPlugin->upload($foto, $path);
+            if (!$pathPhoto) {
+                return;
+            }
+
+            $response[$property] = $pathPhoto;
+            $response->save();
+        }
+
+        return $response;
+    }
+
+    private function addPhoto64($request, $response, $property)
+    {
+        $image = $request->$property;
+
+        $companyId = Auth::user()->company_id;
+        $id = Arr::get($response, "id");
+        $path = "photos/company/$companyId/user/$id/$property";
+
+        if ($path && $image) {
+            $pathPhoto = $this->uploadPlugin->upload64($image, $path);
             if (!$pathPhoto) {
                 return;
             }

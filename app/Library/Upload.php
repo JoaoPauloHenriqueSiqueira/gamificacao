@@ -45,6 +45,37 @@ class Upload
         }
     }
 
+    public function upload64($file, $path)
+    {
+        try {
+            $name = md5(microtime() . rand());
+            $fileName = "$path/$name";
+            $avatar = $this->getFileName($file, $fileName);
+            $fileName .= $avatar['extension'];
+            //$normal = Image::make($file)->resize(160, 160)->encode($file->getClientOriginalExtension());
+            // $uploaded =  $this->storage->put($fileName, $normal);
+            $uploaded =  $this->storage->put($fileName, base64_decode($avatar['file']));
+
+            if ($uploaded) {
+                return $fileName;
+            }
+        } catch (Exception $e) {
+            \Log::info($e->getMessage());
+            return false;
+        }
+    }
+
+    private function getFileName($image, $namePrefix)
+    {
+        list($type, $file) = explode(';', $image);
+        list(, $extension) = explode('/', $type);
+        list(, $file) = explode(',', $file);
+        $result['name'] = $namePrefix . '.' . $extension;
+        $result['file'] = $file;
+        $result['extension'] = "." . $extension;
+        return $result;
+    }
+
     /**
      * Remove a file from a BUCKET S3
      *

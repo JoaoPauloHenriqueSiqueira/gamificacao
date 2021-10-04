@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => 'account'], function () {
             Route::get('/', 'HomeController@myAccount')->name('my_account');
             Route::post('/update_account', 'UserController@updateAccount')->name('update_my_user');
+            Route::post('/update_picture', 'UserController@updatePicture')->name('update_my_picture');
+
 
         });
 
