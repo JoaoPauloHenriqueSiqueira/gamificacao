@@ -37,18 +37,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::group(['prefix' => 'users'], function () {
                 Route::get('/', 'UserController@index')->name('users');
                 Route::get('/search', 'UserController@index')->name('search_users');
-                Route::post('/search', 'UserController@search');
                 Route::post('/', 'UserController@create')->name('make_user');
                 Route::delete('/', 'UserController@delete')->name('delete_user');
                 Route::delete('/delete_photo', 'UserController@deletePhoto')->name('delete_user_photo');
             });
 
-
-
             Route::group(['prefix' => 'campaigns'], function () {
                 Route::get('/', 'CampaignController@index')->name('campaigns');
                 Route::get('/search', 'CampaignController@index')->name('search_campaigns');
-                Route::post('/search', 'CampaignController@search');
                 Route::post('/', 'CampaignController@create')->name('make_campaign');
                 Route::delete('/', 'CampaignController@delete')->name('delete_campaign');
                 Route::delete('/delete_background', 'CampaignController@deletePhoto')->name('delete_background_campaign');
@@ -58,7 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::group(['prefix' => 'albums'], function () {
                 Route::get('/', 'AlbumController@index')->name('albums');
                 Route::get('/search', 'AlbumController@index')->name('search_albums');
-                Route::post('/search', 'AlbumController@search');
                 Route::post('/', 'AlbumController@create')->name('make_album');
                 Route::delete('/', 'AlbumController@delete')->name('delete_album');
                 Route::delete('/delete_background', 'AlbumController@deletePhoto')->name('delete_background_album');
@@ -73,8 +68,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'HomeController@myAccount')->name('my_account');
             Route::post('/update_account', 'UserController@updateAccount')->name('update_my_user');
             Route::post('/update_picture', 'UserController@updatePicture')->name('update_my_picture');
-
-
         });
 
         Route::group(['prefix' => 'scraps'], function () {
@@ -82,6 +75,21 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/', 'ScrapController@delete')->name('delete_message');
         });
 
+        Route::group(['prefix' => 'campaigns'], function () {
+            Route::get('/', 'CampaignController@indexNotAdm')->name('campaigns_not_admin');
+            Route::post('/user', 'CampaignController@addMyUser')->name('add_my_user_campaign');
+            Route::post('/remove_user', 'CampaignController@deleteMyUser')->name('delete_my_user_campaign');
+            Route::get('/search', 'CampaignController@indexNotAdm')->name('search_public_campaigns');
+        });
+
+        Route::group(['prefix' => 'albums'], function () {
+            Route::get('/', 'AlbumController@indexNotAdm')->name('albums_not_admin');
+            Route::post('/users', 'AlbumController@addPhotos')->name('add_photo_album_public');
+            Route::get('/search', 'AlbumController@indexNotAdm')->name('search_public_albums');
+            Route::delete('/delete_album_photo', 'AlbumController@deletePhotoAlbum')->name('delete_album_photo_public');
+
+        });
+        
         // Route::group(['prefix' => 'albums_videos'], function () {
         //     Route::get('/', 'AlbumVideoController@index')->name('album_videos');
         //     Route::get('/search', 'AlbumVideoController@index')->name('search_album_video_name');

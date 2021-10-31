@@ -17,8 +17,8 @@
         <i class="material-icons">add</i>
     </a>
 </div>
-<!-- Add new contact popup Ends-->
 
+<!-- Add new contact popup Ends-->
 <div class="content-area content-left">
     <div class="app-wrapper">
         <div class="datatable-search">
@@ -88,7 +88,12 @@
             </div>
         </div>
     </div>
+
+    @if( method_exists($datas,'links') )
+    <h1 class="center">{{$datas->links('vendor.pagination.materializecss')}}</h1>
+    @endif
 </div>
+
 
 <!-- Modal Structure -->
 <div id="modalDeletePhoto" class="modal">
@@ -211,10 +216,10 @@
         </div>
     </form>
 </div>
-</div>
-@if( method_exists($datas,'links') )
-<h1 class="center">{{$datas->links('vendor.pagination.materializecss')}}</h1>
-@endif
+
+
+
+
 
 @endsection
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
@@ -260,8 +265,8 @@
             $data['admin'] = '<?= old('admin'); ?>' != '' ? true : false;
 
             $data['email'] = '<?= old('email'); ?>' != '' ? '<?= old('email'); ?>' : '';
-            
-            $data['password']= '<?= old('password'); ?>' != '' ? '<?= old('password'); ?>' : '';
+
+            $data['password'] = '<?= old('password'); ?>' != '' ? '<?= old('password'); ?>' : '';
 
             let $birthday = '<?= old('birthday'); ?>' != '' ? '<?= old('birthday'); ?>' : '';
             if ($birthday != '') {
@@ -297,5 +302,4 @@
         $('#modalDeletePhoto').modal('open');
         $("#deleteInputPhoto").val(id);
     }
-
 </script>

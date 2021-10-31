@@ -85,6 +85,10 @@ class CampaignService
             array_push($filterColumns, ['active', Arr::get($request, 'search_campaign_active')]);
         }
 
+        if(!Auth::user()->admin){
+            array_push($filterColumns, ['public', 1]);
+        }
+
         return  $filterColumns;
     }
 
@@ -133,6 +137,34 @@ class CampaignService
     public function find($taskId)
     {
         return $this->repository->find($taskId)->toArray();
+    }
+
+    public function deleteMyUser($request)
+    {
+        $campaignId = Arr::get($request, "campaign_id");
+        if ($campaignId) {
+            if (!$this->checkCompany($campaignId)) {
+                return response('Sem permissão para essa empresa', 422);
+            }
+
+            $campaign = $this->repository->find($campaignId);
+            $campaign->users()->detach(Auth::user());
+            return response('Feito! Não participando da campanha', 200);
+        }
+    }
+
+    public function addMyUser($request)
+    {
+        $campaignId = Arr::get($request, "campaign_id");
+        if ($campaignId) {
+            if (!$this->checkCompany($campaignId)) {
+                return response('Sem permissão para essa empresa', 422);
+            }
+
+            $campaign = $this->repository->find($campaignId);
+            $campaign->users()->attach(Auth::user());
+            return response('Participando da campanha', 200);
+        }
     }
 
     public function addUsers($request)
@@ -198,6 +230,12 @@ class CampaignService
                 $active = true;
             }
             $request['active'] = $active;
+
+            $public = false;
+            if (Arr::exists($request->all(), "public")) {
+                $public = true;
+            }
+            $request['public'] = $public;
 
             $isContinuous = true;
             if (Arr::exists($request->all(), "is_not_continuous")) {

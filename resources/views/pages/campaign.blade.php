@@ -48,6 +48,12 @@
                             </div></br>
                             <div class="row">
                                 <span class="span-body">
+                                    <span class="green-text">Pública?:</span>
+                                    {{ $data->public ==  "1" ? 'Sim': 'Não' }}
+                                </span>
+                            </div></br>
+                            <div class="row">
+                                <span class="span-body">
                                     <span class="green-text">Duração Frames:</span>
                                     {{ $data->duration_frames }}
                                 </span>
@@ -141,6 +147,10 @@
             </div>
         </div>
     </div>
+
+    @if( method_exists($datas,'links') )
+    <h1 class="center">{{$datas->links('vendor.pagination.materializecss')}}</h1>
+    @endif
 </div>
 
 <div id="modalAdd" class="modal modal-fixed-footer">
@@ -166,25 +176,7 @@
     </form>
 </div>
 
-<!-- <div id="modalList" class="modal modal-fixed-footer">
-    <form class="col s12" method="POST" action="{{ URL::route('add_users_campaign') }}" id="formUsersList">
-        <div class="modal-content">
-            <h4 class='center text-center'>Gerenciar usuários</h4>
-            <div class="row">
-                <table class="bordered center">
-                    <tbody id="users_form">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-small waves-effect waves-light">
-                <span>Salvar</span>
-            </button>
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
-        </div>
-    </form>
-</div> -->
+
 
 <div id="modalDeletePhoto" class="modal">
     <div class="modal-content gradient-45deg-indigo-purple white-text">
@@ -277,7 +269,14 @@
                             </label>
                         </p>
                     </div>
-
+                    <div class="input-field col s12">
+                        <p>
+                            <label>
+                                <input type="checkbox" name="public" id="public">
+                                <span>Pública (usuários podem contribuir)</span>
+                            </label>
+                        </p>
+                    </div>
 
                     <div class="input-field col s12">
                         <input id="duration_frames" name="duration_frames" id="duration_frames" type="number" class="validate" required>
@@ -362,9 +361,7 @@
             </div>
         </div>
     </form>
-    @if( method_exists($datas,'links') )
-    <h1 class="center">{{$datas->links('vendor.pagination.materializecss')}}</h1>
-    @endif
+  
 </div>
 
 @endsection
@@ -416,6 +413,11 @@
                 $data['active'] = $active;
             }
 
+            let $public = '<?= old('public'); ?>' != '' ? '<?= old('public'); ?>' : false;
+            if ($public) {
+                $data['public'] = $public;
+            }
+
             let $is_not_continuous = '<?= old('is_not_continuous'); ?>' != '' ? false : true;
             $data['is_continuous'] = $is_not_continuous;
 
@@ -436,6 +438,7 @@
         $("#idCampaign").remove();
         $("#name").val('');
         $("#active").prop('checked', true);
+        $("#public").prop('checked', false);
         $("#duration_frames").val('');
         $("#checkDates").prop('checked', false);
         $('input[name^="days_week"]').each(function() {
@@ -495,7 +498,7 @@
 
     function createRow($user, $name) {
         return $(`<tr id="rowuser${$user}">
-                            <td>
+                            <td class='imageColumn>
                                 <input type="hidden"  name="users[]"  value="${$user}">
                                 <input placeholder="Nome" type="text" class="validate" readonly disabled value="${$name}">
                                 <label for="name">Nome</label>

@@ -13,6 +13,7 @@ class Campaign extends Model
         'valid_at',
         'valid_from',
         'active',
+        'public',
         'background',
         'duration_frames',
         'is_continuous',

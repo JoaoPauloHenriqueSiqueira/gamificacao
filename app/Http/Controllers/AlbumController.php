@@ -6,6 +6,7 @@ use App\Http\Requests\CampaignValidator;
 use App\Services\AlbumService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AlbumController extends Controller
 {
@@ -27,6 +28,24 @@ class AlbumController extends Controller
             $pageConfigs = ['pageHeader' => true];
             return view('pages.albums', [
                 "datas" => $this->service->search($request),
+                'pageConfigs' => $pageConfigs,
+                "search" => $request->all(),
+                "urlAws" => ENV('AWS_URL'),
+            ], ['breadcrumbs' =>  []]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function indexNotAdm(Request $request)
+    {
+        try {
+            $pageConfigs = ['pageHeader' => true];
+            $userId = Auth::user()->id;
+
+            return view('pages.albums_not_adm', [
+                "datas" => $this->service->search($request),
+                'myUser' => $userId,
                 'pageConfigs' => $pageConfigs,
                 "search" => $request->all(),
                 "urlAws" => ENV('AWS_URL'),

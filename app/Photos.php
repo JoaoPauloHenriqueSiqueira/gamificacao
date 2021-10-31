@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class Photos extends Model
 {
     protected $collection = 'photos';
-    protected $fillable = ['path'];
+    protected $fillable = ['path','user_id'];
 
     protected static function boot()
     {

@@ -41,6 +41,14 @@ class AlbumService
             return $query->where($filterColumns)->orderBy('created_at', 'DESC');
         });
 
+        // foreach($list->get() as $album){
+        //     foreach($album->photos as $photo){
+        //         \Log::info($photo);
+        //     }
+
+        // }
+
+
         return $list->paginate(10);
     }
 
@@ -107,7 +115,11 @@ class AlbumService
             array_push($filterColumns, ['active', Arr::get($request, 'search_album_active')]);
         }
 
-        return  $filterColumns;
+        if(!Auth::user()->admin){
+            array_push($filterColumns, ['public', 1]);
+        }
+
+        return $filterColumns;
     }
 
     public function find($taskId)
@@ -146,6 +158,17 @@ class AlbumService
         $companyId = Auth::user()->company_id;
         $albumId = Arr::get($request, "album_id");
         $path = "photos/company/$companyId/albums/$albumId/fotos";
+        $album = $this->repository->find($albumId);
+        
+        if (!$this->checkCompany($albumId)) {
+            return redirect()->back()->with('message', 'Sem permissão para essa empresa');
+        }
+
+        if(!Auth::user()->admin){
+            if(!$album->public){
+                return redirect()->back()->with('message', 'Sem permissão para esse álbum');
+            }
+        }
 
         foreach ($fotos as $foto) {
             $newPhoto = [];
@@ -155,13 +178,12 @@ class AlbumService
                 continue;
             }
             
-            $photoId = $this->photoRepository->updateOrCreate(['path' => $pathPhoto]);
+            $photoId = $this->photoRepository->updateOrCreate(['path' => $pathPhoto,'user_id'=>Auth::user()->id]);
             $newPhoto["photo_id"] = $photoId->id;
             $newPhoto["album_id"] = $albumId;
             array_push($arrFotos, $newPhoto);
         }
 
-        $album = $this->repository->find($albumId);
 
         $album->photos()->attach(
             $arrFotos
@@ -180,7 +202,7 @@ class AlbumService
         if (Arr::get($data, 'company_id') == Auth::user()->company_id) {
             $response = $this->uploadPlugin->remove(Arr::get($data, "background"));
             if(!$response){
-                \Log::info("Tentativa de remover foto bucket deu erro:".Arr::get($data, "background"));
+                \Log::info("Tentativa de remover foto bucket deu erro: ".Arr::get($data, "background"));
             }
             $data['background'] = null;
             $data->save();
@@ -194,6 +216,10 @@ class AlbumService
     {
         $id = Arr::get($request, "id");
         $photoFind =  $this->photoRepository->find($id);
+
+        if(!Auth::user()->admin && $photoFind->user_id != Auth::user()->id){
+            return response('Sem permissão para remover essa foto', 422);
+        }
 
         if (Arr::get($photoFind, 'company_id') == Auth::user()->company_id) {
             $response = $this->uploadPlugin->remove(Arr::get($photoFind, "path"));
@@ -231,6 +257,12 @@ class AlbumService
                 $active = true;
             }
             $request['active'] = $active;
+
+            $public = false;
+            if (Arr::exists($request->all(), "public")) {
+                $public = true;
+            }
+            $request['public'] = $public;
 
             $isContinuous = true;
             if (Arr::exists($request->all(), "is_not_continuous")) {

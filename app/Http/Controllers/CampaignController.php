@@ -36,6 +36,40 @@ class CampaignController extends Controller
         }
     }
 
+    public function indexNotAdm(Request $request)
+    {
+        try {
+            $pageConfigs = ['pageHeader' => true];
+            return view('pages.campaign_not_adm', [
+                "datas" => $this->service->search($request),
+                "users" => $this->userService->getAll($request),
+                'pageConfigs' => $pageConfigs,
+                "search" => $request->all(),
+                "urlAws" => ENV('AWS_URL'),
+            ], ['breadcrumbs' =>  []]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function addMyUser(Request $request)
+    {
+        try {
+            return $this->service->addMyUser($request);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function deleteMyUser(Request $request)
+    {
+        try {
+            return $this->service->deleteMyUser($request);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function addUsers(Request $request)
     {
         try {

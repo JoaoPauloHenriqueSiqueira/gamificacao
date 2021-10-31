@@ -27,7 +27,7 @@
     },
     {
       "url": "/dashboard/admin/albums",
-      "name": "Álbums",
+      "name": "Álbuns",
       "i18n": "Support",
       "class": "waves-effect waves-cyan",
       "icon": "camera_enhance"
@@ -58,6 +58,20 @@
       "i18n": "Documentation",
       "class": "waves-effect waves-cyan",
       "icon": "message"
+    },
+    {
+      "url": "/dashboard/campaigns",
+      "name": "Campanhas",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "view_list"
+    },
+    {
+      "url": "/dashboard/albums",
+      "name": "Álbuns",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "camera_enhance"
     }
   ]
 }

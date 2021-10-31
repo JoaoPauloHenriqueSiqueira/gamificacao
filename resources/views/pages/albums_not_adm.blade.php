@@ -11,18 +11,10 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/pages/app-contacts.css')}}">
 @endsection
 
-
-<div style="bottom: 54px; right: 19px;" class="fixed-action-btn direction-top">
-    <a class="btn-floating btn-large primary-text gradient-shadow contact-sidebar-trigger" onclick="openModal(false)" href="#modal1">
-        <i class="material-icons">add</i>
-    </a>
-</div>
-<!-- Add new contact popup Ends-->
-
 <div class="content-area content-left">
     <div class="app-wrapper">
         <div class="datatable-search">
-            <form action="{{ URL::route('search_albums') }}">
+            <form action="{{ URL::route('search_public_albums') }}">
                 <i class="material-icons mr-2 search-icon">search</i>
                 <input type="text" placeholder="Procurar (Pressione enter para procurar)" class="app-filter" id="global_filter" name="search_album_name" value="{{Arr::get($search,'search_album_name')}}">
             </form>
@@ -49,12 +41,6 @@
                                 <span class="span-body">
                                     <span class="green-text">Pública?:</span>
                                     {{ $data->public ==  "1" ? 'Sim': 'Não' }}
-                                </span>
-                            </div></br>
-                            <div class="row">
-                                <span class="span-body">
-                                    <span class="green-text">Duração Frames:</span>
-                                    {{ $data->duration_frames }}
                                 </span>
                             </div></br>
                             @if($data->is_continuous)
@@ -95,48 +81,20 @@
                                 </span>
                             </div></br>
                             @endif
-                            <div class="row">
-                                <span class="span-body">
-                                    <div class="row" id="photo{{$data->id}}" <?php if (!$data['background']) { ?> style="display:none" <?php } ?>>
-                                        <h5 class="center">Remover Background <a class="waves-effect waves-light btn" onclick="askDeletePhoto({{$data->id}})"><i class="white-text material-icons">delete</i></a>
-                                        </h5>
-                                        <br>
-                                        <div class="col s12 m4 center">
-                                            @if($data['background'])
-                                            <img class="materialboxed responsive-img" width="550" src="<?= $urlAws . $data['background'] ?>" />
-                                            @endif
-                                        </div>
-                                    </div>
-                                </span>
-                                <br>
-                                <div class="row center">
-                                    <span class="span-body">
-                                        <a class="btn-small tooltipped green {{   count($data->photos) <= 0 ? 'disabled' : '' }}" onclick="managerPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Fotos">
-                                            <i class="material-icons white-text">
-                                                perm_media
-                                            </i>
-                                        </a>
-                                        
-                                        <a class="btn-small tooltipped blue" onclick="addPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Adicionar Fotos">
-                                            <i class="material-icons white-text">
-                                                add_a_photo
-                                            </i>
-                                        </a>
-                                    </span>
-                                </div></br>
-                            </div></br>
-                            <hr>
+
                             <div class="row center">
-                                <a class="btn-small tooltipped" onclick="editCampaign('{{$data->valid_at_input}}','{{$data->valid_from_input}}',{{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Álbum">
-                                    <i class="material-icons white-text">
-                                        edit
-                                    </i>
-                                </a>
-                                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='bottom' data-delay='50' data-tooltip="Deletar Álbum">
-                                    <i class="material-icons white-text">
-                                        clear
-                                    </i>
-                                </a>
+                                <span class="span-body">
+                                    <a class="btn-small tooltipped green {{   count($data->photos) <= 0 ? 'disabled' : '' }}" onclick="managerPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Gerenciar Fotos">
+                                        <i class="material-icons white-text">
+                                            perm_media
+                                        </i>
+                                    </a>
+                                    <a class="btn-small tooltipped blue" onclick="addPhotos({{$data,json_encode($data->photos)}})" data-position='bottom' data-delay='50' data-tooltip="Adicionar Fotos">
+                                        <i class="material-icons white-text">
+                                            add_a_photo
+                                        </i>
+                                    </a>
+                                </span>
                             </div>
                         </div>
                     </li>
@@ -152,7 +110,7 @@
 </div>
 
 <div id="modalAdd" class="modal modal-fixed-footer">
-    <form class="col s12" method="POST" action="{{ URL::route('add_photo_album') }}" id="formUsers" enctype="multipart/form-data">
+    <form class="col s12" method="POST" action="{{ URL::route('add_photo_album_public') }}" id="formUsers" enctype="multipart/form-data">
 
         <div class="modal-content">
             <h4 class='center text-center'>Adicionar foto(s)</h4>
@@ -397,13 +355,13 @@
             </div>
         </div>
     </form>
+  
 </div>
 
 @endsection
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
 <script>
-
     $(document).ready(function() {
         "use strict";
         $(".modal").modal();
@@ -499,14 +457,16 @@
         closeForm();
         $('#modalList').modal('open');
         $photos = $data['photos'];
+
         $("#users_form").empty();
         var items = JSON.parse(sessionStorage.getItem('deletePhotos') || '[]');
 
         $photos.forEach(element => {
+            console.log(element);
             var result = contains(items, "photo", element.id)
+
             if (!result) {
-                $element = createRow(element.id, element.path);
-                console.log($element);
+                $element = createRow(element.id, element.path, element.user_id);
                 $("#users_form").append($element);
             }
         });
@@ -519,10 +479,11 @@
         $("#deleteInputPhoto").val(id);
     }
 
-    function createRow($id, $path) {
+    function createRow($id, $path, $user_id) {
         $urlAws = "<?= $urlAws ?>";
-
-        return $(`<tr class='photos' id="rowPhoto${$id}">
+        $myUser = '<?= $myUser ?>';
+        if($myUser && $myUser == $user_id){
+            return $(`<tr class='photos' id="rowPhoto${$id}">
                         <td class='imageColumn'>
                             <img class="materialboxed responsive-img" width="80" src="${$urlAws}${$path}"></img>
                         </td>
@@ -534,6 +495,21 @@
                             </a>
                         </td>
                     </tr>`);
+        }
+
+        return $(`<tr class='photos' id="rowPhoto${$id}">
+                        <td class='imageColumn'>
+                            <img class="materialboxed responsive-img" width="80" src="${$urlAws}${$path}"></img>
+                        </td>
+                        <td>
+                            <a class="btn-small red disabled" >
+                                <i class="material-icons white-text">
+                                    clear
+                                </i>
+                            </a>
+                        </td>
+                    </tr>`);
+        
     }
 
 
@@ -550,24 +526,12 @@
     }
 
     function deletePhotoAlbum() {
-        //TODO
-        //pegar todas as photos e se não tiver nenhuma, desativar botão managerPhotos
-        
         let id = $("#deleteInputPhotoAlbum").val();
 
         $("#rowPhoto" + id).hide();
         $("#modalDeletePhotoAlbum").modal("close");
 
-        var items = JSON.parse(sessionStorage.getItem('deletePhotos') || '[]');
-        var result = contains(items, "photo", id)
-        if (!result) {
-            items.push({
-                photo: id
-            });
-            sessionStorage.setItem('deletePhotos', JSON.stringify(items));
-        }
-
-        let $url = "<?= URL::route('delete_album_photo') ?>";
+        let $url = "<?= URL::route('delete_album_photo_public') ?>";
         $.ajax({
             type: 'DELETE',
             url: $url,
@@ -583,16 +547,21 @@
         });
     }
 
-    function addPhotoStorage($id) {
-
-    }
-
     function closeCleanModalALbum($id, $data, $success) {
         if (!$success) {
             $("#rowPhoto" + $id).show();
             M.toast({
                 html: $data
             }, 5000);
+        } else {
+            var items = JSON.parse(sessionStorage.getItem('deletePhotos') || '[]');
+            var result = contains(items, "photo", $id)
+            if (!result) {
+                items.push({
+                    photo: $id
+                });
+                sessionStorage.setItem('deletePhotos', JSON.stringify(items));
+            }
         }
 
         $("#modalDeletePhotoAlbum").modal("close");

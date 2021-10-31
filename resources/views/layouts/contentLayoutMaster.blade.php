@@ -44,8 +44,9 @@ License: You must have a valid license purchased only from themeforest(the above
     }
 
     #modalList {
-      max-height: 88%;
+      max-height: 60%;
       height: 88% !important;
+      max-width: 400px;
     }
 
     #modalAdd {
@@ -59,6 +60,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
     #modalPerfil {
       max-height: 100%;
+    }
+
+    .imageColumn{
+      width: 90%;;
     }
   </style>
   {{-- Include core + vendor Styles --}}
@@ -219,6 +224,13 @@ License: You must have a valid license purchased only from themeforest(the above
       $("#active").prop('checked', true);
     } else {
       $("#active").prop('checked', false);
+    }
+
+    let public = data['public'];
+    if (public) {
+      $("#public").prop('checked', true);
+    } else {
+      $("#public").prop('checked', false);
     }
 
     if (data['is_birthday']) {
