@@ -574,6 +574,8 @@
                 });
             },
             error: function(response) {
+                console.log("DEU RUIM");
+                console.log(response);
                 $('#modalLoad').modal('close');
                 $('#modalError').modal('open');
             }
