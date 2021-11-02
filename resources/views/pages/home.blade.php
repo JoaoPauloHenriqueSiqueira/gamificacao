@@ -519,6 +519,8 @@
         $('#modalLoad').modal('open');
         $hash = PagSeguroDirectPayment.getSenderHash();
         let card = getCreateCard();
+    
+        console.log(card);
 
         if (!validCard(card)) {
             $('#modalLoad').modal('close');
