@@ -409,7 +409,7 @@
 
 <script>
     $(document).ready(function($) {
-        $(".cardNumber").mask("9999 9999 9999 9999");
+        $(".cardNumber").mask("9999999999999999");
         $(".expirationMonth").mask("99");
         $(".expirationYear").mask("9999");
         $(".cvv").mask("999");
