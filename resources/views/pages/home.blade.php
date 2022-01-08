@@ -79,8 +79,9 @@
                         </div>
                         <div class="row">
                             <label class="right red-text">
-                                @if(!$card || $card->status != 3)
-                                Sua assinatura precisa estar Ativa
+                                {{$card}}
+                                @if(!$card || $card->plan_status != 'ACTIVE' )
+                                    Sua assinatura precisa estar Ativa
                                 @endif
                             </label>
                         </div>
@@ -238,12 +239,17 @@
                                 <div class="row optionsUpdate">
                                     <div class='col s12 center' id="numberCard">
                                     </div>
-                                    <div class="col s6 center ">
-                                        <button class="btn-small waves-effect" onclick="showUpdateCard()">Alterar Cartão</button>
+                                    <div class="col s4 center ">
+                                        <form method="POST" action="{{ URL::route('retry_plan') }}">
+                                            <button id="retryPayment" class="btn-small waves-effect green" disabled>Tentar novamente</button>
+                                        </form>
                                     </div>
-                                    <div class="col s6 center">
+                                    <div class="col s4 center ">
+                                        <button class="btn-small waves-effect blue" onclick="showUpdateCard()">Alterar Cartão</button>
+                                    </div>
+                                    <div class="col s4 center">
                                         <form method="POST" action="{{ URL::route('delete_plan') }}">
-                                            <button class="btn-small waves-effect blue">Cancelar Assinatura</button>
+                                            <button class="btn-small waves-effect">Cancelar Assinatura</button>
                                         </form>
                                     </div>
                                 </div>
@@ -298,7 +304,7 @@
 
                                     <div class="input-field col s5">
                                         <input name="district" id="district" type="text" class="validate" data-characters='3' oninput="verifyAddress(this)" value="{{$data['district']}}">
-                                        <label for="name">Bairro</label>
+                                        <label for="district">Bairro</label>
                                     </div>
                                 </div>
 
@@ -437,7 +443,7 @@
         let card = '<?= $card ?>';
         if (card != '') {
             card = JSON.parse(card);
-            verifyPayment(card.plan_status);
+            verifyPayment(card);
         }else{
             createCreditCard('Plano - Desativado');
         }
@@ -488,6 +494,8 @@
             "cvvToActive": $("#cvvToActive").val()
         };
     }
+
+    
 
     function showUpdateCard() {
         $(".optionsUpdate").hide('slow');

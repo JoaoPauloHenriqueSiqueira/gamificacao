@@ -28,7 +28,7 @@ class UserValidator extends FormRequest
     {
         $valid =  [
             'name' => 'required|max:255',
-            'email' => 'required|max:255',
+            'email' => 'required|unique:users,email|max:255',
             'password' => 'required|min:5|max:20'
         ];
 
@@ -37,18 +37,18 @@ class UserValidator extends FormRequest
         $email = is_null($this->request->get('email'));
         $admin = $this->request->get('admin');
 
-        //se admin email precisa ser único
-        if ($admin && !$email) {
-            $valid['email'] =  'required|unique:users,email|max:255';
-        }
+        // //se admin email precisa ser único
+        // if ($admin && !$email) {
+        //     $valid['email'] =  'required|unique:users,email|max:255';
+        // }
 
-        //se não é admin, email único pra minha empresa
-        if (!$admin && !$email) {
-            $valid['email'] = Rule::unique('users')
-                ->ignore($this->request->get('id'))->where(function ($query) use ($companyId) {
-                    return $query->where('company_id', $companyId);
-                });
-        }
+        // //se não é admin, email único pra minha empresa
+        // if (!$admin && !$email) {
+        //     $valid['email'] = Rule::unique('users')
+        //         ->ignore($this->request->get('id'))->where(function ($query) use ($companyId) {
+        //             return $query->where('company_id', $companyId);
+        //         });
+        // }
 
         $today = new Carbon();
         $maxDate = new Carbon();

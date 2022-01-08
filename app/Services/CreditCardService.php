@@ -274,6 +274,34 @@ class CreditCardService
         return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
 
+    public function retry()
+    {
+        $card = $this->repository->findByField("company_id", Auth::user()->company_id)->first();
+
+        try {
+            if ($card) {
+                if ($card->plan_token) {
+                    $cancel = (array) PagSeguroRecorrente::setPreApprovalCode($card->plan_token)->sendRetentative('BE651608442242319B3771F5803A4B38');
+                    if ($cancel['status'] ?? false == "ok") {
+                        $card->plan_status = "";
+                        $card->save();
+                        return redirect()->back()->with('message', 'Assinatura atualizada com sucesso!');
+                    }
+                }
+            }
+        } catch (\Artistas\PagSeguro\PagSeguroException $e) {
+            DB::rollback();
+
+            $message = $e->getMessage();
+            if ($message == "invalid pre-approval status to execute the requested operation. Pre-approval status is PENDING."); {
+                $message  = "Seu pagamento ainda está sendo processado";
+            }
+            return redirect()->back()->with('message', $message);
+        }
+
+        return redirect()->back()->with('message', 'Ocorreu algum erro');
+    }
+
     private function checkCompany($card)
     {
         if ($card) {

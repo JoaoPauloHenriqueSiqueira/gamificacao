@@ -28,6 +28,9 @@ class PaymentService
         $status = $notification['status'];
         $card = $this->repository->findByField("reference", $notification['reference'])->first();
 
+        \Log::info($request);
+        \Log::info($notification);
+
         if ($card) {
             $company = $card['company_id'];
 

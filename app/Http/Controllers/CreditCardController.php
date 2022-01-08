@@ -49,4 +49,13 @@ class CreditCardController extends Controller
         }
     }
 
+    public function retry()
+    {
+        try {
+            return $this->service->retry();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

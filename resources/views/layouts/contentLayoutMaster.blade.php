@@ -134,23 +134,27 @@ License: You must have a valid license purchased only from themeforest(the above
 
   channel.bind('paymentEvent', function(data) {
     if (company == data.company) {
-      verifyPayment(data.status);
+      location.reload();
     }
   });
 
-  function verifyPayment(status) {
+  function verifyPayment(card) {
+
+    let plan_status = card.plan_status;
+    let status = card.status;
+
     if (
-      status == "CANCELLED_BY_RECEIVER" ||
-      status == "CANCELLED_BY_SENDER" ||
-      status == "SUSPENDED" ||
-      status == "CANCELLED") {
+      plan_status == "CANCELLED_BY_RECEIVER" ||
+      plan_status == "CANCELLED_BY_SENDER" ||
+      plan_status == "SUSPENDED" ||
+      plan_status == "CANCELLED") {
       createCreditCard('Plano - Desativado');
-    } else if (status == 'PAYMENT_METHOD_CHANGE') {
-      updateCreditCard('Plano - Pagamento pendente. Atualize a forma de pagamento', true);
-    } else if (status == "ACTIVE") {
-      updateCreditCard('Plano - Ativo', true);
-    } else if (status == "PENDING" || status == null) {
-      updateCreditCard('Plano - Aguardando Aprovação');
+    } else if (plan_status == 'PAYMENT_METHOD_CHANGE') {
+      updateCreditCard('Plano - Pagamento pendente. Atualize a forma de pagamento', status, true);
+    } else if (plan_status == "ACTIVE") {
+      updateCreditCard('Plano - Ativo', status,  true);
+    } else if (plan_status == "PENDING" || plan_status == null) {
+      updateCreditCard('Plano - Aguardando Aprovação', status);
     }
   }
 
@@ -163,21 +167,40 @@ License: You must have a valid license purchased only from themeforest(the above
     $("#status").html($status);
   }
 
-  function updateCreditCard($status, show) {
-    if (!show) {
-      $(".creditCard").hide();
-      $(".optionsUpdate").hide();
-      $(".optionUpdateCard").hide();
-      $(".optionSave").hide();
-      $(".creditCardData").hide();
-    } else {
+  function updateCreditCard($legend, $status, $show) {
+    if ($show) {
+
       $(".creditCard").show();
       $(".optionsUpdate").show();
       $(".optionUpdateCard").hide();
       $(".optionSave").hide();
       $(".creditCardData").hide();
+
+      //PAGAMENTO NEGADO
+      if($status == '7'){
+        $("#retryPayment").addClass('pulse');
+        $("#retryPayment").prop('disabled',false);
+        $legend = "Pagamento não finalizado (pode ter sido negado pela empresa de cartão de crédito). Uma nova tentativa será feita após 3 dias.";
+      }
+
+       //PAGAMENTO NEGADO
+       if($status == '2'){
+        $legend = "Pagamento em análise";
+      }
+
+    } else {
+      //PAGAMENTO PENDENTE
+      $(".creditCard").hide();
+      $(".optionsUpdate").hide();
+      $(".optionUpdateCard").hide();
+      $(".optionSave").hide();
+      $(".creditCardData").hide();
+
     }
-    $("#status").html($status);
+
+    
+   
+    $("#status").html($legend);
   }
 </script>
 <script>

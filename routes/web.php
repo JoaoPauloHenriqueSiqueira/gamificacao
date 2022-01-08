@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/', 'CreditCardController@save')->name('save_credit_card');
                 Route::post('/update', 'CreditCardController@update')->name('update_credit_card');
                 Route::post('/cancel', 'CreditCardController@delete')->name('delete_plan');
+                Route::post('/retry', 'CreditCardController@retry')->name('retry_plan');
+
                 Route::get('/updatePlanStatus/{companyId}', 'CreditCardController@updatePlanStatus');
             });
 
